@@ -10,6 +10,6 @@ class AuthenticationInteractor @Inject constructor(private val repository: IAuth
     override fun login(email: String, password: String): Flow<Resource<User>> =
         repository.postLogin(email, password)
 
-    override fun register(email: String, password: String): Flow<Resource<String>> =
+    override fun register(name: String, email: String, password: String): Flow<Resource<String>> =
         repository.postRegister(name, email, password)
 }

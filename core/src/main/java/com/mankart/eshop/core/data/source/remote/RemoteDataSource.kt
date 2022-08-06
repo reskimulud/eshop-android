@@ -3,6 +3,7 @@ package com.mankart.eshop.core.data.source.remote
 import com.mankart.eshop.core.data.source.remote.network.ApiResponse
 import com.mankart.eshop.core.data.source.remote.network.ApiService
 import com.mankart.eshop.core.data.source.remote.response.LoginResponse
+import com.mankart.eshop.core.data.source.remote.response.ProfileResponse
 import com.mankart.eshop.core.data.source.remote.response.ResponseWithoutData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -19,8 +20,8 @@ class RemoteDataSource @Inject constructor(private val apiService: ApiService) {
         return flow {
             try {
                 val response = apiService.postLogin(email, password)
-                val data = response.data
-                emit(ApiResponse.Success(data))
+                emit(ApiResponse.Success(response.data))
+                emit(ApiResponse.Message(response.message))
             } catch (err: Exception) {
                 emit(ApiResponse.Error(err.toString()))
             }
@@ -30,6 +31,20 @@ class RemoteDataSource @Inject constructor(private val apiService: ApiService) {
         return flow {
             try {
                 val response = apiService.postRegister(name, email, password)
+                emit(ApiResponse.Message(response.message))
+            } catch (err: Exception) {
+                emit(ApiResponse.Error(err.toString()))
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
+
+    // profile
+    suspend fun getProfile(token: String): Flow<ApiResponse<ProfileResponse>> {
+        return flow {
+            try {
+                val response = apiService.getProfile(token)
+                emit(ApiResponse.Success(response.data))
                 emit(ApiResponse.Message(response.message))
             } catch (err: Exception) {
                 emit(ApiResponse.Error(err.toString()))

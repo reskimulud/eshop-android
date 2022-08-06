@@ -1,13 +1,7 @@
 package com.mankart.eshop.core.data.source.remote.network
 
-import com.mankart.eshop.core.data.source.remote.response.ResponseWithData
-import com.mankart.eshop.core.data.source.remote.response.LoginResponse
-import com.mankart.eshop.core.data.source.remote.response.ProfileResponse
-import com.mankart.eshop.core.data.source.remote.response.ResponseWithoutData
-import retrofit2.http.Field
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.POST
+import com.mankart.eshop.core.data.source.remote.response.*
+import retrofit2.http.*
 
 interface ApiService {
     @POST("login")
@@ -27,4 +21,10 @@ interface ApiService {
     fun getProfile(
         @Header("Authorization") token: String
     ) : ResponseWithData<ProfileResponse>
+
+    @GET("products")
+    fun getProducts(
+        @Query("page") page: Int? = null,
+        @Query("size") size: Int? = null
+    ) : ResponseWithData<List<ProductResponse>>
 }

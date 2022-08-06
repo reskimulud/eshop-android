@@ -3,6 +3,7 @@ package com.mankart.eshop.core.data.source.remote
 import com.mankart.eshop.core.data.source.remote.network.ApiResponse
 import com.mankart.eshop.core.data.source.remote.network.ApiService
 import com.mankart.eshop.core.data.source.remote.response.LoginResponse
+import com.mankart.eshop.core.data.source.remote.response.ProductResponse
 import com.mankart.eshop.core.data.source.remote.response.ProfileResponse
 import com.mankart.eshop.core.data.source.remote.response.ResponseWithoutData
 import kotlinx.coroutines.Dispatchers
@@ -44,6 +45,20 @@ class RemoteDataSource @Inject constructor(private val apiService: ApiService) {
         return flow {
             try {
                 val response = apiService.getProfile(token)
+                emit(ApiResponse.Success(response.data))
+                emit(ApiResponse.Message(response.message))
+            } catch (err: Exception) {
+                emit(ApiResponse.Error(err.toString()))
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
+
+    // products
+    suspend fun getProducts(page: Int, size: Int): Flow<ApiResponse<List<ProductResponse>>> {
+        return flow {
+            try {
+                val response = apiService.getProducts(page, size)
                 emit(ApiResponse.Success(response.data))
                 emit(ApiResponse.Message(response.message))
             } catch (err: Exception) {

@@ -1,4 +1,4 @@
-package com.mankart.eshop.core.data.source.datastore
+package com.mankart.eshop.core.data.source.local.datastore
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences

@@ -1,8 +1,7 @@
 package com.mankart.eshop.core.data
 
-import android.net.Network
 import com.mankart.eshop.core.data.source.NetworkBoundResource
-import com.mankart.eshop.core.data.source.local.datastore.PreferenceDataStore
+import com.mankart.eshop.core.data.source.local.LocalDataSource
 import com.mankart.eshop.core.data.source.remote.RemoteDataSource
 import com.mankart.eshop.core.data.source.remote.network.ApiResponse
 import com.mankart.eshop.core.data.source.remote.response.LoginResponse
@@ -20,14 +19,14 @@ import javax.inject.Singleton
 @Singleton
 class EShopRepository @Inject constructor(
     private val remoteDataSource: RemoteDataSource,
-    private val dataStore: PreferenceDataStore,
+    private val localDataSource: LocalDataSource,
 ): IAuthenticationRepository, IProfileRepository {
     // authentication
     override fun postLogin(email: String, password: String): Flow<Resource<User>> =
         object: NetworkBoundResource<User, LoginResponse>() {
             override suspend fun fetchFromApi(response: LoginResponse): User {
                 // store the token value to dataStore
-                dataStore.saveUserToken(response.token)
+                localDataSource.saveUserToken(response.token)
                 return DataMapper.mapLoginResponseToDomain(response)
             }
             override suspend fun createCall(): Flow<ApiResponse<LoginResponse>> =
@@ -45,7 +44,7 @@ class EShopRepository @Inject constructor(
         object: NetworkBoundResource<User, ProfileResponse>() {
             override suspend fun fetchFromApi(response: ProfileResponse): User {
                 // store email and name to dataStore
-                dataStore.apply {
+                localDataSource.apply {
                     saveUserEmail(response.email)
                     saveUserName(response.name)
                 }
@@ -53,10 +52,10 @@ class EShopRepository @Inject constructor(
             }
 
             override suspend fun createCall(): Flow<ApiResponse<ProfileResponse>> {
-                val token = dataStore.getUserToken().first()
+                val token = localDataSource.getUserToken().first()
                 return remoteDataSource.getProfile(token)
             }
         }.asFlow()
 
-    override suspend fun logout() = dataStore.clearCache()
+    override suspend fun logout() = localDataSource.clearCache()
 }

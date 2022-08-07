@@ -27,4 +27,9 @@ interface ApiService {
         @Query("page") page: Int? = null,
         @Query("size") size: Int? = null
     ) : ResponseWithData<List<ProductResponse>>
+
+    @GET("products/{id}")
+    fun getProductById(
+        @Path("id") id: String
+    ) : ResponseWithData<ProductResponse>
 }

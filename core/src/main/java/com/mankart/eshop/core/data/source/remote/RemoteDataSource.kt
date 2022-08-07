@@ -67,4 +67,16 @@ class RemoteDataSource @Inject constructor(private val apiService: ApiService) {
         }.flowOn(Dispatchers.IO)
     }
 
+    suspend fun getProductById(id: String): Flow<ApiResponse<ProductResponse>> {
+        return flow {
+            try {
+                val response = apiService.getProductById(id)
+                emit(ApiResponse.Success(response.data))
+                emit(ApiResponse.Message(response.message))
+            } catch (err: Exception) {
+                emit(ApiResponse.Error(err.toString()))
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
 }

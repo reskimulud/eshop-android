@@ -9,5 +9,6 @@ data class Product(
     val description: String,
     val image: String,
     val rating: Double,
-    val countRate: Int
+    val countRate: Int,
+    val reviews: List<UserReview>? = emptyList()
 )

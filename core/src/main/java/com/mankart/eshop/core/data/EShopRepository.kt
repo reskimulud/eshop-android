@@ -8,6 +8,7 @@ import com.mankart.eshop.core.data.source.local.entity.ProductEntity
 import com.mankart.eshop.core.data.source.remote.RemoteDataSource
 import com.mankart.eshop.core.data.source.remote.network.ApiResponse
 import com.mankart.eshop.core.data.source.remote.response.LoginResponse
+import com.mankart.eshop.core.data.source.remote.response.ProductResponse
 import com.mankart.eshop.core.data.source.remote.response.ProfileResponse
 import com.mankart.eshop.core.data.source.remote.response.ResponseWithoutData
 import com.mankart.eshop.core.domain.model.Product
@@ -87,4 +88,13 @@ class EShopRepository @Inject constructor(
                 DataMapper.mapProductEntityToDomain(product)
             }
         }
+
+    override fun getProductById(id: String): Flow<Resource<Product>> =
+        object: NetworkBoundResource<Product, ProductResponse>() {
+            override suspend fun fetchFromApi(response: ProductResponse): Product =
+                DataMapper.mapProductResponseToDomain(response)
+
+            override suspend fun createCall(): Flow<ApiResponse<ProductResponse>> =
+                remoteDataSource.getProductById(id)
+        }.asFlow()
 }

@@ -22,7 +22,10 @@ data class ProductResponse(
     val image: String,
 
     @field:SerializedName("rating")
-    val rating: Rating
+    val rating: Rating? = null,
+
+    @field:SerializedName("reviews")
+    val reviews: List<ReviewResponse>? = emptyList()
 )
 
 data class Rating(

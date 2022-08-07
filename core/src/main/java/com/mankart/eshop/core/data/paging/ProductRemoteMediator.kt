@@ -66,8 +66,7 @@ class ProductRemoteMediator @Inject constructor(
                 localDataSource.insertRemoteKey(keys)
             }
 
-            val emptyList: List<ProductEntity> = listOf()
-            localDataSource.insertProducts(response.data?:emptyList)
+            localDataSource.insertProducts(response.data?:emptyList())
 
             MediatorResult.Success(endOfPaginationReached = false)
         } catch (err: Exception) {

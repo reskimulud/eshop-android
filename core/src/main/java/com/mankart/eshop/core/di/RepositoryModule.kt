@@ -2,6 +2,7 @@ package com.mankart.eshop.core.di
 
 import com.mankart.eshop.core.data.EShopRepository
 import com.mankart.eshop.core.domain.repository.IAuthenticationRepository
+import com.mankart.eshop.core.domain.repository.ICartRepository
 import com.mankart.eshop.core.domain.repository.IProductRepository
 import com.mankart.eshop.core.domain.repository.IProfileRepository
 import dagger.Binds
@@ -20,4 +21,7 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun bindProductRepository(repository: EShopRepository) : IProductRepository
+
+    @Binds
+    abstract fun bindCartRepository(repository: EShopRepository) : ICartRepository
 }

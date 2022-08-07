@@ -1,13 +1,8 @@
 package com.mankart.eshop.core.utils
 
 import com.mankart.eshop.core.data.source.local.entity.ProductEntity
-import com.mankart.eshop.core.data.source.remote.response.LoginResponse
-import com.mankart.eshop.core.data.source.remote.response.ProductResponse
-import com.mankart.eshop.core.data.source.remote.response.ProfileResponse
-import com.mankart.eshop.core.data.source.remote.response.ReviewResponse
-import com.mankart.eshop.core.domain.model.Product
-import com.mankart.eshop.core.domain.model.User
-import com.mankart.eshop.core.domain.model.UserReview
+import com.mankart.eshop.core.data.source.remote.response.*
+import com.mankart.eshop.core.domain.model.*
 
 object DataMapper {
     fun mapLoginResponseToDomain(input: LoginResponse) : User = User(
@@ -58,5 +53,21 @@ object DataMapper {
         user = input.user,
         rate = input.rate,
         review = input.review,
+    )
+
+    fun mapCartResponseToDomain(input: CartResponse): Cart = Cart(
+        totalItem = input.totalItem,
+        subTotal = input.subTotal,
+        cart = input.cart.map { mapCartItemResponseToDomain(it) }
+    )
+
+    private fun mapCartItemResponseToDomain(input: CartItemResponse): CartItem = CartItem(
+        id = input.id,
+        productId = input.productId,
+        title = input.title,
+        price = input.price,
+        description = input.description,
+        image = input.image,
+        quantity = input.quantity,
     )
 }

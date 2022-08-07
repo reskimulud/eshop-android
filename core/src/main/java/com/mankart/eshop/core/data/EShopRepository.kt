@@ -7,13 +7,12 @@ import com.mankart.eshop.core.data.source.local.LocalDataSource
 import com.mankart.eshop.core.data.source.local.entity.ProductEntity
 import com.mankart.eshop.core.data.source.remote.RemoteDataSource
 import com.mankart.eshop.core.data.source.remote.network.ApiResponse
-import com.mankart.eshop.core.data.source.remote.response.LoginResponse
-import com.mankart.eshop.core.data.source.remote.response.ProductResponse
-import com.mankart.eshop.core.data.source.remote.response.ProfileResponse
-import com.mankart.eshop.core.data.source.remote.response.ResponseWithoutData
+import com.mankart.eshop.core.data.source.remote.response.*
+import com.mankart.eshop.core.domain.model.Cart
 import com.mankart.eshop.core.domain.model.Product
 import com.mankart.eshop.core.domain.model.User
 import com.mankart.eshop.core.domain.repository.IAuthenticationRepository
+import com.mankart.eshop.core.domain.repository.ICartRepository
 import com.mankart.eshop.core.domain.repository.IProductRepository
 import com.mankart.eshop.core.domain.repository.IProfileRepository
 import com.mankart.eshop.core.utils.DataMapper
@@ -27,7 +26,13 @@ import javax.inject.Singleton
 class EShopRepository @Inject constructor(
     private val remoteDataSource: RemoteDataSource,
     private val localDataSource: LocalDataSource,
-): IAuthenticationRepository, IProfileRepository, IProductRepository {
+): IAuthenticationRepository,
+    IProfileRepository,
+    IProductRepository,
+    ICartRepository
+{
+
+
     // authentication
     override fun postLogin(email: String, password: String): Flow<Resource<User>> =
         object: NetworkBoundResource<User, LoginResponse>() {
@@ -96,5 +101,48 @@ class EShopRepository @Inject constructor(
 
             override suspend fun createCall(): Flow<ApiResponse<ProductResponse>> =
                 remoteDataSource.getProductById(id)
+        }.asFlow()
+
+
+    // carts
+    override fun getCarts(): Flow<Resource<Cart>> =
+        object: NetworkBoundResource<Cart, CartResponse>() {
+            override suspend fun fetchFromApi(response: CartResponse): Cart =
+                DataMapper.mapCartResponseToDomain(response)
+
+            override suspend fun createCall(): Flow<ApiResponse<CartResponse>> {
+                val token = localDataSource.getUserToken().first()
+                return remoteDataSource.getCarts(token)
+            }
+        }.asFlow()
+
+    override fun addItemToCart(productId: String, quantity: Int): Flow<Resource<String>> =
+        object: NetworkBoundResource<String, ResponseWithoutData>() {
+            override suspend fun fetchFromApi(response: ResponseWithoutData): String = response.message
+
+            override suspend fun createCall(): Flow<ApiResponse<ResponseWithoutData>> {
+                val token = localDataSource.getUserToken().first()
+                return remoteDataSource.postCart(token, productId, quantity)
+            }
+        }.asFlow()
+
+    override fun updateItemInCart(itemId: String, quantity: Int): Flow<Resource<String>> =
+        object: NetworkBoundResource<String, ResponseWithoutData>() {
+            override suspend fun fetchFromApi(response: ResponseWithoutData): String = response.message
+
+            override suspend fun createCall(): Flow<ApiResponse<ResponseWithoutData>> {
+                val token = localDataSource.getUserToken().first()
+                return remoteDataSource.putCart(token, itemId, quantity)
+            }
+        }.asFlow()
+
+    override fun deleteItemFromCart(itemId: String): Flow<Resource<String>> =
+        object: NetworkBoundResource<String, ResponseWithoutData>() {
+            override suspend fun fetchFromApi(response: ResponseWithoutData): String = response.message
+
+            override suspend fun createCall(): Flow<ApiResponse<ResponseWithoutData>> {
+                val token = localDataSource.getUserToken().first()
+                return remoteDataSource.deleteCart(token, itemId)
+            }
         }.asFlow()
 }

@@ -2,10 +2,7 @@ package com.mankart.eshop.core.data.source.remote
 
 import com.mankart.eshop.core.data.source.remote.network.ApiResponse
 import com.mankart.eshop.core.data.source.remote.network.ApiService
-import com.mankart.eshop.core.data.source.remote.response.LoginResponse
-import com.mankart.eshop.core.data.source.remote.response.ProductResponse
-import com.mankart.eshop.core.data.source.remote.response.ProfileResponse
-import com.mankart.eshop.core.data.source.remote.response.ResponseWithoutData
+import com.mankart.eshop.core.data.source.remote.response.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -72,6 +69,52 @@ class RemoteDataSource @Inject constructor(private val apiService: ApiService) {
             try {
                 val response = apiService.getProductById(id)
                 emit(ApiResponse.Success(response.data))
+                emit(ApiResponse.Message(response.message))
+            } catch (err: Exception) {
+                emit(ApiResponse.Error(err.toString()))
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
+    // carts
+    suspend fun getCarts(token: String): Flow<ApiResponse<CartResponse>> {
+        return flow {
+            try {
+                val response = apiService.getCarts(token)
+                emit(ApiResponse.Success(response.data))
+                emit(ApiResponse.Message(response.message))
+            } catch (err: Exception) {
+                emit(ApiResponse.Error(err.toString()))
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
+    suspend fun postCart(token: String, productId: String, quantity: Int): Flow<ApiResponse<ResponseWithoutData>> {
+        return flow {
+            try {
+                val response = apiService.postCart(token, productId, quantity)
+                emit(ApiResponse.Message(response.message))
+            } catch (err: Exception) {
+                emit(ApiResponse.Error(err.toString()))
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
+    suspend fun putCart(token: String, itemId: String, quantity: Int): Flow<ApiResponse<ResponseWithoutData>> {
+        return flow {
+            try {
+                val response = apiService.putCart(token, itemId, quantity)
+                emit(ApiResponse.Message(response.message))
+            } catch (err: Exception) {
+                emit(ApiResponse.Error(err.toString()))
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
+    suspend fun deleteCart(token: String, itemId: String): Flow<ApiResponse<ResponseWithoutData>> {
+        return flow {
+            try {
+                val response = apiService.deleteCart(token, itemId)
                 emit(ApiResponse.Message(response.message))
             } catch (err: Exception) {
                 emit(ApiResponse.Error(err.toString()))

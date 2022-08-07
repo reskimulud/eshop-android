@@ -1,10 +1,7 @@
 package com.mankart.eshop.core.di
 
 import com.mankart.eshop.core.data.EShopRepository
-import com.mankart.eshop.core.domain.repository.IAuthenticationRepository
-import com.mankart.eshop.core.domain.repository.ICartRepository
-import com.mankart.eshop.core.domain.repository.IProductRepository
-import com.mankart.eshop.core.domain.repository.IProfileRepository
+import com.mankart.eshop.core.domain.repository.*
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -24,4 +21,7 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun bindCartRepository(repository: EShopRepository) : ICartRepository
+
+    @Binds
+    abstract fun bindTransactionRepository(repository: EShopRepository) : ITransactionRepository
 }

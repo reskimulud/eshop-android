@@ -58,4 +58,20 @@ interface ApiService {
         @Path("id") itemId: String
     ) : ResponseWithoutData
 
+    @GET("transactions")
+    fun getTransactions(
+        @Header("Authorization") token: String
+    ) : ResponseWithData<List<TransactionResponse>>
+
+    @GET("transactions/{id}")
+    fun getTransactionById(
+        @Header("Authorization") token: String,
+        @Path("id") id: String
+    ) : ResponseWithData<TransactionResponse>
+
+    @POST("checkout")
+    fun postCheckout(
+        @Header("Authorization") token: String
+    ) : ResponseWithoutData
+
 }

@@ -70,4 +70,22 @@ object DataMapper {
         image = input.image,
         quantity = input.quantity,
     )
+
+    fun mapTransactionResponseToDomain(input: TransactionResponse): Transaction = Transaction(
+        id = input.id,
+        dateCreated = input.dateCreated,
+        totalItem = input.totalItem,
+        totalPrice = input.totalPrice,
+        orders = input.orders?.map { mapOrderResponseToDomain(it) } ?: emptyList()
+    )
+
+    private fun mapOrderResponseToDomain(input: OrderResponse): Order = Order(
+        id = input.id,
+        title = input.title,
+        price = input.price,
+        image = input.image,
+        quantity = input.quantity,
+        yourRating = input.yourRating,
+        yourReview = input.yourReview,
+    )
 }

@@ -10,11 +10,9 @@ import com.mankart.eshop.core.data.source.remote.network.ApiResponse
 import com.mankart.eshop.core.data.source.remote.response.*
 import com.mankart.eshop.core.domain.model.Cart
 import com.mankart.eshop.core.domain.model.Product
+import com.mankart.eshop.core.domain.model.Transaction
 import com.mankart.eshop.core.domain.model.User
-import com.mankart.eshop.core.domain.repository.IAuthenticationRepository
-import com.mankart.eshop.core.domain.repository.ICartRepository
-import com.mankart.eshop.core.domain.repository.IProductRepository
-import com.mankart.eshop.core.domain.repository.IProfileRepository
+import com.mankart.eshop.core.domain.repository.*
 import com.mankart.eshop.core.utils.DataMapper
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
@@ -29,7 +27,8 @@ class EShopRepository @Inject constructor(
 ): IAuthenticationRepository,
     IProfileRepository,
     IProductRepository,
-    ICartRepository
+    ICartRepository,
+    ITransactionRepository
 {
 
 
@@ -143,6 +142,39 @@ class EShopRepository @Inject constructor(
             override suspend fun createCall(): Flow<ApiResponse<ResponseWithoutData>> {
                 val token = localDataSource.getUserToken().first()
                 return remoteDataSource.deleteCart(token, itemId)
+            }
+        }.asFlow()
+
+
+    // transactions
+    override fun getTransactions(): Flow<Resource<List<Transaction>>> =
+        object: NetworkBoundResource<List<Transaction>, List<TransactionResponse>>() {
+            override suspend fun fetchFromApi(response: List<TransactionResponse>): List<Transaction> =
+                response.map { DataMapper.mapTransactionResponseToDomain(it) }
+
+            override suspend fun createCall(): Flow<ApiResponse<List<TransactionResponse>>> {
+                val token = localDataSource.getUserToken().first()
+                return remoteDataSource.getTransactions(token)
+            }
+        }.asFlow()
+
+    override fun getTransactionById(id: String): Flow<Resource<Transaction>> =
+        object: NetworkBoundResource<Transaction, TransactionResponse>() {
+            override suspend fun fetchFromApi(response: TransactionResponse): Transaction =
+                DataMapper.mapTransactionResponseToDomain(response)
+
+            override suspend fun createCall(): Flow<ApiResponse<TransactionResponse>> {
+                val token = localDataSource.getUserToken().first()
+                return remoteDataSource.getTransactionById(token, id)
+            }
+        }.asFlow()
+
+    override fun checkout(): Flow<Resource<String>> =
+        object: NetworkBoundResource<String, ResponseWithoutData>() {
+            override suspend fun fetchFromApi(response: ResponseWithoutData): String = response.message
+            override suspend fun createCall(): Flow<ApiResponse<ResponseWithoutData>> {
+                val token = localDataSource.getUserToken().first()
+                return remoteDataSource.postCheckout(token)
             }
         }.asFlow()
 }

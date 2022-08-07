@@ -122,4 +122,41 @@ class RemoteDataSource @Inject constructor(private val apiService: ApiService) {
         }.flowOn(Dispatchers.IO)
     }
 
+
+    // transactions
+    suspend fun getTransactions(token: String): Flow<ApiResponse<List<TransactionResponse>>> {
+        return flow {
+            try {
+                val response = apiService.getTransactions(token)
+                emit(ApiResponse.Success(response.data))
+                emit(ApiResponse.Message(response.message))
+            } catch (err: Exception) {
+                emit(ApiResponse.Error(err.toString()))
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
+    suspend fun getTransactionById(token: String, id: String): Flow<ApiResponse<TransactionResponse>> {
+        return flow {
+            try {
+                val response = apiService.getTransactionById(token, id)
+                emit(ApiResponse.Success(response.data))
+                emit(ApiResponse.Message(response.message))
+            } catch (err: Exception) {
+                emit(ApiResponse.Error(err.toString()))
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
+    suspend fun postCheckout(token: String): Flow<ApiResponse<ResponseWithoutData>> {
+        return flow {
+            try {
+                val response = apiService.postCheckout(token)
+                emit(ApiResponse.Message(response.message))
+            } catch (err: Exception) {
+                emit(ApiResponse.Error(err.toString()))
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
 }

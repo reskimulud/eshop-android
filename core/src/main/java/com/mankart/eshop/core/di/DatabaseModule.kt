@@ -22,7 +22,7 @@ class DatabaseModule {
             context,
             ProductDatabase::class.java,
             "products.db"
-        ).build()
+        ).fallbackToDestructiveMigration().build()
 
     // product dao
     @Provides

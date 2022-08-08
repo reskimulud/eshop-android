@@ -1,4 +1,4 @@
-apply from: 'shared_dependencies.gradle'
+apply from: '../shared_dependencies.gradle'
 
 dependencies {
     implementation "androidx.recyclerview:recyclerview:1.2.1"

@@ -13,10 +13,9 @@ import com.mankart.eshop.core.domain.model.Product
 import com.mankart.eshop.core.domain.model.Transaction
 import com.mankart.eshop.core.domain.model.User
 import com.mankart.eshop.core.domain.repository.*
+import com.mankart.eshop.core.utils.AppExecutors
 import com.mankart.eshop.core.utils.DataMapper
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -24,11 +23,13 @@ import javax.inject.Singleton
 class EShopRepository @Inject constructor(
     private val remoteDataSource: RemoteDataSource,
     private val localDataSource: LocalDataSource,
+    private val appExecutors: AppExecutors,
 ): IAuthenticationRepository,
     IProfileRepository,
     IProductRepository,
     ICartRepository,
-    ITransactionRepository
+    ITransactionRepository,
+    IFavoriteProductRepository
 {
 
 
@@ -177,4 +178,26 @@ class EShopRepository @Inject constructor(
                 return remoteDataSource.postCheckout(token)
             }
         }.asFlow()
+
+    override fun getFavoriteProducts(): Flow<Resource<List<Product>>> = flow {
+        emit(Resource.Loading())
+        val loadFromDB = localDataSource.getFavouriteProducts().map {
+            it.map { product ->
+                DataMapper.mapFavouriteProductEntityToDomain(product)
+            }
+        }
+        emit(Resource.Success(loadFromDB.first()))
+    }
+
+    override fun addFavoriteProduct(product: Product) {
+        val favouriteProductEntity = DataMapper.mapFavouriteProductDomainToEntity(product)
+        appExecutors.diskIO().execute {
+            localDataSource.insertFavouriteProduct(favouriteProductEntity)
+        }
+    }
+
+    override fun deleteFavoriteProductById(productId: String) =
+        appExecutors.diskIO().execute {
+            localDataSource.deleteFavouriteProductById(productId)
+        }
 }

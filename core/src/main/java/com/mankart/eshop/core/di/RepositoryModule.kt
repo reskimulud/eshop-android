@@ -24,4 +24,7 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun bindTransactionRepository(repository: EShopRepository) : ITransactionRepository
+
+    @Binds
+    abstract fun bindFavouriteProductRepository(repository: EShopRepository) : IFavoriteProductRepository
 }

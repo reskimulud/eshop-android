@@ -1,4 +1,4 @@
-package com.mankart.eshop.core.data.source.local.room.product
+package com.mankart.eshop.core.data.source.local.room.dao
 
 import androidx.room.Dao
 import androidx.room.Insert

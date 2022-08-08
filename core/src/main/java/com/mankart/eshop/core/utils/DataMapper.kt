@@ -1,5 +1,6 @@
 package com.mankart.eshop.core.utils
 
+import com.mankart.eshop.core.data.source.local.entity.FavoriteProductEntity
 import com.mankart.eshop.core.data.source.local.entity.ProductEntity
 import com.mankart.eshop.core.data.source.remote.response.*
 import com.mankart.eshop.core.domain.model.*
@@ -88,4 +89,23 @@ object DataMapper {
         yourRating = input.yourRating,
         yourReview = input.yourReview,
     )
+
+    fun mapFavouriteProductEntityToDomain(input: FavoriteProductEntity): Product {
+        val favouriteProductEntity = input.product
+        return mapProductEntityToDomain(favouriteProductEntity)
+    }
+
+    fun mapFavouriteProductDomainToEntity(input: Product): FavoriteProductEntity {
+        val productEntity = ProductEntity(
+            id = input.id,
+            title = input.title,
+            price = input.price,
+            description = input.description,
+            image = input.image,
+            category = input.category,
+            rating = input.rating,
+            countRate = input.countRate
+        )
+        return FavoriteProductEntity(product = productEntity)
+    }
 }

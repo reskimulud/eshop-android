@@ -2,7 +2,7 @@ package com.mankart.eshop.core.di
 
 import android.content.Context
 import androidx.room.Room
-import com.mankart.eshop.core.data.source.local.room.product.ProductDatabase
+import com.mankart.eshop.core.data.source.local.room.ProductDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -30,4 +30,8 @@ class DatabaseModule {
     // remote keys dao (paging)
     @Provides
     fun provideRemoteKeysDao(productDatabase: ProductDatabase) = productDatabase.remoteKeysDao()
+    // favourite product dao
+    @Provides
+    fun provideFavouriteProductDao(productDatabase: ProductDatabase) = productDatabase.favouriteProductDao()
+
 }

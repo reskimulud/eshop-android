@@ -7,4 +7,8 @@ import kotlinx.coroutines.flow.Flow
 interface IProfileRepository {
     fun getProfile(): Flow<Resource<User>>
     suspend fun logout()
+    suspend fun getName(): Flow<String>
+    suspend fun getEmail(): Flow<String>
+    suspend fun saveName(name: String)
+    suspend fun saveEmail(email: String)
 }

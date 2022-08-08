@@ -10,4 +10,12 @@ class ProfileInteractor @Inject constructor(private val repository: IProfileRepo
     override fun getUserProfile(): Flow<Resource<User>> = repository.getProfile()
 
     override suspend fun logout() = repository.logout()
+
+    override suspend fun getName(): Flow<String> = repository.getName()
+
+    override suspend fun getEmail(): Flow<String> = repository.getEmail()
+
+    override suspend fun saveName(name: String) = repository.saveName(name)
+
+    override suspend fun saveEmail(email: String) = repository.saveEmail(email)
 }

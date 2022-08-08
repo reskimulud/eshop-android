@@ -32,7 +32,6 @@ class EShopRepository @Inject constructor(
     IFavoriteProductRepository
 {
 
-
     // authentication
     override fun postLogin(email: String, password: String): Flow<Resource<User>> =
         object: NetworkBoundResource<User, LoginResponse>() {
@@ -70,6 +69,18 @@ class EShopRepository @Inject constructor(
         }.asFlow()
 
     override suspend fun logout() = localDataSource.clearCache()
+
+    override suspend fun getName(): Flow<String> = flow {
+        emit(localDataSource.getUserName().first())
+    }
+
+    override suspend fun getEmail(): Flow<String> = flow {
+        emit(localDataSource.getUserEmail().first())
+    }
+
+    override suspend fun saveName(name: String) = localDataSource.saveUserName(name)
+    override suspend fun saveEmail(email: String) = localDataSource.saveUserEmail(email)
+
 
     // products
     @OptIn(ExperimentalPagingApi::class)

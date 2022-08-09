@@ -1,11 +1,13 @@
 package com.mankart.eshop.auth.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.util.Patterns
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -13,17 +15,22 @@ import androidx.navigation.fragment.findNavController
 import com.mankart.eshop.auth.AuthenticationViewModel
 import com.mankart.eshop.auth.R
 import com.mankart.eshop.auth.databinding.FragmentRegisterBinding
+import com.mankart.eshop.auth.utils.Helpers.isVisible
+import com.mankart.eshop.core.data.Resource
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class RegisterFragment : Fragment() {
     private var _binding: FragmentRegisterBinding? = null
     private val binding get() = _binding!!
 
     private val authViewModel: AuthenticationViewModel by viewModels()
-    private var registerJob = Job()
+    private var registerJob: Job = Job()
 
     // state flow
     private val nameState = MutableStateFlow("")
@@ -62,7 +69,42 @@ class RegisterFragment : Fragment() {
             moveToLoginFragment()
         }
         binding.btnRegister.setOnClickListener {
-            moveToLoginFragment()
+            registerAction()
+        }
+    }
+
+    private fun registerAction() {
+        val name = binding.etName.text.toString().trim()
+        val email = binding.etEmail.text.toString().trim()
+        val password = binding.etPassword.text.toString().trim()
+
+        lifecycleScope.launchWhenResumed {
+            if (registerJob.isActive) registerJob.cancel()
+
+            registerJob = launch {
+                authViewModel.register(name, email, password).collect {
+                    when (it) {
+                        is Resource.Loading -> setLoading(true)
+                        is Resource.Message -> {
+                            setLoading(false)
+                            Toast.makeText(requireActivity(), it.message, Toast.LENGTH_LONG).show()
+                            Log.e("RegisterFragment", it.message.toString())
+                            moveToLoginFragment()
+                        }
+                        is Resource.Error -> {
+                            setLoading(false)
+                            Toast.makeText(requireActivity(), it.message, Toast.LENGTH_LONG).show()
+                            Log.e("RegisterFragment", it.message.toString())
+                        }
+                        is Resource.Success -> {
+                            setLoading(false)
+                            Toast.makeText(requireActivity(), it.message.toString(), Toast.LENGTH_LONG).show()
+                            Log.e("RegisterFragment", it.message.toString())
+                            moveToLoginFragment()
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -88,6 +130,22 @@ class RegisterFragment : Fragment() {
 
     private fun moveToLoginFragment() {
         findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
+    }
+
+    private fun setLoading(state: Boolean){
+        binding.apply {
+            etName.isEnabled = !state
+            etEmail.isEnabled = !state
+            etPassword.isEnabled = !state
+            btnRegister.isEnabled = !state
+
+            if (state) {
+                viewLoading.isVisible(true)
+
+            }else {
+                viewLoading.isVisible(false)
+            }
+        }
     }
 
     override fun onDestroyView() {

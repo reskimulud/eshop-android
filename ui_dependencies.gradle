@@ -1,0 +1,22 @@
+apply from: '../shared_dependencies.gradle'
+
+dependencies {
+    implementation "androidx.recyclerview:recyclerview:1.2.1"
+
+    // KTX
+    implementation 'androidx.activity:activity-ktx:1.5.1'
+    implementation 'androidx.fragment:fragment-ktx:1.5.1'
+    implementation "androidx.lifecycle:lifecycle-livedata-core-ktx:2.5.1"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.5.1"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.5.1"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1"
+
+    // Navigation
+    implementation "androidx.navigation:navigation-runtime-ktx:2.5.1"
+    implementation "androidx.navigation:navigation-fragment-ktx:2.5.1"
+    implementation "androidx.navigation:navigation-ui-ktx:2.5.1"
+
+    // other 3rd-party library
+    implementation 'com.github.ybq:Android-SpinKit:1.4.0'
+    implementation 'com.github.bumptech.glide:glide:4.13.1'
+}

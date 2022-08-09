@@ -1,0 +1,15 @@
+<resources>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="welcome_back">Welcome Back!</string>
+    <string name="login">Login</string>
+    <string name="login_desc">Login to eShop</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="no_account">Don\'t have an account?</string>
+    <string name="register">Register</string>
+    <string name="create_account">Create account</string>
+    <string name="register_desc">Create an account to enter eShop</string>
+    <string name="have_account">Already have an account?</string>
+    <string name="name">Name</string>
+</resources>

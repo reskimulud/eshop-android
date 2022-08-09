@@ -4,73 +4,76 @@ import com.mankart.eshop.core.data.source.remote.response.*
 import retrofit2.http.*
 
 interface ApiService {
+    @FormUrlEncoded
     @POST("login")
-    fun postLogin(
+    suspend fun postLogin(
         @Field("email") email: String,
         @Field("password") password: String
     ) : ResponseWithData<LoginResponse>
 
+    @FormUrlEncoded
     @POST("register")
-    fun postRegister(
+    suspend fun postRegister(
         @Field("name") name: String,
         @Field("email") email: String,
         @Field("password") password: String
     ) : ResponseWithoutData
 
     @GET("user")
-    fun getProfile(
+    suspend fun getProfile(
         @Header("Authorization") token: String
     ) : ResponseWithData<ProfileResponse>
 
     @GET("products")
-    fun getProducts(
+    suspend fun getProducts(
         @Query("page") page: Int? = null,
         @Query("size") size: Int? = null
     ) : ResponseWithData<List<ProductResponse>>
 
     @GET("products/{id}")
-    fun getProductById(
+    suspend fun getProductById(
         @Path("id") id: String
     ) : ResponseWithData<ProductResponse>
 
     @GET("carts")
-    fun getCarts(
+    suspend fun getCarts(
         @Header("Authorization") token: String
     ) : ResponseWithData<CartResponse>
 
+    @FormUrlEncoded
     @POST("carts")
-    fun postCart(
+    suspend fun postCart(
         @Header("Authorization") token: String,
-        @Body productId: String,
-        @Body quantity: Int
+        @Field("productId") productId: String,
+        @Field("quantity") quantity: Int
     ) : ResponseWithoutData
 
     @PUT("carts/{id}")
-    fun putCart(
+    suspend fun putCart(
         @Header("Authorization") token: String,
         @Path("id") itemId: String,
         @Query("qty") quantity: Int
     ) : ResponseWithoutData
 
     @DELETE("carts/{id}")
-    fun deleteCart(
+    suspend fun deleteCart(
         @Header("Authorization") token: String,
         @Path("id") itemId: String
     ) : ResponseWithoutData
 
     @GET("transactions")
-    fun getTransactions(
+    suspend fun getTransactions(
         @Header("Authorization") token: String
     ) : ResponseWithData<List<TransactionResponse>>
 
     @GET("transactions/{id}")
-    fun getTransactionById(
+    suspend fun getTransactionById(
         @Header("Authorization") token: String,
         @Path("id") id: String
     ) : ResponseWithData<TransactionResponse>
 
     @POST("checkout")
-    fun postCheckout(
+    suspend fun postCheckout(
         @Header("Authorization") token: String
     ) : ResponseWithoutData
 

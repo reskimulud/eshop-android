@@ -24,11 +24,11 @@ class SplashScreenActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setupView()
-        val delayMillis = 8000L
+        val delayMillis = 2000L
 
         Handler(Looper.getMainLooper()).postDelayed({
-//            val moveIntent = Intent(this@SplashScreenActivity, TargetActivity::class.java)
-//            startActivity(moveIntent)
+            val moveIntent = Intent(this@SplashScreenActivity, Class.forName("com.mankart.eshop.auth.AuthenticationHostActivity"))
+            startActivity(moveIntent)
             finish()
         }, delayMillis)
     }

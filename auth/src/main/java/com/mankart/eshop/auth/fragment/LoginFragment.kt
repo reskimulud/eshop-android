@@ -1,11 +1,14 @@
 package com.mankart.eshop.auth.fragment
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.util.Patterns
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -13,6 +16,8 @@ import androidx.navigation.fragment.findNavController
 import com.mankart.eshop.auth.AuthenticationViewModel
 import com.mankart.eshop.auth.R
 import com.mankart.eshop.auth.databinding.FragmentLoginBinding
+import com.mankart.eshop.auth.utils.Helpers.isVisible
+import com.mankart.eshop.core.data.Resource
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
@@ -22,7 +27,7 @@ class LoginFragment : Fragment() {
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
 
-    private var loginJob = Job()
+    private var loginJob: Job = Job()
     private val authViewModel: AuthenticationViewModel by viewModels()
 
     // state flow
@@ -59,6 +64,46 @@ class LoginFragment : Fragment() {
         binding.tvSignUp.setOnClickListener {
             findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
         }
+
+        binding.btnLogin.setOnClickListener {
+            loginAction()
+        }
+    }
+
+    private fun loginAction() {
+        val email = binding.etEmail.text.toString().trim()
+        val password = binding.etPassword.text.toString().trim()
+
+        lifecycleScope.launchWhenResumed {
+            if (loginJob.isActive) loginJob.cancel()
+
+            loginJob = launch {
+                authViewModel.login(email, password).collect {
+                    when (it) {
+                        is Resource.Loading -> setLoading(true)
+                        is Resource.Message -> {
+                            setLoading(false)
+                            Toast.makeText(requireActivity(), it.message, Toast.LENGTH_SHORT).show()
+                            Log.e("LoginFragment", it.message.toString())
+                        }
+                        is Resource.Error -> {
+                            setLoading(false)
+                            Toast.makeText(requireActivity(), "Login Failed, Wrong Email or Password", Toast.LENGTH_SHORT).show()
+                            Log.e("LoginFragment", it.message.toString())
+                        }
+                        is Resource.Success -> {
+                            setLoading(false)
+                            Toast.makeText(requireActivity(), it.message, Toast.LENGTH_SHORT).show()
+                            val intent = Intent(requireActivity(), Class.forName(
+                                "com.mankart.eshop.MainActivity"
+                            ))
+                            startActivity(intent)
+                            requireActivity().finish()
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private fun validateUserInput() {
@@ -74,6 +119,21 @@ class LoginFragment : Fragment() {
         lifecycleScope.launch {
             formIsValid.collect {
                 binding.btnLogin.isEnabled = it
+            }
+        }
+    }
+
+    private fun setLoading(state: Boolean){
+        binding.apply {
+            etEmail.isEnabled = !state
+            etPassword.isEnabled = !state
+            btnLogin.isEnabled = !state
+
+            if (state) {
+                viewLoading.isVisible(true)
+
+            }else {
+                viewLoading.isVisible(false)
             }
         }
     }

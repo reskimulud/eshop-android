@@ -8,6 +8,8 @@
     <color name="colorTextSecondary">#636363</color>
     <color name="colorPrimaryVariant">#1C1C1C</color>
 
+    <color name="transparant">#6691C1F4</color>
+
     <style name="Theme.Eshop" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/colorPrimary</item>

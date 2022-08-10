@@ -50,6 +50,8 @@ class EShopRepository @Inject constructor(
             override suspend fun createCall(): Flow<ApiResponse<ResponseWithoutData>> = remoteDataSource.postRegister(name, email, password)
         }.asFlow()
 
+    override fun getUserToken(): Flow<String> = localDataSource.getUserToken()
+
     // profile
     override fun getProfile(): Flow<Resource<User>> =
         object: NetworkBoundResource<User, ProfileResponse>() {

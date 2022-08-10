@@ -9,6 +9,8 @@ import android.os.Handler
 import android.os.Looper
 import android.view.WindowInsets
 import android.view.WindowManager
+import androidx.activity.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.mankart.eshop.databinding.ActivitySplashScreenBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -16,6 +18,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @SuppressLint("CustomSplashScreen")
 class SplashScreenActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySplashScreenBinding
+    private val mainViewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,10 +30,31 @@ class SplashScreenActivity : AppCompatActivity() {
         val delayMillis = 2000L
 
         Handler(Looper.getMainLooper()).postDelayed({
-            val moveIntent = Intent(this@SplashScreenActivity, Class.forName("com.mankart.eshop.auth.AuthenticationHostActivity"))
-            startActivity(moveIntent)
-            finish()
+            handlerIntent()
         }, delayMillis)
+    }
+
+    private fun handlerIntent() {
+        lifecycleScope.launchWhenCreated {
+            mainViewModel.getUserToken().collect {
+                if (it.isNotEmpty() && it != "not_set_yet") {
+                    startActivity(
+                        Intent(
+                            this@SplashScreenActivity,
+                            MainActivity::class.java,
+                        )
+                    )
+                } else {
+                    startActivity(
+                        Intent(
+                            this@SplashScreenActivity,
+                            Class.forName("com.mankart.eshop.auth.AuthenticationHostActivity"),
+                        )
+                    )
+                }
+                finish()
+            }
+        }
     }
 
     private fun setupView() {

@@ -7,4 +7,5 @@ import kotlinx.coroutines.flow.Flow
 interface IAuthenticationRepository {
     fun postLogin(email: String, password: String): Flow<Resource<User>>
     fun postRegister(name: String, email: String, password: String): Flow<Resource<String>>
+    fun getUserToken(): Flow<String>
 }

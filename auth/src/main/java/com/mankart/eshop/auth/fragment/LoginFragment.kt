@@ -95,7 +95,7 @@ class LoginFragment : Fragment() {
                             setLoading(false)
                             Toast.makeText(requireActivity(), it.message, Toast.LENGTH_SHORT).show()
                             val intent = Intent(requireActivity(), Class.forName(
-                                "com.mankart.eshop.MainActivity"
+                                "com.mankart.eshop.ui.MainActivity"
                             ))
                             startActivity(intent)
                             requireActivity().finish()

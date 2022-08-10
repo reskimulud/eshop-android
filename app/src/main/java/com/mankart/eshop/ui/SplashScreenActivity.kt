@@ -1,4 +1,4 @@
-package com.mankart.eshop
+package com.mankart.eshop.ui
 
 import android.annotation.SuppressLint
 import android.content.Intent

@@ -1,5 +1,5 @@
 plugins {
-    id 'com.android.application'
+    id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
@@ -11,13 +11,11 @@ android {
     compileSdk 32
 
     defaultConfig {
-        applicationId "com.mankart.eshop"
         minSdk 21
         targetSdk 32
-        versionCode 1
-        versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
     }
 
     buildTypes {
@@ -39,10 +37,6 @@ android {
 }
 
 dependencies {
-
     implementation project(':core')
-    implementation project(':auth')
-    implementation project(':product')
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-
 }

@@ -3,11 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/app_nav_graph"
-    app:startDestination="@id/blankFragment">
+    app:startDestination="@id/product_nav_graph">
 
-    <fragment
-        android:id="@+id/blankFragment"
-        android:name="com.mankart.eshop.ui.BlankFragment"
-        android:label="fragment_blank"
-        tools:layout="@layout/fragment_blank" />
+    <include app:graph="@navigation/product_nav_graph" />
+
 </navigation>

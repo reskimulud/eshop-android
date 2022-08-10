@@ -1,6 +1,6 @@
 package com.mankart.eshop.product.di
 
-import com.mankart.eshop.core.domain.usecase.favproduct.FavoriteProductInteractor
+import com.mankart.eshop.core.domain.usecase.products.ProductInteractor
 import com.mankart.eshop.core.domain.usecase.products.ProductUseCase
 import dagger.Binds
 import dagger.Module
@@ -13,5 +13,5 @@ import dagger.hilt.android.scopes.ViewModelScoped
 abstract class ProductModule {
     @Binds
     @ViewModelScoped
-    abstract fun provideProductUseCase(productInteractor: FavoriteProductInteractor): ProductUseCase
+    abstract fun provideProductUseCase(productInteractor: ProductInteractor): ProductUseCase
 }

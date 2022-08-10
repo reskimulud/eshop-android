@@ -9,10 +9,18 @@
         android:id="@+id/productsFragment"
         android:name="com.mankart.eshop.product.ui.ProductsFragment"
         android:label="fragment_products"
-        tools:layout="@layout/fragment_products" />
+        tools:layout="@layout/fragment_products" >
+        <action
+            android:id="@+id/action_productsFragment_to_detailProductFragment"
+            app:destination="@id/detailProductFragment" />
+    </fragment>
     <fragment
         android:id="@+id/detailProductFragment"
         android:name="com.mankart.eshop.product.ui.DetailProductFragment"
         android:label="fragment_detail_product"
-        tools:layout="@layout/fragment_detail_product" />
+        tools:layout="@layout/fragment_detail_product" >
+        <argument
+            android:name="id"
+            app:argType="string" />
+    </fragment>
 </navigation>

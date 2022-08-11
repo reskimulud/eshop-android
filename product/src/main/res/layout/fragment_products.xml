@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.ProductsFragment">
+    tools:context=".ui.fragment.ProductsFragment">
 
     <TextView
+        android:id="@+id/tv_product"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="@string/products"

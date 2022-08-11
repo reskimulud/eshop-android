@@ -24,5 +24,12 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_main_activity) as NavHostFragment
         val navController = navHostFragment.navController
         bottomNavigation.setupWithNavController(navController)
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                com.mankart.eshop.product.R.id.detailProductFragment -> bottomNavigation.visibility = BottomNavigationView.GONE
+                else -> bottomNavigation.visibility = BottomNavigationView.VISIBLE
+            }
+        }
     }
 }

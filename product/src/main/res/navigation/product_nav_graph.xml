@@ -7,20 +7,19 @@
 
     <fragment
         android:id="@+id/productsFragment"
-        android:name="com.mankart.eshop.product.ui.ProductsFragment"
+        android:name="com.mankart.eshop.product.ui.fragment.ProductsFragment"
         android:label="fragment_products"
-        tools:layout="@layout/fragment_products" >
-        <action
-            android:id="@+id/action_productsFragment_to_detailProductFragment"
-            app:destination="@id/detailProductFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_products" />
     <fragment
         android:id="@+id/detailProductFragment"
-        android:name="com.mankart.eshop.product.ui.DetailProductFragment"
+        android:name="com.mankart.eshop.product.ui.fragment.DetailProductFragment"
         android:label="fragment_detail_product"
-        tools:layout="@layout/fragment_detail_product" >
+        tools:layout="@layout/fragment_detail_product">
+        <deepLink
+            android:id="@+id/deepLink"
+            app:uri="eshop://detail_product_fragment/{productId}" />
         <argument
-            android:name="id"
+            android:name="productId"
             app:argType="string" />
     </fragment>
 </navigation>

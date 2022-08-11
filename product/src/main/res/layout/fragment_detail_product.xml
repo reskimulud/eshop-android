@@ -4,9 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.DetailProductFragment">
+    android:background="@color/colorBase"
+    tools:context=".ui.fragment.DetailProductFragment">
 
     <TextView
+        android:id="@+id/tv_id_product"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:textSize="18sp"

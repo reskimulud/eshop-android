@@ -1,24 +1,18 @@
 package com.mankart.eshop.core.data.paging
 
+import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
-import com.mankart.eshop.core.data.Resource
-import com.mankart.eshop.core.data.source.NetworkBoundResource
 import com.mankart.eshop.core.data.source.local.LocalDataSource
 import com.mankart.eshop.core.data.source.local.entity.ProductEntity
 import com.mankart.eshop.core.data.source.local.entity.RemoteKeys
 import com.mankart.eshop.core.data.source.remote.RemoteDataSource
-import com.mankart.eshop.core.data.source.remote.network.ApiResponse
-import com.mankart.eshop.core.data.source.remote.response.ProductResponse
 import com.mankart.eshop.core.utils.DataMapper
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
-import javax.inject.Inject
 
 @OptIn(ExperimentalPagingApi::class)
-class ProductRemoteMediator @Inject constructor(
+class ProductRemoteMediator constructor(
     private val localDataSource: LocalDataSource,
     private val remoteDataSource: RemoteDataSource
 ) : RemoteMediator<Int, ProductEntity>() {
@@ -45,45 +39,44 @@ class ProductRemoteMediator @Inject constructor(
         }
 
         return try {
-            val response = getResponse(page = page, size = state.config.pageSize).first()
-            val endOfPaginationReached = response.data?.isEmpty()
+            val response = remoteDataSource.getProducts(page = page, size = state.config.pageSize)
+            if (response.isSuccessful) {
 
-            if (loadType == LoadType.REFRESH) {
-                localDataSource.deleteRemoteKeys()
-                localDataSource.deleteProducts()
-            }
+                val dataResponse = response.body()!!.data.data
+                val endOfPaginationReached = dataResponse.isEmpty()
 
-            val nextKey = if (endOfPaginationReached == true) null else page + 1
-            val prevKey = if (page == INITIAL_PAGE_INDEX) null else page - 1
-            val keys = response.data?.map {
-                RemoteKeys(
-                    id = it.id,
-                    prevKey = prevKey,
-                    nextKey = nextKey
-                )
-            }
-            if (keys != null) {
-                localDataSource.insertRemoteKey(keys)
-            }
-
-            localDataSource.insertProducts(response.data?:emptyList())
-
-            MediatorResult.Success(endOfPaginationReached = false)
-        } catch (err: Exception) {
-            MediatorResult.Error(err)
-        }
-    }
-
-    private suspend fun getResponse(page: Int, size: Int): Flow<Resource<List<ProductEntity>>> =
-        object: NetworkBoundResource<List<ProductEntity>, List<ProductResponse>>() {
-            override suspend fun fetchFromApi(response: List<ProductResponse>): List<ProductEntity> =
-                response.map {
+                val productEntity = dataResponse.map {
                     DataMapper.mapProductsResponseToEntity(it)
                 }
 
-            override suspend fun createCall(): Flow<ApiResponse<List<ProductResponse>>> =
-                remoteDataSource.getProducts(page, size)
-        }.asFlow()
+                Log.e("ProductRemoteMediator", "entity: $productEntity")
+
+                if (loadType == LoadType.REFRESH) {
+                    localDataSource.deleteRemoteKeys()
+                    localDataSource.deleteProducts()
+                }
+
+                val nextKey = if (endOfPaginationReached) null else page + 1
+                val prevKey = if (page == INITIAL_PAGE_INDEX) null else page - 1
+
+                val keys = productEntity.map { product ->
+                    RemoteKeys(
+                        id = product.id,
+                        prevKey = prevKey,
+                        nextKey = nextKey
+                    )
+                }
+                localDataSource.insertRemoteKey(keys)
+
+                localDataSource.insertProducts(productEntity ?: emptyList())
+            }
+
+            MediatorResult.Success(endOfPaginationReached = false)
+        } catch (err: Exception) {
+            Log.e("ProductRemoteMediator", "err: ${err.message}")
+            MediatorResult.Error(err)
+        }
+    }
 
     override suspend fun initialize(): InitializeAction {
         return InitializeAction.LAUNCH_INITIAL_REFRESH

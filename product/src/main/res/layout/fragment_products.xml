@@ -4,15 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/fragment_background"
     tools:context=".ui.fragment.ProductsFragment">
 
-    <TextView
-        android:id="@+id/tv_product"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_products"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/products"
-        android:textSize="18sp"
-        android:background="@drawable/fragment_background"
-        android:fontFamily="@font/poppins"/>
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:listitem="@layout/item_product" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

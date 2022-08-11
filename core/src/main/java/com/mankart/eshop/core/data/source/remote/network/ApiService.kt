@@ -1,6 +1,7 @@
 package com.mankart.eshop.core.data.source.remote.network
 
 import com.mankart.eshop.core.data.source.remote.response.*
+import retrofit2.Response
 import retrofit2.http.*
 
 interface ApiService {
@@ -28,7 +29,7 @@ interface ApiService {
     suspend fun getProducts(
         @Query("page") page: Int? = null,
         @Query("size") size: Int? = null
-    ) : ResponseWithData<List<ProductResponse>>
+    ) : Response<ResponseWithData<ListProductResponse>>
 
     @GET("products/{id}")
     suspend fun getProductById(

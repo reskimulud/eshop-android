@@ -7,10 +7,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.mankart.eshop.core.domain.model.Product
 import com.mankart.eshop.core.utils.DiffUtilCallback
+import com.mankart.eshop.core.utils.Helpers.formatIDR
 import com.mankart.eshop.product.databinding.ItemProductBinding
 
-class ListProductAdapter: PagingDataAdapter<Product, ListProductAdapter.ViewHolder>(DiffUtilCallback()) {
+class ListProductAdapter(val onItemCallback: (productId: String) -> Unit): PagingDataAdapter<Product, ListProductAdapter.ViewHolder>(DiffUtilCallback()) {
     inner class ViewHolder(binding: ItemProductBinding): RecyclerView.ViewHolder(binding.root) {
+        var root = binding.root
         var image = binding.ivImage
         var title = binding.tvTitle
         var price = binding.tvPrice
@@ -26,9 +28,13 @@ class ListProductAdapter: PagingDataAdapter<Product, ListProductAdapter.ViewHold
                 .load(product?.image)
                 .into(image)
             title.text = product?.title
-            price.text = product?.price.toString()
+            price.text = product?.price?.formatIDR()
             rating.rating = product?.rating?.toFloat() ?: 0f
             tvRating.text = product?.rating.toString()
+
+            root.setOnClickListener {
+                product?.let { p -> onItemCallback(p.id) }
+            }
         }
     }
 

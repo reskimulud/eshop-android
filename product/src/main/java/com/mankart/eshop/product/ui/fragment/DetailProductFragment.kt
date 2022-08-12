@@ -34,7 +34,7 @@ class DetailProductFragment: Fragment() {
          * Alasan menggunakan deep link untuk navigasi supaya menjadi lebih general,
          * dan bisa di akses dari luar modul
          */
-        val productId = arguments?.getString(Constants.EXTRA_ID)
+        val productId = arguments?.getString(Constants.EXTRA_PRODUCT_ID)
 
         binding.tvIdProduct.text = productId
     }

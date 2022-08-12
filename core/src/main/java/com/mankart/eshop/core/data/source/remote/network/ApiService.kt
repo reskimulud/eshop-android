@@ -29,7 +29,7 @@ interface ApiService {
     suspend fun getProducts(
         @Query("page") page: Int? = null,
         @Query("size") size: Int? = null
-    ) : Response<ResponseWithData<ListProductResponse>>
+    ) : Response<ResponseWithData<List<ProductResponse>>>
 
     @GET("products/{id}")
     suspend fun getProductById(

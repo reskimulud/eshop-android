@@ -42,7 +42,7 @@ class ProductRemoteMediator constructor(
             val response = remoteDataSource.getProducts(page = page, size = state.config.pageSize)
             if (response.isSuccessful) {
 
-                val dataResponse = response.body()!!.data.data
+                val dataResponse = response.body()!!.data
                 val endOfPaginationReached = dataResponse.isEmpty()
 
                 val productEntity = dataResponse.map {

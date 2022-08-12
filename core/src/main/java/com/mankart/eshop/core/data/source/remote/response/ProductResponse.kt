@@ -29,7 +29,7 @@ data class ProductResponse(
 )
 
 data class Rating(
-    @field:SerializedName("rating")
+    @field:SerializedName("rate")
     val rating: Double,
 
     @field:SerializedName("count")

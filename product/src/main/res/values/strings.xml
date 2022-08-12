@@ -5,4 +5,8 @@
     <string name="search">Search</string>
     <string name="categories">Categories</string>
     <string name="all_products">All Products</string>
+    <string name="add_to_cart">Add Item To Cart</string>
+    <string name="user_name">User Name</string>
+    <string name="user_review">User Review</string>
+    <string name="no_reviews">No Reviews Yet</string>
 </resources>

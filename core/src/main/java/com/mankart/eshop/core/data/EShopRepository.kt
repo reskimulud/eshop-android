@@ -205,6 +205,7 @@ class EShopRepository @Inject constructor(
             }
         }.asFlow()
 
+    // favorite
     override fun getFavoriteProducts(): Flow<Resource<List<Product>>> = flow {
         emit(Resource.Loading())
         val loadFromDB = localDataSource.getFavouriteProducts().map {
@@ -215,15 +216,16 @@ class EShopRepository @Inject constructor(
         emit(Resource.Success(loadFromDB.first()))
     }
 
-    override fun addFavoriteProduct(product: Product) {
+    override suspend fun addFavoriteProduct(product: Product) {
         val favouriteProductEntity = DataMapper.mapFavouriteProductDomainToEntity(product)
-        appExecutors.diskIO().execute {
-            localDataSource.insertFavouriteProduct(favouriteProductEntity)
-        }
+        localDataSource.insertFavouriteProduct(favouriteProductEntity)
     }
 
     override fun deleteFavoriteProductById(productId: String) =
         appExecutors.diskIO().execute {
             localDataSource.deleteFavouriteProductById(productId)
         }
+
+    override fun isFavoriteProduct(productId: String): Flow<Boolean> =
+        localDataSource.isFavoriteProduct(productId)
 }

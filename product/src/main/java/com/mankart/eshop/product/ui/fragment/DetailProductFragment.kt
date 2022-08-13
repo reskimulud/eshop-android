@@ -13,6 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.mankart.eshop.core.data.Resource
+import com.mankart.eshop.core.domain.model.Product
 import com.mankart.eshop.core.domain.model.UserReview
 import com.mankart.eshop.core.utils.Constants.EXTRA_PRODUCT_ID
 import com.mankart.eshop.core.utils.Helpers.formatIDR
@@ -32,7 +33,9 @@ class DetailProductFragment: Fragment() {
     private var productId: String? = ""
     private val productViewModel: ProductViewModel by viewModels()
     private var productJob: Job = Job()
-    private var isFavorite: Boolean = false
+    private var isFavorite = false
+
+    private lateinit var productState: Product
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -62,18 +65,12 @@ class DetailProductFragment: Fragment() {
         binding.ivBack.setOnClickListener {
             requireActivity().onBackPressed()
         }
-        binding.fabAddToFavorite.setOnClickListener {
-            isFavorite = if (isFavorite) {
-                binding.fabAddToFavorite.setImageResource(R.drawable.ic_favorite_border)
-                false
-            } else {
-                binding.fabAddToFavorite.setImageResource(R.drawable.ic_favorite)
-                true
-            }
-        }
+
         binding.btnAdToCart.setOnClickListener {
             addItemToCartHandler()
         }
+
+        favoriteProductToggle()
 
         binding.ivCartFromDetail
     }
@@ -91,7 +88,36 @@ class DetailProductFragment: Fragment() {
     }
 
     private fun isFavoriteSetup() {
-        isFavorite = false
+        lifecycleScope.launch {
+            productId?.let { productViewModel.isFavoriteProduct(it).collect { isFavorite ->
+                this@DetailProductFragment.isFavorite = isFavorite
+                if (isFavorite) {
+                    binding.fabAddToFavorite.setImageResource(R.drawable.ic_favorite)
+                } else {
+                    binding.fabAddToFavorite.setImageResource(R.drawable.ic_favorite_border)
+                }
+            } }
+        }
+    }
+
+    private fun favoriteProductToggle() {
+        binding.fabAddToFavorite.setOnClickListener {
+            isFavorite = if (isFavorite) {
+                binding.fabAddToFavorite.setImageResource(R.drawable.ic_favorite_border)
+                lifecycleScope.launch {
+                    productViewModel.deleteFavoriteProductById(productState.id)
+                    Log.e("DetailProductFragment", "deleteFavoriteProductById: ${productState.id}")
+                }
+                false
+            } else {
+                binding.fabAddToFavorite.setImageResource(R.drawable.ic_favorite)
+                lifecycleScope.launch {
+                    productViewModel.addFavoriteProduct(productState)
+                    Log.e("DetailProductFragment", "addFavoriteProduct: ${productState.id}")
+                }
+                true
+            }
+        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -106,22 +132,36 @@ class DetailProductFragment: Fragment() {
                             .load(productResource.data?.image)
                             .into(binding.ivImageProduct)
                         binding.apply {
-                            tvTitleProduct.text = productResource.data?.title
-                            tvPriceProduct.text = productResource.data?.price?.formatIDR()
-                            rbRatingProduct.rating = productResource.data?.rating?.toFloat() ?: 0f
-                            tvCountRating.text = "(${productResource.data?.countRate})"
-                            tvDescriptionProduct.text = productResource.data?.description
+                            productResource.data?.apply {
+                                tvTitleProduct.text = title
+                                tvPriceProduct.text = price.formatIDR()
+                                rbRatingProduct.rating = rating.toFloat() ?: 0f
+                                tvCountRating.text = "(${countRate})"
+                                tvDescriptionProduct.text = description
 
-                            if (productResource.data?.reviews?.isNotEmpty() == true) {
-                                tvNoReview.visibility = View.GONE
-                                rvReview.visibility = View.VISIBLE
-                                val reviews = productResource.data?.reviews
-                                if (reviews != null) {
-                                    userReviewSetup(reviews)
+                                val productForState = Product(
+                                    id,
+                                    title,
+                                    price,
+                                    category,
+                                    description,
+                                    image,
+                                    rating,
+                                    countRate
+                                )
+                                this@DetailProductFragment.productState = productForState
+
+                                if (reviews?.isNotEmpty() == true) {
+                                    tvNoReview.visibility = View.GONE
+                                    rvReview.visibility = View.VISIBLE
+                                    val reviews = reviews
+                                    if (reviews != null) {
+                                        userReviewSetup(reviews)
+                                    }
+                                } else {
+                                    tvNoReview.visibility = View.VISIBLE
+                                    rvReview.visibility = View.GONE
                                 }
-                            } else {
-                                tvNoReview.visibility = View.VISIBLE
-                                rvReview.visibility = View.GONE
                             }
                         }
                     }

@@ -39,10 +39,12 @@ class LocalDataSource @Inject constructor(
     // interact with remote product database table favProduct
     fun getFavouriteProducts(): Flow<List<FavoriteProductEntity>> =
         favouriteProductDao.getFavoriteProducts()
-    fun insertFavouriteProduct(products: FavoriteProductEntity) =
+    suspend fun insertFavouriteProduct(products: FavoriteProductEntity) =
         favouriteProductDao.insertFavoriteProduct(products)
     fun deleteFavouriteProductById(productId: String) =
         favouriteProductDao.deleteFavoriteProductById(productId)
+    fun isFavoriteProduct(productId: String): Flow<Boolean> =
+        favouriteProductDao.isFavoriteProduct(productId)
 
     // interact with remote keys (paging)
     suspend fun getRemoteKey(id: String): RemoteKeys? = remoteKeysDao.getRemoteKey(id)

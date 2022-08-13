@@ -10,8 +10,11 @@ interface FavoriteProductDao {
     fun getFavoriteProducts(): Flow<List<FavoriteProductEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertFavoriteProduct(product: FavoriteProductEntity)
+    suspend fun insertFavoriteProduct(product: FavoriteProductEntity)
 
     @Query("DELETE FROM favProduct WHERE id = :id")
     fun deleteFavoriteProductById(id: String)
+
+    @Query("SELECT EXISTS(SELECT id FROM favProduct WHERE id = :id)")
+    fun isFavoriteProduct(id: String): Flow<Boolean>
 }

@@ -28,13 +28,25 @@ interface ApiService {
     @GET("products")
     suspend fun getProducts(
         @Query("page") page: Int? = null,
-        @Query("size") size: Int? = null
+        @Query("size") size: Int? = null,
+        @Query("s") search: String? = null
     ) : Response<ResponseWithData<List<ProductResponse>>>
 
     @GET("products/{id}")
     suspend fun getProductById(
         @Path("id") id: String
     ) : ResponseWithData<ProductResponse>
+
+    @GET("products/categories")
+    suspend fun getProductCategories(): ResponseWithData<List<ProductCategoryResponse>>
+
+    @GET("products/categories/{id}")
+    suspend fun getProductsByCategoryId(
+        @Path("id") categoryId: String,
+        @Query("page") page: Int? = null,
+        @Query("size") size: Int? = null,
+        @Query("s") search: String? = null
+    ) : Response<ResponseWithData<ProductByCategoryResponse>>
 
     @GET("carts")
     suspend fun getCarts(

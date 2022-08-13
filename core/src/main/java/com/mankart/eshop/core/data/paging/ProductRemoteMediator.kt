@@ -14,7 +14,9 @@ import com.mankart.eshop.core.utils.DataMapper
 @OptIn(ExperimentalPagingApi::class)
 class ProductRemoteMediator constructor(
     private val localDataSource: LocalDataSource,
-    private val remoteDataSource: RemoteDataSource
+    private val remoteDataSource: RemoteDataSource,
+    private val categoryId: String? = null,
+    private val searchQuery: String? = null,
 ) : RemoteMediator<Int, ProductEntity>() {
 
     override suspend fun load(
@@ -39,18 +41,7 @@ class ProductRemoteMediator constructor(
         }
 
         return try {
-            val response = remoteDataSource.getProducts(page = page, size = state.config.pageSize)
-            if (response.isSuccessful) {
-
-                val dataResponse = response.body()!!.data
-                val endOfPaginationReached = dataResponse.isEmpty()
-
-                val productEntity = dataResponse.map {
-                    DataMapper.mapProductsResponseToEntity(it)
-                }
-
-                Log.e("ProductRemoteMediator", "entity: $productEntity")
-
+            suspend fun insertIntoDatabase(endOfPaginationReached: Boolean, productEntity: List<ProductEntity>) {
                 if (loadType == LoadType.REFRESH) {
                     localDataSource.deleteRemoteKeys()
                     localDataSource.deleteProducts()
@@ -69,6 +60,39 @@ class ProductRemoteMediator constructor(
                 localDataSource.insertRemoteKey(keys)
 
                 localDataSource.insertProducts(productEntity ?: emptyList())
+            }
+
+            if (!categoryId.isNullOrEmpty() && categoryId != "all") {
+                val response = remoteDataSource.getProductsByCategoryId(
+                    categoryId,
+                    page,
+                    size = state.config.pageSize,
+                    searchQuery?:"")
+                if (response.isSuccessful) {
+
+                    val dataResponse = response.body()!!.data.products
+                    val endOfPaginationReached = dataResponse.isEmpty()
+
+                    val productEntity = dataResponse.map {
+                        DataMapper.mapProductsResponseToEntity(it)
+                    }
+
+                    Log.e("ProductRemoteMediator", "entity: $productEntity")
+                    insertIntoDatabase(endOfPaginationReached, productEntity)
+                }
+            } else {
+                val response = remoteDataSource.getProducts(page, size = state.config.pageSize, searchQuery?:"")
+                if (response.isSuccessful) {
+
+                    val dataResponse = response.body()!!.data
+                    val endOfPaginationReached = dataResponse.isEmpty()
+
+                    val productEntity = dataResponse.map {
+                        DataMapper.mapProductsResponseToEntity(it)
+                    }
+                    Log.e("ProductRemoteMediator", "entity: $productEntity")
+                    insertIntoDatabase(endOfPaginationReached, productEntity)
+                }
             }
 
             MediatorResult.Success(endOfPaginationReached = false)

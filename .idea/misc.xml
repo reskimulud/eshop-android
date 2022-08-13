@@ -5,7 +5,7 @@
       <map>
         <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/app/src/main/res/drawable/fragment_background.xml" value="0.13" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/app/src/main/res/drawable/ic_logo_mank.xml" value="0.13" />
-        <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/app/src/main/res/layout/activity_main.xml" value="0.22" />
+        <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/app/src/main/res/layout/activity_main.xml" value="0.2" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/app/src/main/res/layout/activity_splash_screen.xml" value="0.25" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/app/src/main/res/layout/fragment_blank.xml" value="0.75" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/app/src/main/res/menu/main_menu.xml" value="0.1841880341880342" />
@@ -34,7 +34,7 @@
         <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/product/src/main/res/drawable/shape_edit_text.xml" value="0.13" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/product/src/main/res/layout/fragment_detail_product.xml" value="0.2865691489361702" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/product/src/main/res/layout/fragment_products.xml" value="0.22" />
-        <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/product/src/main/res/layout/item_btn_category.xml" value="0.22447916666666667" />
+        <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/product/src/main/res/layout/item_btn_category.xml" value="0.5" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/product/src/main/res/layout/item_product.xml" value="0.33" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/product/src/main/res/layout/item_review.xml" value="0.18" />
       </map>

@@ -8,10 +8,7 @@ import com.mankart.eshop.core.data.source.local.entity.ProductEntity
 import com.mankart.eshop.core.data.source.remote.RemoteDataSource
 import com.mankart.eshop.core.data.source.remote.network.ApiResponse
 import com.mankart.eshop.core.data.source.remote.response.*
-import com.mankart.eshop.core.domain.model.Cart
-import com.mankart.eshop.core.domain.model.Product
-import com.mankart.eshop.core.domain.model.Transaction
-import com.mankart.eshop.core.domain.model.User
+import com.mankart.eshop.core.domain.model.*
 import com.mankart.eshop.core.domain.repository.*
 import com.mankart.eshop.core.utils.AppExecutors
 import com.mankart.eshop.core.utils.DataMapper
@@ -86,7 +83,7 @@ class EShopRepository @Inject constructor(
 
     // products
     @OptIn(ExperimentalPagingApi::class)
-    private fun getProductsPager(): Flow<PagingData<ProductEntity>> {
+    private fun getProductsPager(categoryId: String?, search: String?): Flow<PagingData<ProductEntity>> {
         return Pager(
             config = PagingConfig(
                 pageSize = 10,
@@ -94,18 +91,34 @@ class EShopRepository @Inject constructor(
             ),
             remoteMediator = ProductRemoteMediator(
                 remoteDataSource = remoteDataSource,
-                localDataSource = localDataSource
+                localDataSource = localDataSource,
+                categoryId = categoryId,
+                searchQuery = search,
             ),
             pagingSourceFactory = { localDataSource.getProducts() }
         ).flow
     }
 
-    override fun getProducts(): Flow<PagingData<Product>> =
-        getProductsPager().map { pagingData ->
+    override fun getProducts(categoryId: String?, search: String?): Flow<PagingData<Product>> =
+        getProductsPager(categoryId, search).map { pagingData ->
             pagingData.map { product ->
                 DataMapper.mapProductEntityToDomain(product)
             }
         }
+
+    override fun getProductCategories(): Flow<Resource<List<ProductCategory>>> =
+        object: NetworkBoundResource<List<ProductCategory>, List<ProductCategoryResponse>>() {
+            override suspend fun fetchFromApi(response: List<ProductCategoryResponse>): List<ProductCategory> =
+                response.map {
+                    ProductCategory(
+                        id = it.id,
+                        name = it.name
+                    )
+                }
+
+            override suspend fun createCall(): Flow<ApiResponse<List<ProductCategoryResponse>>> =
+                remoteDataSource.getProductCategories()
+        }.asFlow()
 
     override fun getProductById(id: String): Flow<Resource<Product>> =
         object: NetworkBoundResource<Product, ProductResponse>() {

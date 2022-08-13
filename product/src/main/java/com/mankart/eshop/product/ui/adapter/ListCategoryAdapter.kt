@@ -2,11 +2,19 @@ package com.mankart.eshop.product.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.mankart.eshop.core.domain.model.ProductCategory
+import com.mankart.eshop.product.R
 import com.mankart.eshop.product.databinding.ItemBtnCategoryBinding
 
-class ListCategoryAdapter(private val categories: List<String>): RecyclerView.Adapter<ListCategoryAdapter.ViewHolder>() {
+class ListCategoryAdapter(
+    private val categories: List<ProductCategory>,
+    val onItemClickCallback: (categoryId: String, categoryName: String) -> Unit
+): RecyclerView.Adapter<ListCategoryAdapter.ViewHolder>() {
     inner class ViewHolder(binding: ItemBtnCategoryBinding): RecyclerView.ViewHolder(binding.root) {
+        val root = binding.root
         val tvCategory = binding.tvCategoryName
     }
 
@@ -17,7 +25,11 @@ class ListCategoryAdapter(private val categories: List<String>): RecyclerView.Ad
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = categories[position]
-        holder.tvCategory.text = item
+        holder.tvCategory.text = item.name
+
+        holder.root.setOnClickListener {
+            onItemClickCallback(item.id, item.name)
+        }
     }
 
     override fun getItemCount(): Int = categories.size

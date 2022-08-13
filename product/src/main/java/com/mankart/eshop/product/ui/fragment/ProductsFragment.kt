@@ -16,6 +16,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.mankart.eshop.core.data.Resource
+import com.mankart.eshop.core.domain.model.ProductCategory
 import com.mankart.eshop.core.utils.Constants.DETAIL_PRODUCT_URI
 import com.mankart.eshop.product.databinding.FragmentProductsBinding
 import com.mankart.eshop.product.ui.ProductViewModel
@@ -23,6 +25,8 @@ import com.mankart.eshop.product.ui.adapter.ListCategoryAdapter
 import com.mankart.eshop.product.ui.adapter.ListProductAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -35,7 +39,11 @@ class ProductsFragment: Fragment() {
 
     private var productJob: Job = Job()
 
-    private var hideNavView = true
+    private var hideFabToTop = true
+
+    // state for search and category id
+    private val categoryIdState = MutableStateFlow("")
+    private val searchState = MutableStateFlow("")
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,8 +58,9 @@ class ProductsFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupCategory()
-        setupFabToTop()
         initRecyclerView()
+        stateFlowCollector()
+        setupFabToTop()
     }
 
     private fun setupFabToTop() {
@@ -68,16 +77,16 @@ class ProductsFragment: Fragment() {
                 fabToTop.visibility = View.VISIBLE
                 val height = (fabToTop.height + 48).toFloat()
 
-                if (!hideNavView && scrollY < oldScrollY) {
-                    hideNavView = true
+                if (!hideFabToTop && scrollY < oldScrollY) {
+                    hideFabToTop = true
                     ObjectAnimator.ofFloat(fabToTop, "translationY", 0f, height).apply {
                         duration = 200
                         start()
                     }
                 }
 
-                if (hideNavView && scrollY > oldScrollY) {
-                    hideNavView = false
+                if (hideFabToTop && scrollY > oldScrollY) {
+                    hideFabToTop = false
                     ObjectAnimator.ofFloat(fabToTop, "translationY", height, 0f).apply {
                         duration = 200
                         start()
@@ -91,9 +100,63 @@ class ProductsFragment: Fragment() {
         binding.rvCategories.layoutManager = LinearLayoutManager(
             requireActivity(), LinearLayoutManager.HORIZONTAL, false
         )
-        val categories = listOf("All", "Electronics", "Clothing", "Books", "Sports", "Movies", "Games")
-        val adapter = ListCategoryAdapter(categories)
-        binding.rvCategories.adapter = adapter
+        lifecycleScope.launch {
+            productViewModel.getProductCategories().collect {
+                when (it) {
+                    is Resource.Loading -> Log.i("ProductsFragment", "Loading")
+                    is Resource.Success -> {
+                        val adapter = it.data?.let { listCategory ->
+                            val allCategory = ProductCategory("all", "All")
+                            val newListCategory: MutableList<ProductCategory> = mutableListOf(allCategory)
+                            newListCategory.addAll(listCategory)
+
+                            ListCategoryAdapter(newListCategory as List<ProductCategory>) { categoryId, categoryName ->
+                                lifecycleScope.launch {
+                                    categoryIdState.value = categoryId
+                                }
+                                Log.e("ProductsFragment", "onClick - categoryId: $categoryId")
+                                binding.tvProducts.text = categoryName
+                            }
+                        }
+                        binding.rvCategories.adapter = adapter
+                    }
+                    else -> Log.e("ProductsFragment", it.toString())
+                }
+            }
+        }
+    }
+
+    private fun stateFlowCollector() {
+        Log.e("ProductsFragment", "stateFlowCollector")
+        val stateCombine = combine(categoryIdState, searchState) { categoryId, search ->
+            Log.e("ProductsFragment", "stateFlowCollector - categoryId: $categoryId - search: $search")
+            Pair(categoryId, search)
+        }
+
+        lifecycleScope.launch {
+            stateCombine.collect {
+                val categoryId = it.first
+                val search = it.second
+
+                if (categoryId.isNotEmpty() || search.isNotEmpty()) {
+                    Log.e("ProductsFragment", "collect - categoryId: $categoryId")
+                    if (categoryId.isNotEmpty() || categoryId != "all") {
+                        getProducts(categoryId, search)
+                    } else {
+                        getProducts(search = search)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun getProducts(categoryId: String? = null, search: String? = null) {
+        lifecycleScope.launch {
+            productViewModel.getProducts(categoryId, search).collect {
+                Log.e("ProductsFragment", "Products: $it")
+                listProductAdapter.submitData(it)
+            }
+        }
     }
 
     private fun initRecyclerView() {
@@ -106,16 +169,7 @@ class ProductsFragment: Fragment() {
             findNavController().navigate(request)
         }
 
-        lifecycleScope.launchWhenResumed {
-            if (productJob.isActive) productJob.cancel()
-
-            productJob = launch {
-                productViewModel.getProducts().collect {
-                    Log.e("ProductsFragment", "Products: $it")
-                    listProductAdapter.submitData(it)
-                }
-            }
-        }
+        getProducts()
 
         binding.rvProducts.adapter = listProductAdapter
     }

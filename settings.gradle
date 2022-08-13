@@ -17,3 +17,4 @@ rootProject.name = "Eshop"
 include ':app'
 include ':core'
 include ':auth'
+include ':product'

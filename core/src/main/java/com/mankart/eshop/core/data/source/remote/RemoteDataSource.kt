@@ -52,17 +52,21 @@ class RemoteDataSource @Inject constructor(private val apiService: ApiService) {
 
 
     // products
-    suspend fun getProducts(page: Int, size: Int): Flow<ApiResponse<List<ProductResponse>>> {
-        return flow {
-            try {
-                val response = apiService.getProducts(page, size)
-                emit(ApiResponse.Success(response.data))
-                emit(ApiResponse.Message(response.message))
-            } catch (err: Exception) {
-                emit(ApiResponse.Error(err.toString()))
-            }
-        }.flowOn(Dispatchers.IO)
-    }
+    suspend fun getProducts(page: Int, size: Int, search: String) =
+        apiService.getProducts(page, size, search)
+
+    suspend fun getProductCategories(): Flow<ApiResponse<List<ProductCategoryResponse>>> = flow {
+        try {
+            val response = apiService.getProductCategories()
+            emit(ApiResponse.Success(response.data))
+            emit(ApiResponse.Message(response.message))
+        } catch (err: Exception) {
+            emit(ApiResponse.Error(err.toString()))
+        }
+    }.flowOn(Dispatchers.IO)
+
+    suspend fun getProductsByCategoryId(categoryId: String, page: Int, size: Int, search: String) =
+        apiService.getProductsByCategoryId(categoryId, page, size, search)
 
     suspend fun getProductById(id: String): Flow<ApiResponse<ProductResponse>> {
         return flow {

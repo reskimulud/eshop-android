@@ -10,9 +10,12 @@ class FavoriteProductInteractor @Inject constructor(private val repository: IFav
     override fun getFavoriteProducts(): Flow<Resource<List<Product>>> =
         repository.getFavoriteProducts()
 
-    override fun addFavoriteProduct(product: Product) =
+    override suspend fun addFavoriteProduct(product: Product) =
         repository.addFavoriteProduct(product)
 
     override fun deleteFavoriteProductById(productId: String) =
         repository.deleteFavoriteProductById(productId)
+
+    override fun isFavoriteProduct(productId: String): Flow<Boolean> =
+        repository.isFavoriteProduct(productId)
 }

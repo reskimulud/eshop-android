@@ -1,26 +1,22 @@
 package com.mankart.eshop.core.data.paging
 
+import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
-import com.mankart.eshop.core.data.Resource
-import com.mankart.eshop.core.data.source.NetworkBoundResource
 import com.mankart.eshop.core.data.source.local.LocalDataSource
 import com.mankart.eshop.core.data.source.local.entity.ProductEntity
 import com.mankart.eshop.core.data.source.local.entity.RemoteKeys
 import com.mankart.eshop.core.data.source.remote.RemoteDataSource
-import com.mankart.eshop.core.data.source.remote.network.ApiResponse
-import com.mankart.eshop.core.data.source.remote.response.ProductResponse
 import com.mankart.eshop.core.utils.DataMapper
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
-import javax.inject.Inject
 
 @OptIn(ExperimentalPagingApi::class)
-class ProductRemoteMediator @Inject constructor(
+class ProductRemoteMediator constructor(
     private val localDataSource: LocalDataSource,
-    private val remoteDataSource: RemoteDataSource
+    private val remoteDataSource: RemoteDataSource,
+    private val categoryId: String? = null,
+    private val searchQuery: String? = null,
 ) : RemoteMediator<Int, ProductEntity>() {
 
     override suspend fun load(
@@ -45,45 +41,66 @@ class ProductRemoteMediator @Inject constructor(
         }
 
         return try {
-            val response = getResponse(page = page, size = state.config.pageSize).first()
-            val endOfPaginationReached = response.data?.isEmpty()
+            suspend fun insertIntoDatabase(endOfPaginationReached: Boolean, productEntity: List<ProductEntity>) {
+                if (loadType == LoadType.REFRESH) {
+                    localDataSource.deleteRemoteKeys()
+                    localDataSource.deleteProducts()
+                }
 
-            if (loadType == LoadType.REFRESH) {
-                localDataSource.deleteRemoteKeys()
-                localDataSource.deleteProducts()
-            }
+                val nextKey = if (endOfPaginationReached) null else page + 1
+                val prevKey = if (page == INITIAL_PAGE_INDEX) null else page - 1
 
-            val nextKey = if (endOfPaginationReached == true) null else page + 1
-            val prevKey = if (page == INITIAL_PAGE_INDEX) null else page - 1
-            val keys = response.data?.map {
-                RemoteKeys(
-                    id = it.id,
-                    prevKey = prevKey,
-                    nextKey = nextKey
-                )
-            }
-            if (keys != null) {
+                val keys = productEntity.map { product ->
+                    RemoteKeys(
+                        id = product.id,
+                        prevKey = prevKey,
+                        nextKey = nextKey
+                    )
+                }
                 localDataSource.insertRemoteKey(keys)
+
+                localDataSource.insertProducts(productEntity ?: emptyList())
             }
 
-            localDataSource.insertProducts(response.data?:emptyList())
+            if (!categoryId.isNullOrEmpty() && categoryId != "all") {
+                val response = remoteDataSource.getProductsByCategoryId(
+                    categoryId,
+                    page,
+                    size = state.config.pageSize,
+                    searchQuery?:"")
+                if (response.isSuccessful) {
+
+                    val dataResponse = response.body()!!.data.products
+                    val endOfPaginationReached = dataResponse.isEmpty()
+
+                    val productEntity = dataResponse.map {
+                        DataMapper.mapProductsResponseToEntity(it)
+                    }
+
+                    Log.e("ProductRemoteMediator", "entity: $productEntity")
+                    insertIntoDatabase(endOfPaginationReached, productEntity)
+                }
+            } else {
+                val response = remoteDataSource.getProducts(page, size = state.config.pageSize, searchQuery?:"")
+                if (response.isSuccessful) {
+
+                    val dataResponse = response.body()!!.data
+                    val endOfPaginationReached = dataResponse.isEmpty()
+
+                    val productEntity = dataResponse.map {
+                        DataMapper.mapProductsResponseToEntity(it)
+                    }
+                    Log.e("ProductRemoteMediator", "entity: $productEntity")
+                    insertIntoDatabase(endOfPaginationReached, productEntity)
+                }
+            }
 
             MediatorResult.Success(endOfPaginationReached = false)
         } catch (err: Exception) {
+            Log.e("ProductRemoteMediator", "err: ${err.message}")
             MediatorResult.Error(err)
         }
     }
-
-    private suspend fun getResponse(page: Int, size: Int): Flow<Resource<List<ProductEntity>>> =
-        object: NetworkBoundResource<List<ProductEntity>, List<ProductResponse>>() {
-            override suspend fun fetchFromApi(response: List<ProductResponse>): List<ProductEntity> =
-                response.map {
-                    DataMapper.mapProductsResponseToEntity(it)
-                }
-
-            override suspend fun createCall(): Flow<ApiResponse<List<ProductResponse>>> =
-                remoteDataSource.getProducts(page, size)
-        }.asFlow()
 
     override suspend fun initialize(): InitializeAction {
         return InitializeAction.LAUNCH_INITIAL_REFRESH

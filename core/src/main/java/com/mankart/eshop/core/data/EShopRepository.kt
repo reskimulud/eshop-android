@@ -8,10 +8,7 @@ import com.mankart.eshop.core.data.source.local.entity.ProductEntity
 import com.mankart.eshop.core.data.source.remote.RemoteDataSource
 import com.mankart.eshop.core.data.source.remote.network.ApiResponse
 import com.mankart.eshop.core.data.source.remote.response.*
-import com.mankart.eshop.core.domain.model.Cart
-import com.mankart.eshop.core.domain.model.Product
-import com.mankart.eshop.core.domain.model.Transaction
-import com.mankart.eshop.core.domain.model.User
+import com.mankart.eshop.core.domain.model.*
 import com.mankart.eshop.core.domain.repository.*
 import com.mankart.eshop.core.utils.AppExecutors
 import com.mankart.eshop.core.utils.DataMapper
@@ -65,7 +62,7 @@ class EShopRepository @Inject constructor(
             }
 
             override suspend fun createCall(): Flow<ApiResponse<ProfileResponse>> {
-                val token = localDataSource.getUserToken().first()
+                val token = "Bearer " + localDataSource.getUserToken().first()
                 return remoteDataSource.getProfile(token)
             }
         }.asFlow()
@@ -86,7 +83,7 @@ class EShopRepository @Inject constructor(
 
     // products
     @OptIn(ExperimentalPagingApi::class)
-    private fun getProductsPager(): Flow<PagingData<ProductEntity>> {
+    private fun getProductsPager(categoryId: String?, search: String?): Flow<PagingData<ProductEntity>> {
         return Pager(
             config = PagingConfig(
                 pageSize = 10,
@@ -94,18 +91,34 @@ class EShopRepository @Inject constructor(
             ),
             remoteMediator = ProductRemoteMediator(
                 remoteDataSource = remoteDataSource,
-                localDataSource = localDataSource
+                localDataSource = localDataSource,
+                categoryId = categoryId,
+                searchQuery = search,
             ),
             pagingSourceFactory = { localDataSource.getProducts() }
         ).flow
     }
 
-    override fun getProducts(): Flow<PagingData<Product>> =
-        getProductsPager().map { pagingData ->
+    override fun getProducts(categoryId: String?, search: String?): Flow<PagingData<Product>> =
+        getProductsPager(categoryId, search).map { pagingData ->
             pagingData.map { product ->
                 DataMapper.mapProductEntityToDomain(product)
             }
         }
+
+    override fun getProductCategories(): Flow<Resource<List<ProductCategory>>> =
+        object: NetworkBoundResource<List<ProductCategory>, List<ProductCategoryResponse>>() {
+            override suspend fun fetchFromApi(response: List<ProductCategoryResponse>): List<ProductCategory> =
+                response.map {
+                    ProductCategory(
+                        id = it.id,
+                        name = it.name
+                    )
+                }
+
+            override suspend fun createCall(): Flow<ApiResponse<List<ProductCategoryResponse>>> =
+                remoteDataSource.getProductCategories()
+        }.asFlow()
 
     override fun getProductById(id: String): Flow<Resource<Product>> =
         object: NetworkBoundResource<Product, ProductResponse>() {
@@ -124,7 +137,7 @@ class EShopRepository @Inject constructor(
                 DataMapper.mapCartResponseToDomain(response)
 
             override suspend fun createCall(): Flow<ApiResponse<CartResponse>> {
-                val token = localDataSource.getUserToken().first()
+                val token = "Bearer " + localDataSource.getUserToken().first()
                 return remoteDataSource.getCarts(token)
             }
         }.asFlow()
@@ -134,7 +147,7 @@ class EShopRepository @Inject constructor(
             override suspend fun fetchFromApi(response: ResponseWithoutData): String = response.message
 
             override suspend fun createCall(): Flow<ApiResponse<ResponseWithoutData>> {
-                val token = localDataSource.getUserToken().first()
+                val token = "Bearer " + localDataSource.getUserToken().first()
                 return remoteDataSource.postCart(token, productId, quantity)
             }
         }.asFlow()
@@ -144,7 +157,7 @@ class EShopRepository @Inject constructor(
             override suspend fun fetchFromApi(response: ResponseWithoutData): String = response.message
 
             override suspend fun createCall(): Flow<ApiResponse<ResponseWithoutData>> {
-                val token = localDataSource.getUserToken().first()
+                val token = "Bearer " + localDataSource.getUserToken().first()
                 return remoteDataSource.putCart(token, itemId, quantity)
             }
         }.asFlow()
@@ -154,7 +167,7 @@ class EShopRepository @Inject constructor(
             override suspend fun fetchFromApi(response: ResponseWithoutData): String = response.message
 
             override suspend fun createCall(): Flow<ApiResponse<ResponseWithoutData>> {
-                val token = localDataSource.getUserToken().first()
+                val token = "Bearer " + localDataSource.getUserToken().first()
                 return remoteDataSource.deleteCart(token, itemId)
             }
         }.asFlow()
@@ -167,7 +180,7 @@ class EShopRepository @Inject constructor(
                 response.map { DataMapper.mapTransactionResponseToDomain(it) }
 
             override suspend fun createCall(): Flow<ApiResponse<List<TransactionResponse>>> {
-                val token = localDataSource.getUserToken().first()
+                val token = "Bearer " + localDataSource.getUserToken().first()
                 return remoteDataSource.getTransactions(token)
             }
         }.asFlow()
@@ -178,7 +191,7 @@ class EShopRepository @Inject constructor(
                 DataMapper.mapTransactionResponseToDomain(response)
 
             override suspend fun createCall(): Flow<ApiResponse<TransactionResponse>> {
-                val token = localDataSource.getUserToken().first()
+                val token = "Bearer " + localDataSource.getUserToken().first()
                 return remoteDataSource.getTransactionById(token, id)
             }
         }.asFlow()
@@ -187,11 +200,12 @@ class EShopRepository @Inject constructor(
         object: NetworkBoundResource<String, ResponseWithoutData>() {
             override suspend fun fetchFromApi(response: ResponseWithoutData): String = response.message
             override suspend fun createCall(): Flow<ApiResponse<ResponseWithoutData>> {
-                val token = localDataSource.getUserToken().first()
+                val token = "Bearer " + localDataSource.getUserToken().first()
                 return remoteDataSource.postCheckout(token)
             }
         }.asFlow()
 
+    // favorite
     override fun getFavoriteProducts(): Flow<Resource<List<Product>>> = flow {
         emit(Resource.Loading())
         val loadFromDB = localDataSource.getFavouriteProducts().map {
@@ -202,15 +216,16 @@ class EShopRepository @Inject constructor(
         emit(Resource.Success(loadFromDB.first()))
     }
 
-    override fun addFavoriteProduct(product: Product) {
+    override suspend fun addFavoriteProduct(product: Product) {
         val favouriteProductEntity = DataMapper.mapFavouriteProductDomainToEntity(product)
-        appExecutors.diskIO().execute {
-            localDataSource.insertFavouriteProduct(favouriteProductEntity)
-        }
+        localDataSource.insertFavouriteProduct(favouriteProductEntity)
     }
 
     override fun deleteFavoriteProductById(productId: String) =
         appExecutors.diskIO().execute {
             localDataSource.deleteFavouriteProductById(productId)
         }
+
+    override fun isFavoriteProduct(productId: String): Flow<Boolean> =
+        localDataSource.isFavoriteProduct(productId)
 }

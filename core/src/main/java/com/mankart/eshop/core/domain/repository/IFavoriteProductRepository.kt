@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface IFavoriteProductRepository {
     fun getFavoriteProducts(): Flow<Resource<List<Product>>>
-    fun addFavoriteProduct(product: Product)
+    suspend fun addFavoriteProduct(product: Product)
     fun deleteFavoriteProductById(productId: String)
+    fun isFavoriteProduct(productId: String): Flow<Boolean>
 }

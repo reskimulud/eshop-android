@@ -62,7 +62,7 @@ class EShopRepository @Inject constructor(
             }
 
             override suspend fun createCall(): Flow<ApiResponse<ProfileResponse>> {
-                val token = localDataSource.getUserToken().first()
+                val token = "Bearer " + localDataSource.getUserToken().first()
                 return remoteDataSource.getProfile(token)
             }
         }.asFlow()
@@ -137,7 +137,7 @@ class EShopRepository @Inject constructor(
                 DataMapper.mapCartResponseToDomain(response)
 
             override suspend fun createCall(): Flow<ApiResponse<CartResponse>> {
-                val token = localDataSource.getUserToken().first()
+                val token = "Bearer " + localDataSource.getUserToken().first()
                 return remoteDataSource.getCarts(token)
             }
         }.asFlow()
@@ -147,7 +147,7 @@ class EShopRepository @Inject constructor(
             override suspend fun fetchFromApi(response: ResponseWithoutData): String = response.message
 
             override suspend fun createCall(): Flow<ApiResponse<ResponseWithoutData>> {
-                val token = localDataSource.getUserToken().first()
+                val token = "Bearer " + localDataSource.getUserToken().first()
                 return remoteDataSource.postCart(token, productId, quantity)
             }
         }.asFlow()
@@ -157,7 +157,7 @@ class EShopRepository @Inject constructor(
             override suspend fun fetchFromApi(response: ResponseWithoutData): String = response.message
 
             override suspend fun createCall(): Flow<ApiResponse<ResponseWithoutData>> {
-                val token = localDataSource.getUserToken().first()
+                val token = "Bearer " + localDataSource.getUserToken().first()
                 return remoteDataSource.putCart(token, itemId, quantity)
             }
         }.asFlow()
@@ -167,7 +167,7 @@ class EShopRepository @Inject constructor(
             override suspend fun fetchFromApi(response: ResponseWithoutData): String = response.message
 
             override suspend fun createCall(): Flow<ApiResponse<ResponseWithoutData>> {
-                val token = localDataSource.getUserToken().first()
+                val token = "Bearer " + localDataSource.getUserToken().first()
                 return remoteDataSource.deleteCart(token, itemId)
             }
         }.asFlow()
@@ -180,7 +180,7 @@ class EShopRepository @Inject constructor(
                 response.map { DataMapper.mapTransactionResponseToDomain(it) }
 
             override suspend fun createCall(): Flow<ApiResponse<List<TransactionResponse>>> {
-                val token = localDataSource.getUserToken().first()
+                val token = "Bearer " + localDataSource.getUserToken().first()
                 return remoteDataSource.getTransactions(token)
             }
         }.asFlow()
@@ -191,7 +191,7 @@ class EShopRepository @Inject constructor(
                 DataMapper.mapTransactionResponseToDomain(response)
 
             override suspend fun createCall(): Flow<ApiResponse<TransactionResponse>> {
-                val token = localDataSource.getUserToken().first()
+                val token = "Bearer " + localDataSource.getUserToken().first()
                 return remoteDataSource.getTransactionById(token, id)
             }
         }.asFlow()
@@ -200,7 +200,7 @@ class EShopRepository @Inject constructor(
         object: NetworkBoundResource<String, ResponseWithoutData>() {
             override suspend fun fetchFromApi(response: ResponseWithoutData): String = response.message
             override suspend fun createCall(): Flow<ApiResponse<ResponseWithoutData>> {
-                val token = localDataSource.getUserToken().first()
+                val token = "Bearer " + localDataSource.getUserToken().first()
                 return remoteDataSource.postCheckout(token)
             }
         }.asFlow()

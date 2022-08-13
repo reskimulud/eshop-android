@@ -2,6 +2,7 @@ package com.mankart.eshop.product.ui.fragment
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -78,7 +79,15 @@ class DetailProductFragment: Fragment() {
     }
 
     private fun addItemToCartHandler() {
-        Toast.makeText(requireActivity(), "Item added to cart", Toast.LENGTH_SHORT).show()
+        lifecycleScope.launch {
+            productId?.let { productViewModel.addItemToCart(it, 1).collect { resource ->
+                if (resource is Resource.Success || resource is Resource.Message) {
+                    Toast.makeText(requireContext(), "Item has added to cart", Toast.LENGTH_SHORT).show()
+                } else {
+                    Log.e("DetailProductFragment", "Error adding to cart ${resource.message}")
+                }
+            } }
+        }
     }
 
     private fun isFavoriteSetup() {

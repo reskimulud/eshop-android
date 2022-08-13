@@ -1,5 +1,7 @@
 package com.mankart.eshop.product.di
 
+import com.mankart.eshop.core.domain.usecase.cart.CartInteractor
+import com.mankart.eshop.core.domain.usecase.cart.CartUseCase
 import com.mankart.eshop.core.domain.usecase.products.ProductInteractor
 import com.mankart.eshop.core.domain.usecase.products.ProductUseCase
 import dagger.Binds
@@ -14,4 +16,8 @@ abstract class ProductModule {
     @Binds
     @ViewModelScoped
     abstract fun provideProductUseCase(productInteractor: ProductInteractor): ProductUseCase
+
+    @Binds
+    @ViewModelScoped
+    abstract fun provideCartUseCase(cartInteractor: CartInteractor): CartUseCase
 }

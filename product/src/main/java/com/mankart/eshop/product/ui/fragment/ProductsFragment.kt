@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -61,6 +62,20 @@ class ProductsFragment: Fragment() {
         initRecyclerView()
         stateFlowCollector()
         setupFabToTop()
+        searchSetup()
+    }
+
+    private fun searchSetup() {
+        binding.svSearchProduct.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return true
+            }
+
+            override fun onQueryTextChange(query: String?): Boolean {
+                searchState.value = query ?: ""
+                return true
+            }
+        })
     }
 
     private fun setupFabToTop() {
@@ -151,10 +166,14 @@ class ProductsFragment: Fragment() {
     }
 
     private fun getProducts(categoryId: String? = null, search: String? = null) {
-        lifecycleScope.launch {
-            productViewModel.getProducts(categoryId, search).collect {
-                Log.e("ProductsFragment", "Products: $it")
-                listProductAdapter.submitData(it)
+        lifecycleScope.launchWhenStarted {
+            if (productJob.isActive) productJob.cancel()
+
+            productJob = launch {
+                productViewModel.getProducts(categoryId, search).collect {
+                    Log.e("ProductsFragment", "Products: $it")
+                    listProductAdapter.submitData(it)
+                }
             }
         }
     }

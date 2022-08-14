@@ -23,7 +23,5 @@ abstract class ProductModule {
     @ViewModelScoped
     abstract fun provideCartUseCase(cartInteractor: CartInteractor): CartUseCase
 
-    @Binds
-    @ViewModelScoped
-    abstract fun provideFavoriteProductUseCase(favoriteProductInteractor: FavoriteProductInteractor): FavoriteProductUseCase
+    // binds favorite product di provide sama core module
 }

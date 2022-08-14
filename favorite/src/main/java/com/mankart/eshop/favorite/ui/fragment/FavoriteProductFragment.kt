@@ -78,11 +78,18 @@ class FavoriteProductFragment: Fragment() {
         lifecycleScope.launchWhenStarted {
             favoriteViewModel.getFavoriteProducts().collect { resource ->
                 if (resource is Resource.Success) {
-                    val adapter = resource.data?.let { it -> ListFavoriteProductAdapter(it,
-                        onItemClickCallback = { navigateToDetailProduct(it) },
-                        onFavBtnClickCallback = { deleteItemFromFavoriteProduct(it) }
-                    ) }
-                    binding.rvFavoriteProduct.adapter = adapter
+                    if (resource.data.isNullOrEmpty()) {
+                        binding.rvFavoriteProduct.visibility = View.GONE
+                        binding.tvNoFavorite.visibility = View.VISIBLE
+                    } else {
+                        val adapter = resource.data?.let { listFavoriteProduct ->
+                            ListFavoriteProductAdapter(listFavoriteProduct,
+                                onItemClickCallback = { navigateToDetailProduct(it) },
+                                onFavBtnClickCallback = { deleteItemFromFavoriteProduct(it) }
+                            )
+                        }
+                        binding.rvFavoriteProduct.adapter = adapter
+                    }
                 } else {
                     Log.e("FavoriteProductFragment", "Error: ${resource.message}")
                 }

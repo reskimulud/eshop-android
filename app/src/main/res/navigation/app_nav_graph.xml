@@ -6,5 +6,10 @@
     app:startDestination="@id/product_nav_graph">
 
     <include app:graph="@navigation/product_nav_graph" />
+    <include-dynamic
+        android:id="@+id/favorite_nav_graph"
+        app:moduleName="favorite"
+        app:graphResName="favorite_nav_graph"
+        app:graphPackage="com.mankart.eshop.favorite" />
 
 </navigation>

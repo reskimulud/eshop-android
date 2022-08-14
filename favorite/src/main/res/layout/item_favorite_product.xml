@@ -8,8 +8,10 @@
 
     <ImageView
         android:id="@+id/iv_product_image"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:padding="4dp"
+        android:background="@android:color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@tools:sample/avatars" />
@@ -19,13 +21,12 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:fontFamily="pop"
         android:text="@string/products"
-        app:layout_constraintEnd_toStartOf="@+id/iv_is_favorite"
+        app:layout_constraintBottom_toTopOf="@+id/tv_product_price"
+        app:layout_constraintEnd_toStartOf="@+id/btn_fav_product"
         app:layout_constraintStart_toEndOf="@+id/iv_product_image"
-        app:layout_constraintTop_toTopOf="parent"
         tools:fontFamily="@font/poppins" />
 
     <TextView
@@ -35,16 +36,16 @@
         android:fontFamily="@font/poppins"
         android:textSize="16sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/tv_product_title"
-        app:layout_constraintTop_toBottomOf="@+id/tv_product_title"
+        app:layout_constraintTop_toTopOf="parent"
         tools:text="Rp.10.000" />
 
     <RatingBar
-        android:id="@+id/tb_product_rating"
+        android:id="@+id/rb_product_rating"
         style="?attr/ratingBarStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:progressTint="@color/colorAccent"
         android:rating="4"
@@ -53,7 +54,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_product_price" />
 
     <ImageView
-        android:id="@+id/iv_is_favorite"
+        android:id="@+id/btn_fav_product"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="8dp"

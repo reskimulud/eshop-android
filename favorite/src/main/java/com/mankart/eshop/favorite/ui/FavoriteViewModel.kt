@@ -10,4 +10,6 @@ class FavoriteViewModel @Inject constructor(
     private val favoriteProductUseCase: FavoriteProductUseCase,
 ): ViewModel() {
     fun getFavoriteProducts() = favoriteProductUseCase.getFavoriteProducts()
+    fun deleteFavoriteProductById(productId: String) =
+        favoriteProductUseCase.deleteFavoriteProductById(productId)
 }

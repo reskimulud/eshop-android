@@ -47,6 +47,17 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
+    <TextView
+        android:id="@+id/tv_empty_cart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/cart_is_empty"
+        android:layout_marginTop="?android:attr/actionBarSize"
+        android:paddingTop="16dp"
+        android:fontFamily="@font/poppins"
+        android:visibility="gone"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_carts"
         android:layout_width="match_parent"
@@ -94,10 +105,12 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="right"
-            android:backgroundTint="@color/colorAccent"
+            android:layout_marginEnd="16dp"
             android:textAllCaps="false"
             android:fontFamily="@font/poppins"
+            android:textColor="@color/colorBase"
             android:text="@string/process_to_checkout"
+            app:backgroundTint="@color/colorAccent"
             app:cornerRadius="24dp"/>
 
     </com.google.android.material.bottomappbar.BottomAppBar>

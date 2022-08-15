@@ -12,5 +12,7 @@ class CartViewModel @Inject constructor(
     private val transactionUseCase: TransactionUseCase
 ): ViewModel() {
     fun getCarts() = cartUseCase.getCarts()
+    fun updateCartItem(itemId: String, qty: Int) = cartUseCase.updateItemInCart(itemId, qty)
+    fun deleteCartItem(itemId: String) = cartUseCase.deleteItemFromCart(itemId)
     fun checkout() = transactionUseCase.checkout()
 }

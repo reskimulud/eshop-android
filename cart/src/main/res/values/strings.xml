@@ -4,4 +4,5 @@
     <string name="process_to_checkout">Process to Checkout</string>
     <string name="total">Total</string>
     <string name="products">Product</string>
+    <string name="cart_is_empty">Cart is Empty</string>
 </resources>

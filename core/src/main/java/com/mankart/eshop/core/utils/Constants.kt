@@ -5,4 +5,5 @@ object Constants {
 
     private const val DOMAIN_URI = "eshop://"
     const val DETAIL_PRODUCT_URI = "${DOMAIN_URI}detail_product_fragment"
+    const val CART_URI = "${DOMAIN_URI}cart_fragment"
 }

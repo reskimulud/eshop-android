@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mankart.eshop.core.data.Resource
 import com.mankart.eshop.core.domain.model.ProductCategory
+import com.mankart.eshop.core.utils.Constants.CART_URI
 import com.mankart.eshop.core.utils.Constants.DETAIL_PRODUCT_URI
 import com.mankart.eshop.product.databinding.FragmentProductsBinding
 import com.mankart.eshop.product.ui.ProductViewModel
@@ -63,6 +64,13 @@ class ProductsFragment: Fragment() {
         stateFlowCollector()
         setupFabToTop()
         searchSetup()
+
+        binding.ibCart.setOnClickListener {
+            val request = NavDeepLinkRequest.Builder
+                .fromUri(CART_URI.toUri())
+                .build()
+            findNavController().navigate(request)
+        }
     }
 
     private fun searchSetup() {

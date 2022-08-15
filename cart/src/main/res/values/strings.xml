@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="carts">Carts</string>
+    <string name="process_to_checkout">Process to Checkout</string>
+    <string name="total">Total</string>
+    <string name="products">Product</string>
 </resources>

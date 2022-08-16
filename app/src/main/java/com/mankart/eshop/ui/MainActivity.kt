@@ -27,8 +27,6 @@ class MainActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 com.mankart.eshop.product.R.id.detailProductFragment -> hideBottomNavigation(true)
-                // TODO : Customize the progress fragment
-                // R.id.favorite_nav_graph ->
                 com.mankart.eshop.cart.R.id.cartFragment -> hideBottomNavigation(true)
                 else -> hideBottomNavigation(false)
             }

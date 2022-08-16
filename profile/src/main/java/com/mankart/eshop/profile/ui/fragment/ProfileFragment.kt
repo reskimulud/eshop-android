@@ -7,10 +7,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.mankart.eshop.core.data.Resource
-import com.mankart.eshop.core.domain.model.Transaction
+import com.mankart.eshop.core.utils.Constants.EXTRA_TRANSACTION_ID
+import com.mankart.eshop.profile.R
 import com.mankart.eshop.profile.databinding.FragmentProfileBinding
 import com.mankart.eshop.profile.ui.ProfileViewModel
 import com.mankart.eshop.profile.ui.adapter.ListTransactionAdapter
@@ -47,19 +49,26 @@ class ProfileFragment: Fragment() {
         lifecycleScope.launch {
             profileViewModel.getTransactions().collect {
                 if (it is Resource.Success) {
-                    val adapter = it.data?.let { listTransaction ->
-                        ListTransactionAdapter(listTransaction) { productId ->
-                            navigateToDetailTransaction(productId)
+                    if (!it.data.isNullOrEmpty()) {
+                        val adapter = it.data?.let { listTransaction ->
+                            ListTransactionAdapter(listTransaction) { transactionId ->
+                                navigateToDetailTransaction(transactionId)
+                            }
                         }
+                        binding.rvTransactions.adapter = adapter
+                    } else {
+                        binding.tvNoTransaction.visibility = View.VISIBLE
+                        binding.rvTransactions.visibility = View.GONE
                     }
-                    binding.rvTransactions.adapter = adapter
                 }
             }
         }
     }
 
-    private fun navigateToDetailTransaction(productId: String) {
-        // TODO("Not yet implemented")
+    private fun navigateToDetailTransaction(transactionId: String) {
+        val mBundle = Bundle()
+        mBundle.putString(EXTRA_TRANSACTION_ID, transactionId)
+        findNavController().navigate(R.id.action_profileFragment_to_detailTransactionFragment, mBundle)
     }
 
     private fun setupProfile() {

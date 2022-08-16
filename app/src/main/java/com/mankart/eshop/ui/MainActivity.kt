@@ -28,6 +28,7 @@ class MainActivity : AppCompatActivity() {
             when (destination.id) {
                 com.mankart.eshop.product.R.id.detailProductFragment -> hideBottomNavigation(true)
                 com.mankart.eshop.cart.R.id.cartFragment -> hideBottomNavigation(true)
+                com.mankart.eshop.profile.R.id.detailTransactionFragment -> hideBottomNavigation(true)
                 else -> hideBottomNavigation(false)
             }
         }

@@ -9,7 +9,7 @@ import com.mankart.eshop.profile.databinding.ItemTransactionBinding
 
 class ListTransactionAdapter(
     private val listTransaction: List<Transaction>,
-    private val onDetailClickCallback: (productId: String) -> Unit
+    private val onDetailClickCallback: (transactionId: String) -> Unit
 ): RecyclerView.Adapter<ListTransactionAdapter.ViewHolder>() {
     inner class ViewHolder(itemTransactionBinding: ItemTransactionBinding): RecyclerView.ViewHolder(itemTransactionBinding.root) {
         val tvTransactionId = itemTransactionBinding.tvTransactionId

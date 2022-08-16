@@ -1,9 +1,11 @@
 package com.mankart.eshop.profile.ui.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -15,6 +17,7 @@ import com.mankart.eshop.core.data.Resource
 import com.mankart.eshop.core.utils.Constants.DETAIL_PRODUCT_URI
 import com.mankart.eshop.core.utils.Constants.EXTRA_TRANSACTION_ID
 import com.mankart.eshop.core.utils.Helpers.formatIDR
+import com.mankart.eshop.core.utils.Helpers.getCurrentDate
 import com.mankart.eshop.core.utils.Helpers.timestampToDate
 import com.mankart.eshop.profile.databinding.FragmentDetailTransactionBinding
 import com.mankart.eshop.profile.ui.ProfileViewModel
@@ -74,7 +77,9 @@ class DetailTransactionFragment: Fragment() {
                         ListOrderAdapter(
                             listOrder,
                             onItemClickCallback = { productId -> navigateToDetailProduct(productId) },
-                            onBtnRateClickCallback = { productId -> addRatingHandler(productId) }
+                            onBtnRateClickCallback = { productId, rating, review ->
+                                addRatingHandler(productId, rating, review)
+                            }
                         )
                     }
                     binding.rvOrders.adapter = adapter
@@ -83,8 +88,17 @@ class DetailTransactionFragment: Fragment() {
         }
     }
 
-    private fun addRatingHandler(productId: String) {
-        // TODO("Not yet implemented")
+    private fun addRatingHandler(productId: String, rating: Int, review: String) {
+        lifecycleScope.launch {
+            profileViewModel.addProductReview(productId, rating, review).collect {
+                if (it is Resource.Message) {
+                    Toast.makeText(requireContext(), "Review added successfully", Toast.LENGTH_SHORT).show()
+                    uiState.value = getCurrentDate()
+                } else {
+                    Log.e("DetailTransaction", "Error adding review")
+                }
+            }
+        }
     }
 
     private fun navigateToDetailProduct(productId: String) {

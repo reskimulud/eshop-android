@@ -102,6 +102,50 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/tv_sub_total_text" />
 
+            <!-- Form for post a review -->
+            <RatingBar
+                android:id="@+id/rb_rating_user_input"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:isIndicator="false"
+                android:layout_marginTop="16dp"
+                android:progressTint="@color/colorAccent"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_sub_total" />
+
+            <EditText
+                android:id="@+id/et_input_review"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:gravity="start|top"
+                android:inputType="textMultiLine"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/shape_edit_text"
+                android:padding="6dp"
+                android:hint="@string/your_review"
+                android:minHeight="100dp"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@+id/rb_rating_user_input" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_post_review"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/cta_enabled_state"
+                android:fontFamily="@font/poppins"
+                android:text="@string/post_review"
+                android:textAllCaps="false"
+                android:textColor="@color/colorBase"
+                android:layout_marginTop="8dp"
+                android:visibility="gone"
+                app:cornerRadius="12dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/et_input_review" />
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.card.MaterialCardView>

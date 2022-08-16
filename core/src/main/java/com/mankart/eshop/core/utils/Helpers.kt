@@ -22,6 +22,6 @@ object Helpers {
 
     fun Long.timestampToDate() : String {
         val simpleDateFormat = simpleDateFormat("dd MMMM yyyy, HH:mm:ss")
-        return simpleDateFormat.format(this * 1000L)
+        return simpleDateFormat.format(this)
     }
 }

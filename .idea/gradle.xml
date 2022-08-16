@@ -16,6 +16,7 @@
             <option value="$PROJECT_DIR$/core" />
             <option value="$PROJECT_DIR$/favorite" />
             <option value="$PROJECT_DIR$/product" />
+            <option value="$PROJECT_DIR$/profile" />
             <option value="$PROJECT_DIR$/setting" />
           </set>
         </option>

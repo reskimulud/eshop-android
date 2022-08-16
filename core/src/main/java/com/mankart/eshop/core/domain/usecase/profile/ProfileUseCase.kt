@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface ProfileUseCase {
     fun getUserProfile(): Flow<Resource<User>>
+    fun postPreview(productId: String, rate: Int, review: String): Flow<Resource<String>>
     suspend fun logout()
     suspend fun getName(): Flow<String>
     suspend fun getEmail(): Flow<String>

@@ -90,4 +90,13 @@ interface ApiService {
         @Header("Authorization") token: String
     ) : ResponseWithoutData
 
+    @FormUrlEncoded
+    @POST("products/{id}/rating")
+    suspend fun postReview(
+        @Header("Authorization") token: String,
+        @Path("id") productId: String,
+        @Field("rate") rate: Int,
+        @Field("review") review: String
+    ) : ResponseWithoutData
+
 }

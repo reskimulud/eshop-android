@@ -67,6 +67,16 @@ class EShopRepository @Inject constructor(
             }
         }.asFlow()
 
+    override fun postReview(productId: String, rate: Int, review: String): Flow<Resource<String>> =
+        object: NetworkBoundResource<String, ResponseWithoutData>() {
+            override suspend fun fetchFromApi(response: ResponseWithoutData): String = response.message
+
+            override suspend fun createCall(): Flow<ApiResponse<ResponseWithoutData>> {
+                val token = "Bearer " + localDataSource.getUserToken().first()
+                return remoteDataSource.postReview(token, productId, rate, review)
+            }
+        }.asFlow()
+
     override suspend fun logout() = localDataSource.clearCache()
 
     override suspend fun getName(): Flow<String> = flow {

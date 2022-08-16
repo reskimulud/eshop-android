@@ -18,7 +18,7 @@ data class OrderResponse(
     @field:SerializedName("image")
     val image: String,
 
-    @field:SerializedName("yourRating")
+    @field:SerializedName("yourRate")
     val yourRating: Int,
 
     @field:SerializedName("yourReview")

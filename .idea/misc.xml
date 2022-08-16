@@ -26,7 +26,7 @@
         <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/auth/src/main/res/layout/fragment_login.xml" value="0.25" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/auth/src/main/res/layout/fragment_register.xml" value="0.22447916666666667" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/cart/src/main/res/drawable/fragment_background.xml" value="0.1295" />
-        <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/cart/src/main/res/layout/fragment_cart.xml" value="0.25" />
+        <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/cart/src/main/res/layout/fragment_cart.xml" value="0.2" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/cart/src/main/res/layout/item_cart_product.xml" value="0.25" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/cart/src/main/res/layout/item_product.xml" value="0.2234375" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/favorite/src/main/res/layout/fragment_favorite_product.xml" value="0.22" />
@@ -43,6 +43,15 @@
         <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/product/src/main/res/layout/item_btn_category.xml" value="0.5" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/product/src/main/res/layout/item_product.xml" value="0.33" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/product/src/main/res/layout/item_review.xml" value="0.18" />
+        <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/profile/src/main/res/drawable/bg_bottom_sheet_dialog.xml" value="0.1295" />
+        <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/profile/src/main/res/drawable/capsul_button.xml" value="0.1295" />
+        <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/profile/src/main/res/drawable/fragment_background.xml" value="0.1295" />
+        <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/profile/src/main/res/drawable/shape_edit_text.xml" value="0.1295" />
+        <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/profile/src/main/res/layout/dialog_fragment_add_rating.xml" value="0.22" />
+        <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/profile/src/main/res/layout/fragment_detail_transaction.xml" value="0.22" />
+        <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/profile/src/main/res/layout/fragment_profile.xml" value="0.25" />
+        <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/profile/src/main/res/layout/item_order.xml" value="0.25" />
+        <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/profile/src/main/res/layout/item_transaction.xml" value="0.25" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/setting/src/main/res/drawable/fragment_background.xml" value="0.1295" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/setting/src/main/res/layout/fragment_setting.xml" value="0.25" />
       </map>

@@ -17,7 +17,5 @@ abstract class CartModule {
     @ViewModelScoped
     abstract fun provideCartUseCase(cartInteractor: CartInteractor): CartUseCase
 
-    @Binds
-    @ViewModelScoped
-    abstract fun provideTransactionUseCase(transactionInteractor: TransactionInteractor): TransactionUseCase
+    // transaction use case di provide oleh modul profile
 }

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/profile_nav_graph"
+    app:startDestination="@id/profileFragment">
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.mankart.eshop.profile.ui.fragment.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profileFragment_to_detailTransactionFragment"
+            app:destination="@id/detailTransactionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailTransactionFragment"
+        android:name="com.mankart.eshop.profile.ui.fragment.DetailTransactionFragment"
+        android:label="fragment_detail_transaction"
+        tools:layout="@layout/fragment_detail_transaction" >
+        <argument
+            android:name="transactonId"
+            app:argType="string" />
+    </fragment>
+</navigation>

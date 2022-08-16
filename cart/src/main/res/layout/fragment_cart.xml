@@ -106,12 +106,13 @@
             android:layout_height="match_parent"
             android:layout_gravity="right"
             android:layout_marginEnd="16dp"
-            android:textAllCaps="false"
             android:fontFamily="@font/poppins"
-            android:textColor="@color/colorBase"
             android:text="@string/process_to_checkout"
+            android:textAllCaps="false"
+            android:textColor="@color/colorBase"
+            android:textStyle="bold"
             app:backgroundTint="@color/cta_enabled_state"
-            app:cornerRadius="24dp"/>
+            app:cornerRadius="24dp" />
 
     </com.google.android.material.bottomappbar.BottomAppBar>
 

@@ -12,7 +12,7 @@ import androidx.navigation.NavDeepLinkRequest
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mankart.eshop.core.data.Resource
-import com.mankart.eshop.core.utils.Constants.EXTRA_PRODUCT_ID
+import com.mankart.eshop.core.utils.Constants.DETAIL_PRODUCT_URI
 import com.mankart.eshop.core.utils.Constants.EXTRA_TRANSACTION_ID
 import com.mankart.eshop.core.utils.Helpers.formatIDR
 import com.mankart.eshop.core.utils.Helpers.timestampToDate
@@ -89,7 +89,7 @@ class DetailTransactionFragment: Fragment() {
 
     private fun navigateToDetailProduct(productId: String) {
         val request = NavDeepLinkRequest.Builder
-            .fromUri("${EXTRA_PRODUCT_ID}/$productId".toUri())
+            .fromUri("${DETAIL_PRODUCT_URI}/$productId".toUri())
             .build()
         findNavController().navigate(request)
     }

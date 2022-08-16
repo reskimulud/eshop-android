@@ -20,6 +20,7 @@ import com.mankart.eshop.cart.ui.CartViewModel
 import com.mankart.eshop.cart.ui.adapter.ListCartAdapter
 import com.mankart.eshop.core.data.Resource
 import com.mankart.eshop.core.utils.Constants.DETAIL_PRODUCT_URI
+import com.mankart.eshop.core.utils.Constants.PRODUCT_URI
 import com.mankart.eshop.core.utils.Helpers.formatIDR
 import com.mankart.eshop.core.utils.Helpers.getCurrentDate
 import dagger.hilt.android.AndroidEntryPoint
@@ -71,11 +72,24 @@ class CartFragment: Fragment() {
             requireActivity().onBackPressed()
         }
 
-        onCheckoutHandler()
+        binding.btnCheckout.setOnClickListener {
+            onCheckoutHandler()
+        }
     }
 
     private fun onCheckoutHandler() {
-        // TODO("Not yet implemented")
+        lifecycleScope.launch {
+            cartViewModel.checkout().collect {
+                if (it is Resource.Message) {
+                    Toast.makeText(requireActivity(), "Transaction success", Toast.LENGTH_LONG).show()
+
+                    val request = NavDeepLinkRequest.Builder
+                        .fromUri(PRODUCT_URI.toUri())
+                        .build()
+                    findNavController().navigate(request)
+                }
+            }
+        }
     }
 
     private fun onCartItemUpdatedHandler() {
@@ -148,6 +162,7 @@ class CartFragment: Fragment() {
                     } else {
                         binding.rvCarts.visibility = View.GONE
                         binding.tvEmptyCart.visibility = View.VISIBLE
+                        binding.btnCheckout.isEnabled = false
                     }
                 } else {
                     Log.e("CartFragment", resource.message.toString())

@@ -110,7 +110,7 @@
             android:fontFamily="@font/poppins"
             android:textColor="@color/colorBase"
             android:text="@string/process_to_checkout"
-            app:backgroundTint="@color/colorAccent"
+            app:backgroundTint="@color/cta_enabled_state"
             app:cornerRadius="24dp"/>
 
     </com.google.android.material.bottomappbar.BottomAppBar>

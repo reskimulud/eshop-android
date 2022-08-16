@@ -9,7 +9,11 @@
         android:id="@+id/productsFragment"
         android:name="com.mankart.eshop.product.ui.fragment.ProductsFragment"
         android:label="fragment_products"
-        tools:layout="@layout/fragment_products" />
+        tools:layout="@layout/fragment_products">
+        <deepLink
+            android:id="@+id/deepLink2"
+            app:uri="eshop://product_fragment" />
+    </fragment>
     <fragment
         android:id="@+id/detailProductFragment"
         android:name="com.mankart.eshop.product.ui.fragment.DetailProductFragment"

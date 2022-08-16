@@ -2,17 +2,12 @@ package com.mankart.eshop.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.play.core.splitinstall.SplitInstallManagerFactory
-import com.google.android.play.core.splitinstall.SplitInstallRequest
 import com.mankart.eshop.R
 import com.mankart.eshop.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
-import java.lang.Exception
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -29,42 +24,22 @@ class MainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
         bottomNavigation.setupWithNavController(navController)
 
-        navController.addOnDestinationChangedListener { controller, destination, _ ->
+        navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                com.mankart.eshop.product.R.id.detailProductFragment -> bottomNavigation.visibility = BottomNavigationView.GONE
-                R.id.favorite_nav_graph -> {
-                    try {
-                        installFavoriteModule()
-                    } catch (err: Exception) {
-                        Toast.makeText(this, "Module not found", Toast.LENGTH_LONG).show()
-                        controller.currentDestination?.id?.let { navController.navigate(it) }
-                    }
-                }
-                else -> bottomNavigation.visibility = BottomNavigationView.VISIBLE
+                com.mankart.eshop.product.R.id.detailProductFragment -> hideBottomNavigation(true)
+                // TODO : Customize the progress fragment
+                // R.id.favorite_nav_graph ->
+                com.mankart.eshop.cart.R.id.cartFragment -> hideBottomNavigation(true)
+                else -> hideBottomNavigation(false)
             }
         }
     }
 
-    private fun installFavoriteModule(){
-        val splitInstallManager = SplitInstallManagerFactory.create(this)
-        val moduleFavorite = "favorite"
-        if (splitInstallManager.installedModules.contains(moduleFavorite)) {
-            return
+    private fun hideBottomNavigation(isHide: Boolean) {
+        if (isHide) {
+            binding.bottomNavigationView.visibility = BottomNavigationView.GONE
         } else {
-            val request = SplitInstallRequest.newBuilder()
-                .addModule(moduleFavorite)
-                .build()
-
-            Toast.makeText(this@MainActivity, "Installing Favorite Module...", Toast.LENGTH_SHORT).show()
-            splitInstallManager.startInstall(request)
-                .addOnSuccessListener {
-                    Toast.makeText(this@MainActivity, "Favorite Module Installed", Toast.LENGTH_SHORT).show()
-                    return@addOnSuccessListener
-                }
-                .addOnFailureListener {
-                    Toast.makeText(this@MainActivity, "Favorite Module Installation Failed", Toast.LENGTH_SHORT).show()
-                    throw it
-                }
+            binding.bottomNavigationView.visibility = BottomNavigationView.VISIBLE
         }
     }
 }

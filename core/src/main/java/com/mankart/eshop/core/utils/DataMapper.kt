@@ -67,7 +67,6 @@ object DataMapper {
         productId = input.productId,
         title = input.title,
         price = input.price,
-        description = input.description,
         image = input.image,
         quantity = input.quantity,
     )

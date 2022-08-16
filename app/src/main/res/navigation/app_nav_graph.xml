@@ -11,5 +11,6 @@
         app:moduleName="favorite"
         app:graphResName="favorite_nav_graph"
         app:graphPackage="com.mankart.eshop.favorite" />
+    <include app:graph="@navigation/cart_nav_graph" />
 
 </navigation>

@@ -7,14 +7,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavDeepLinkRequest
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.mankart.eshop.core.data.Resource
 import com.mankart.eshop.core.domain.model.Product
 import com.mankart.eshop.core.domain.model.UserReview
+import com.mankart.eshop.core.utils.Constants.CART_URI
 import com.mankart.eshop.core.utils.Constants.EXTRA_PRODUCT_ID
 import com.mankart.eshop.core.utils.Helpers.formatIDR
 import com.mankart.eshop.product.R
@@ -72,7 +76,12 @@ class DetailProductFragment: Fragment() {
 
         favoriteProductToggle()
 
-        binding.ivCartFromDetail
+        binding.ivCartFromDetail.setOnClickListener {
+            val request = NavDeepLinkRequest.Builder
+                .fromUri(CART_URI.toUri())
+                .build()
+            findNavController().navigate(request)
+        }
     }
 
     private fun addItemToCartHandler() {

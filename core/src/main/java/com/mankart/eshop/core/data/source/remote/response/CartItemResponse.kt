@@ -15,9 +15,6 @@ data class CartItemResponse(
     @field:SerializedName("price")
     val price: Int,
 
-    @field:SerializedName("description")
-    val description: String,
-
     @field:SerializedName("image")
     val image: String,
 

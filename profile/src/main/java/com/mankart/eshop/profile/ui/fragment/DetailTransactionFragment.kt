@@ -19,6 +19,7 @@ import com.mankart.eshop.core.utils.Constants.EXTRA_TRANSACTION_ID
 import com.mankart.eshop.core.utils.Helpers.formatIDR
 import com.mankart.eshop.core.utils.Helpers.getCurrentDate
 import com.mankart.eshop.core.utils.Helpers.timestampToDate
+import com.mankart.eshop.profile.R
 import com.mankart.eshop.profile.databinding.FragmentDetailTransactionBinding
 import com.mankart.eshop.profile.ui.ProfileViewModel
 import com.mankart.eshop.profile.ui.adapter.ListOrderAdapter
@@ -92,7 +93,7 @@ class DetailTransactionFragment: Fragment() {
         lifecycleScope.launch {
             profileViewModel.addProductReview(productId, rating, review).collect {
                 if (it is Resource.Message) {
-                    Toast.makeText(requireContext(), "Review added successfully", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), getString(R.string.success_add_review), Toast.LENGTH_SHORT).show()
                     uiState.value = getCurrentDate()
                 } else {
                     Log.e("DetailTransaction", "Error adding review")

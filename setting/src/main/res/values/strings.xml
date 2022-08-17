@@ -6,4 +6,6 @@
     <string name="set_theme">Set Theme</string>
     <string name="app_name">Eshop</string>
     <string name="logout">Logout</string>
+    <string name="confirm_logout">Are you sure you want to logout?</string>
+    <string name="under_dev">Under Development</string>
 </resources>

@@ -97,7 +97,7 @@ class FavoriteProductFragment: Fragment() {
                         binding.rvFavoriteProduct.adapter = adapter
                     }
                 } else {
-                    Log.e("FavoriteProductFragment", "Error: ${resource.message}")
+                    Log.e(TAG, "Error: ${resource.message}")
                 }
             }
         }
@@ -145,5 +145,9 @@ class FavoriteProductFragment: Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    companion object {
+        private const val TAG = "FavoriteProductFragment"
     }
 }

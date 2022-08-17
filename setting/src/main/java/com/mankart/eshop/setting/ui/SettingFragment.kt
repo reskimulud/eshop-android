@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.mankart.eshop.setting.BuildConfig
+import com.mankart.eshop.setting.R
 import com.mankart.eshop.setting.databinding.FragmentSettingBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -52,9 +53,9 @@ class SettingFragment: Fragment() {
         val authenticationActivityClassName = "com.mankart.eshop.auth.ui.AuthenticationHostActivity"
 
         val alertDialog = AlertDialog.Builder(requireContext())
-            .setTitle("Logout")
-            .setMessage("Are you sure you want to logout?")
-            .setPositiveButton("Yes") { dialog, _ ->
+            .setTitle(R.string.logout)
+            .setMessage(R.string.confirm_logout)
+            .setPositiveButton(R.string.logout) { dialog, _ ->
                 val intent = Intent(requireContext(), Class.forName(authenticationActivityClassName))
 
                 settingViewModel.logout()
@@ -72,7 +73,7 @@ class SettingFragment: Fragment() {
     }
 
     private fun showUnderDevelopmentToast() {
-        Toast.makeText(requireActivity(), "Under Development", Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireActivity(), R.string.under_dev, Toast.LENGTH_SHORT).show()
     }
 
     override fun onDestroyView() {

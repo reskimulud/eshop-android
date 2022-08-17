@@ -39,8 +39,8 @@ class LoginFragment : Fragment() {
         val passwordIsValid = password.isNotEmpty() && password.length in 6..15
 
         when {
-            !emailIsValid && email.isNotEmpty() -> binding.etEmail.error = "Email is not valid!"
-            !passwordIsValid && password.isNotEmpty() -> binding.etPassword.error = "Password must have length between 6 - 15"
+            !emailIsValid && email.isNotEmpty() -> binding.etEmail.error = getString(R.string.email_not_valid)
+            !passwordIsValid && password.isNotEmpty() -> binding.etPassword.error = getString(R.string.password_not_valid)
         }
 
         emailIsValid && passwordIsValid
@@ -83,19 +83,19 @@ class LoginFragment : Fragment() {
                         is Resource.Message -> {
                             setLoading(false)
                             Toast.makeText(requireActivity(), it.message, Toast.LENGTH_SHORT).show()
-                            Log.e("LoginFragment", it.message.toString())
+                            Log.e(TAG, it.message.toString())
                         }
                         is Resource.Error -> {
                             setLoading(false)
-                            Toast.makeText(requireActivity(), "Login Failed, Wrong Email or Password", Toast.LENGTH_SHORT).show()
-                            Log.e("LoginFragment", it.message.toString())
+                            Toast.makeText(requireActivity(), getString(R.string.wrong_email_password), Toast.LENGTH_SHORT).show()
+                            Log.e(TAG, it.message.toString())
                         }
                         is Resource.Success -> {
                             setLoading(false)
 
                             profileSetup()
 
-                            Toast.makeText(requireActivity(), "Login Successfully", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(requireActivity(), getString(R.string.login_success), Toast.LENGTH_SHORT).show()
                             val intent = Intent(requireActivity(), Class.forName(
                                 "com.mankart.eshop.ui.MainActivity"
                             ))
@@ -156,5 +156,9 @@ class LoginFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    companion object {
+        private const val TAG = "LoginFragment"
     }
 }

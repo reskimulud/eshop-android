@@ -88,9 +88,9 @@ class DetailProductFragment: Fragment() {
         lifecycleScope.launch {
             productId?.let { productViewModel.addItemToCart(it, 1).collect { resource ->
                 if (resource is Resource.Success || resource is Resource.Message) {
-                    Toast.makeText(requireContext(), "Item has added to cart", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), getString(R.string.item_add_to_cart), Toast.LENGTH_SHORT).show()
                 } else {
-                    Log.e("DetailProductFragment", "Error adding to cart ${resource.message}")
+                    Log.e(TAG, "Error adding to cart ${resource.message}")
                 }
             } }
         }
@@ -115,14 +115,14 @@ class DetailProductFragment: Fragment() {
                 binding.fabAddToFavorite.setImageResource(R.drawable.ic_favorite_border)
                 lifecycleScope.launch {
                     productViewModel.deleteFavoriteProductById(productState.id)
-                    Log.e("DetailProductFragment", "deleteFavoriteProductById: ${productState.id}")
+                    Log.e(TAG, "deleteFavoriteProductById: ${productState.id}")
                 }
                 false
             } else {
                 binding.fabAddToFavorite.setImageResource(R.drawable.ic_favorite)
                 lifecycleScope.launch {
                     productViewModel.addFavoriteProduct(productState)
-                    Log.e("DetailProductFragment", "addFavoriteProduct: ${productState.id}")
+                    Log.e(TAG, "addFavoriteProduct: ${productState.id}")
                 }
                 true
             }
@@ -144,7 +144,7 @@ class DetailProductFragment: Fragment() {
                             productResource.data?.apply {
                                 tvTitleProduct.text = title
                                 tvPriceProduct.text = price.formatIDR()
-                                rbRatingProduct.rating = rating.toFloat() ?: 0f
+                                rbRatingProduct.rating = rating.toFloat()
                                 tvCountRating.text = "(${countRate})"
                                 tvDescriptionProduct.text = description
 
@@ -190,4 +190,7 @@ class DetailProductFragment: Fragment() {
         _binding = null
     }
 
+    companion object {
+        private const val TAG = "DetailProductFragment"
+    }
 }

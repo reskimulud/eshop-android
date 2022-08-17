@@ -19,7 +19,7 @@ data class ProductResponse(
     val description: String,
 
     @field:SerializedName("image")
-    val image: String,
+    val image: String? = null,
 
     @field:SerializedName("rating")
     val rating: Rating? = null,

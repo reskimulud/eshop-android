@@ -9,5 +9,6 @@ object Constants {
     const val DETAIL_PRODUCT_URI = "${DOMAIN_URI}detail_product_fragment"
     const val CART_URI = "${DOMAIN_URI}cart_fragment"
 
+    const val DATA_STORE_NAME = "application"
     const val EMPTY_DATA_STORE = "not_set_yet"
 }

@@ -5,4 +5,7 @@
     <string name="total">Total</string>
     <string name="products">Product</string>
     <string name="cart_is_empty">Cart is Empty</string>
+    <string name="transaction_success">Transaction Success</string>
+    <string name="item_updated">Item Updated</string>
+    <string name="item_deleted">Item deleted from Cart</string>
 </resources>

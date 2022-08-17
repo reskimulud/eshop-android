@@ -15,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.mankart.eshop.cart.R
 import com.mankart.eshop.cart.databinding.FragmentCartBinding
 import com.mankart.eshop.cart.ui.CartViewModel
 import com.mankart.eshop.cart.ui.adapter.ListCartAdapter
@@ -81,7 +82,7 @@ class CartFragment: Fragment() {
         lifecycleScope.launch {
             cartViewModel.checkout().collect {
                 if (it is Resource.Message) {
-                    Toast.makeText(requireActivity(), "Transaction success", Toast.LENGTH_LONG).show()
+                    Toast.makeText(requireActivity(), getString(R.string.transaction_success), Toast.LENGTH_LONG).show()
 
                     val request = NavDeepLinkRequest.Builder
                         .fromUri(PRODUCT_URI.toUri())
@@ -123,9 +124,9 @@ class CartFragment: Fragment() {
             cartViewModel.updateCartItem(itemId, qty).collect {
                 if (it is Resource.Message) {
                     uiState.value = getCurrentDate()
-                    Toast.makeText(requireActivity(), "Item updated", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireActivity(), getString(R.string.item_updated), Toast.LENGTH_SHORT).show()
                 } else {
-                    Log.e("CartFragment", it.message.toString())
+                    Log.e(TAG, it.message.toString())
                 }
             }
         }
@@ -136,9 +137,9 @@ class CartFragment: Fragment() {
             cartViewModel.deleteCartItem(itemId).collect {
                 if (it is Resource.Message) {
                     uiState.value = getCurrentDate()
-                    Toast.makeText(requireActivity(), "Item deleted from Cart", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireActivity(), getString(R.string.item_deleted), Toast.LENGTH_SHORT).show()
                 } else {
-                    Log.e("CartFragment", it.message.toString())
+                    Log.e(TAG, it.message.toString())
                 }
             }
         }
@@ -165,7 +166,7 @@ class CartFragment: Fragment() {
                         binding.btnCheckout.isEnabled = false
                     }
                 } else {
-                    Log.e("CartFragment", resource.message.toString())
+                    Log.e(TAG, resource.message.toString())
                 }
             }
         }
@@ -216,5 +217,9 @@ class CartFragment: Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    companion object {
+        private const val TAG = "CartFragment"
     }
 }

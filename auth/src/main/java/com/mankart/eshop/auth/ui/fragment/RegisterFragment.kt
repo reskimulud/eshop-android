@@ -42,8 +42,8 @@ class RegisterFragment : Fragment() {
         val passwordIsValid = password.isNotEmpty() && password.length in 6..15
 
         when {
-            !emailIsValid && email.isNotEmpty() -> binding.etEmail.error = "Email is not valid!"
-            !passwordIsValid && password.isNotEmpty() -> binding.etPassword.error = "Password must have length between 6 - 15"
+            !emailIsValid && email.isNotEmpty() -> binding.etEmail.error = getString(R.string.email_not_valid)
+            !passwordIsValid && password.isNotEmpty() -> binding.etPassword.error = getString(R.string.password_not_valid)
         }
 
         nameIsValid && emailIsValid && passwordIsValid
@@ -86,18 +86,18 @@ class RegisterFragment : Fragment() {
                         is Resource.Message -> {
                             setLoading(false)
                             Toast.makeText(requireActivity(), it.message, Toast.LENGTH_LONG).show()
-                            Log.e("RegisterFragment", it.message.toString())
+                            Log.e(TAG, it.message.toString())
                             moveToLoginFragment()
                         }
                         is Resource.Error -> {
                             setLoading(false)
                             Toast.makeText(requireActivity(), it.message, Toast.LENGTH_LONG).show()
-                            Log.e("RegisterFragment", it.message.toString())
+                            Log.e(TAG, it.message.toString())
                         }
                         is Resource.Success -> {
                             setLoading(false)
                             Toast.makeText(requireActivity(), it.message.toString(), Toast.LENGTH_LONG).show()
-                            Log.e("RegisterFragment", it.message.toString())
+                            Log.e(TAG, it.message.toString())
                             moveToLoginFragment()
                         }
                     }
@@ -149,5 +149,9 @@ class RegisterFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    companion object {
+        private const val TAG = "RegisterFragment"
     }
 }

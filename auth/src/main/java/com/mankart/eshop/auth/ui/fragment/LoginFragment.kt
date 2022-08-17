@@ -93,13 +93,29 @@ class LoginFragment : Fragment() {
                         }
                         is Resource.Success -> {
                             setLoading(false)
-                            Toast.makeText(requireActivity(), it.message, Toast.LENGTH_SHORT).show()
+
+                            profileSetup()
+
+                            Toast.makeText(requireActivity(), "Login Successfully", Toast.LENGTH_SHORT).show()
                             val intent = Intent(requireActivity(), Class.forName(
                                 "com.mankart.eshop.ui.MainActivity"
                             ))
                             startActivity(intent)
                             requireActivity().finish()
                         }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun profileSetup() {
+        lifecycleScope.launch {
+            authViewModel.getProfileData().collect {
+                if (it is Resource.Success) {
+                    authViewModel.apply {
+                        it.data?.name?.let { name -> saveUserName(name) }
+                        it.data?.email?.let { email -> saveEmail(email) }
                     }
                 }
             }

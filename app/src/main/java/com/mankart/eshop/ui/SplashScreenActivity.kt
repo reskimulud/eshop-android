@@ -12,10 +12,8 @@ import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.mankart.eshop.core.data.Resource
 import com.mankart.eshop.databinding.ActivitySplashScreenBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 @SuppressLint("CustomSplashScreen")
@@ -42,7 +40,6 @@ class SplashScreenActivity : AppCompatActivity() {
             mainViewModel.getUserToken().collect {
                 Log.e("SplashScreenActivity", "User Token: $it")
                 if (it.isNotEmpty() && it != "not_set_yet") {
-                    profileSetup()
                     startActivity(
                         Intent(
                             this@SplashScreenActivity,
@@ -58,19 +55,6 @@ class SplashScreenActivity : AppCompatActivity() {
                     )
                 }
                 finish()
-            }
-        }
-    }
-
-    private fun profileSetup() {
-        lifecycleScope.launch {
-            mainViewModel.getProfileData().collect {
-                if (it is Resource.Success) {
-                    mainViewModel.apply {
-                        it.data?.name?.let { name -> saveUserName(name) }
-                        it.data?.email?.let { email -> saveEmail(email) }
-                    }
-                }
             }
         }
     }

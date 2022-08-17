@@ -29,6 +29,12 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * Produk yang dsimpan di favorite (yang belum dihapus) akan tetap tersimpan di database
+ * meskipun user telah logout. Untuk implementasi ke depannya saya akan menerapkan fitur
+ * favorite product disimpan di server (API).
+ */
+
 class FavoriteProductFragment: Fragment() {
     private var _binding: FragmentFavoriteProductBinding? = null
     private val binding get() = _binding!!

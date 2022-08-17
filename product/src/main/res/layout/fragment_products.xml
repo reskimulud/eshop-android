@@ -44,7 +44,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:tint="@color/colorPrimary" />
 
-            <SearchView
+            <androidx.appcompat.widget.SearchView
                 android:id="@+id/sv_search_product"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"

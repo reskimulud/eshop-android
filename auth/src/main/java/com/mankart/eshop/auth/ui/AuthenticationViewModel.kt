@@ -1,4 +1,4 @@
-package com.mankart.eshop.auth
+package com.mankart.eshop.auth.ui
 
 import androidx.lifecycle.ViewModel
 import com.mankart.eshop.core.domain.usecase.authentication.AuthenticationUseCase

@@ -5,7 +5,7 @@
     <application
         android:theme="@style/Theme.Eshop">
         <activity
-            android:name=".AuthenticationHostActivity"
+            android:name=".ui.AuthenticationHostActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize|stateVisible"/>
         <meta-data

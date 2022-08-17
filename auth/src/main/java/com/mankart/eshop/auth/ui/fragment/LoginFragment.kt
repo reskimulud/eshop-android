@@ -1,5 +1,6 @@
-package com.mankart.eshop.auth.fragment
+package com.mankart.eshop.auth.ui.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.util.Patterns
@@ -12,32 +13,28 @@ import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.mankart.eshop.auth.AuthenticationViewModel
+import com.mankart.eshop.auth.ui.AuthenticationViewModel
 import com.mankart.eshop.auth.R
-import com.mankart.eshop.auth.databinding.FragmentRegisterBinding
+import com.mankart.eshop.auth.databinding.FragmentLoginBinding
 import com.mankart.eshop.auth.utils.Helpers.isVisible
 import com.mankart.eshop.core.data.Resource
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.*
 
 @AndroidEntryPoint
-class RegisterFragment : Fragment() {
-    private var _binding: FragmentRegisterBinding? = null
+class LoginFragment : Fragment() {
+    private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
 
+    private var loginJob: Job = Job()
     private val authViewModel: AuthenticationViewModel by viewModels()
-    private var registerJob: Job = Job()
 
     // state flow
-    private val nameState = MutableStateFlow("")
     private val emailState = MutableStateFlow("")
     private val passwordState = MutableStateFlow("")
 
-    private val isFormValid = combine(nameState, emailState, passwordState) { name, email, password ->
-        val nameIsValid = name.isNotEmpty()
+    private val formIsValid = combine(emailState, passwordState) { email, password ->
         val emailIsValid = email.isNotEmpty() &&
                 Patterns.EMAIL_ADDRESS.matcher(email).matches()
         val passwordIsValid = password.isNotEmpty() && password.length in 6..15
@@ -47,7 +44,7 @@ class RegisterFragment : Fragment() {
             !passwordIsValid && password.isNotEmpty() -> binding.etPassword.error = "Password must have length between 6 - 15"
         }
 
-        nameIsValid && emailIsValid && passwordIsValid
+        emailIsValid && passwordIsValid
     }
 
     override fun onCreateView(
@@ -55,7 +52,7 @@ class RegisterFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
-        _binding = FragmentRegisterBinding.inflate(inflater, container, false)
+        _binding = FragmentLoginBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -64,42 +61,44 @@ class RegisterFragment : Fragment() {
 
         validateUserInput()
 
-        binding.tvSignIn.setOnClickListener {
-            moveToLoginFragment()
+        binding.tvSignUp.setOnClickListener {
+            findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
         }
-        binding.btnRegister.setOnClickListener {
-            registerAction()
+
+        binding.btnLogin.setOnClickListener {
+            loginAction()
         }
     }
 
-    private fun registerAction() {
-        val name = binding.etName.text.toString().trim()
+    private fun loginAction() {
         val email = binding.etEmail.text.toString().trim()
         val password = binding.etPassword.text.toString().trim()
 
         lifecycleScope.launchWhenResumed {
-            if (registerJob.isActive) registerJob.cancel()
+            if (loginJob.isActive) loginJob.cancel()
 
-            registerJob = launch {
-                authViewModel.register(name, email, password).collect {
+            loginJob = launch {
+                authViewModel.login(email, password).collect {
                     when (it) {
                         is Resource.Loading -> setLoading(true)
                         is Resource.Message -> {
                             setLoading(false)
-                            Toast.makeText(requireActivity(), it.message, Toast.LENGTH_LONG).show()
-                            Log.e("RegisterFragment", it.message.toString())
-                            moveToLoginFragment()
+                            Toast.makeText(requireActivity(), it.message, Toast.LENGTH_SHORT).show()
+                            Log.e("LoginFragment", it.message.toString())
                         }
                         is Resource.Error -> {
                             setLoading(false)
-                            Toast.makeText(requireActivity(), it.message, Toast.LENGTH_LONG).show()
-                            Log.e("RegisterFragment", it.message.toString())
+                            Toast.makeText(requireActivity(), "Login Failed, Wrong Email or Password", Toast.LENGTH_SHORT).show()
+                            Log.e("LoginFragment", it.message.toString())
                         }
                         is Resource.Success -> {
                             setLoading(false)
-                            Toast.makeText(requireActivity(), it.message.toString(), Toast.LENGTH_LONG).show()
-                            Log.e("RegisterFragment", it.message.toString())
-                            moveToLoginFragment()
+                            Toast.makeText(requireActivity(), it.message, Toast.LENGTH_SHORT).show()
+                            val intent = Intent(requireActivity(), Class.forName(
+                                "com.mankart.eshop.ui.MainActivity"
+                            ))
+                            startActivity(intent)
+                            requireActivity().finish()
                         }
                     }
                 }
@@ -109,9 +108,6 @@ class RegisterFragment : Fragment() {
 
     private fun validateUserInput() {
         binding.apply {
-            etName.doOnTextChanged { text, _, _, _ ->
-                nameState.value = text.toString()
-            }
             etEmail.doOnTextChanged { text, _, _, _ ->
                 emailState.value = text.toString()
             }
@@ -121,22 +117,17 @@ class RegisterFragment : Fragment() {
         }
 
         lifecycleScope.launch {
-            isFormValid.collect {
-                binding.btnRegister.isEnabled = it
+            formIsValid.collect {
+                binding.btnLogin.isEnabled = it
             }
         }
     }
 
-    private fun moveToLoginFragment() {
-        findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
-    }
-
     private fun setLoading(state: Boolean){
         binding.apply {
-            etName.isEnabled = !state
             etEmail.isEnabled = !state
             etPassword.isEnabled = !state
-            btnRegister.isEnabled = !state
+            btnLogin.isEnabled = !state
 
             if (state) {
                 viewLoading.isVisible(true)

@@ -53,7 +53,7 @@ class SplashScreenActivity : AppCompatActivity() {
                     startActivity(
                         Intent(
                             this@SplashScreenActivity,
-                            Class.forName("com.mankart.eshop.auth.AuthenticationHostActivity"),
+                            Class.forName("com.mankart.eshop.auth.ui.AuthenticationHostActivity"),
                         )
                     )
                 }

@@ -87,6 +87,16 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/logout"
+        android:textAllCaps="false"
+        android:textColor="@color/colorBase"
+        android:layout_gravity="center"
+        android:layout_marginBottom="8dp"/>
+
     <View
         android:id="@+id/divider"
         android:layout_width="match_parent"

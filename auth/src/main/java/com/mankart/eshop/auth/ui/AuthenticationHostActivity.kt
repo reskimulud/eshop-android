@@ -1,7 +1,8 @@
-package com.mankart.eshop.auth
+package com.mankart.eshop.auth.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.mankart.eshop.auth.R
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

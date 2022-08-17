@@ -15,7 +15,6 @@ import androidx.navigation.fragment.findNavController
 import com.mankart.eshop.auth.ui.AuthenticationViewModel
 import com.mankart.eshop.auth.R
 import com.mankart.eshop.auth.databinding.FragmentRegisterBinding
-import com.mankart.eshop.auth.utils.Helpers.isVisible
 import com.mankart.eshop.core.data.Resource
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
@@ -139,10 +138,10 @@ class RegisterFragment : Fragment() {
             btnRegister.isEnabled = !state
 
             if (state) {
-                viewLoading.isVisible(true)
+                viewLoading.visibility = View.VISIBLE
 
             }else {
-                viewLoading.isVisible(false)
+                viewLoading.visibility = View.GONE
             }
         }
     }

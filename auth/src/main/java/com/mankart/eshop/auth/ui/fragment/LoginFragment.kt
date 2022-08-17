@@ -146,10 +146,10 @@ class LoginFragment : Fragment() {
             btnLogin.isEnabled = !state
 
             if (state) {
-                viewLoading.isVisible(true)
+                viewLoading.visibility = View.VISIBLE
 
-            }else {
-                viewLoading.isVisible(false)
+            } else {
+                viewLoading.visibility = View.GONE
             }
         }
     }

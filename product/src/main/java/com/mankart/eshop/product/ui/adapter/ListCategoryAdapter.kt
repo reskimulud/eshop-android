@@ -2,11 +2,8 @@ package com.mankart.eshop.product.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.mankart.eshop.core.domain.model.ProductCategory
-import com.mankart.eshop.product.R
 import com.mankart.eshop.product.databinding.ItemBtnCategoryBinding
 
 class ListCategoryAdapter(

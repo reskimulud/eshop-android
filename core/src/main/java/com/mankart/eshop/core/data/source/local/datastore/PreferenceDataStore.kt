@@ -4,6 +4,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
+import com.mankart.eshop.core.utils.Constants.EMPTY_DATA_STORE
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -12,7 +13,7 @@ import javax.inject.Singleton
 @Singleton
 class PreferenceDataStore @Inject constructor(private val dataStore: DataStore<Preferences>) {
 
-    fun getUserToken(): Flow<String> = dataStore.data.map { it[USER_ACCESS_TOKEN] ?: "not_set_yet" }
+    fun getUserToken(): Flow<String> = dataStore.data.map { it[USER_ACCESS_TOKEN] ?: EMPTY_DATA_STORE }
 
     suspend fun saveUserToken(token: String) {
         dataStore.edit { preferences ->
@@ -20,7 +21,7 @@ class PreferenceDataStore @Inject constructor(private val dataStore: DataStore<P
         }
     }
 
-    fun getUserEmail(): Flow<String> = dataStore.data.map { it[USER_EMAIL] ?: "not_set_yet" }
+    fun getUserEmail(): Flow<String> = dataStore.data.map { it[USER_EMAIL] ?: EMPTY_DATA_STORE }
 
     suspend fun saveUserEmail(email: String) {
         dataStore.edit { preferences ->
@@ -28,7 +29,7 @@ class PreferenceDataStore @Inject constructor(private val dataStore: DataStore<P
         }
     }
 
-    fun getUserName(): Flow<String> = dataStore.data.map { it[USER_NAME] ?: "not_set_yet" }
+    fun getUserName(): Flow<String> = dataStore.data.map { it[USER_NAME] ?: EMPTY_DATA_STORE }
 
     suspend fun saveUserName(name: String) {
         dataStore.edit { preferences ->

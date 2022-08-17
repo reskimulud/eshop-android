@@ -29,6 +29,9 @@ class EShopRepository @Inject constructor(
     IFavoriteProductRepository
 {
 
+    private suspend fun token(): String =
+        "Bearer " + localDataSource.getUserToken().first()
+
     // authentication
     override fun postLogin(email: String, password: String): Flow<Resource<User>> =
         object: NetworkBoundResource<User, LoginResponse>() {
@@ -61,20 +64,16 @@ class EShopRepository @Inject constructor(
                 return DataMapper.mapProfileResponseToDomain(response)
             }
 
-            override suspend fun createCall(): Flow<ApiResponse<ProfileResponse>> {
-                val token = "Bearer " + localDataSource.getUserToken().first()
-                return remoteDataSource.getProfile(token)
-            }
+            override suspend fun createCall(): Flow<ApiResponse<ProfileResponse>> =
+                remoteDataSource.getProfile(token())
         }.asFlow()
 
     override fun postReview(productId: String, rate: Int, review: String): Flow<Resource<String>> =
         object: NetworkBoundResource<String, ResponseWithoutData>() {
             override suspend fun fetchFromApi(response: ResponseWithoutData): String = response.message
 
-            override suspend fun createCall(): Flow<ApiResponse<ResponseWithoutData>> {
-                val token = "Bearer " + localDataSource.getUserToken().first()
-                return remoteDataSource.postReview(token, productId, rate, review)
-            }
+            override suspend fun createCall(): Flow<ApiResponse<ResponseWithoutData>> =
+                remoteDataSource.postReview(token(), productId, rate, review)
         }.asFlow()
 
     override suspend fun logout() = localDataSource.clearCache()
@@ -146,40 +145,32 @@ class EShopRepository @Inject constructor(
             override suspend fun fetchFromApi(response: CartResponse): Cart =
                 DataMapper.mapCartResponseToDomain(response)
 
-            override suspend fun createCall(): Flow<ApiResponse<CartResponse>> {
-                val token = "Bearer " + localDataSource.getUserToken().first()
-                return remoteDataSource.getCarts(token)
-            }
+            override suspend fun createCall(): Flow<ApiResponse<CartResponse>> =
+                remoteDataSource.getCarts(token())
         }.asFlow()
 
     override fun addItemToCart(productId: String, quantity: Int): Flow<Resource<String>> =
         object: NetworkBoundResource<String, ResponseWithoutData>() {
             override suspend fun fetchFromApi(response: ResponseWithoutData): String = response.message
 
-            override suspend fun createCall(): Flow<ApiResponse<ResponseWithoutData>> {
-                val token = "Bearer " + localDataSource.getUserToken().first()
-                return remoteDataSource.postCart(token, productId, quantity)
-            }
+            override suspend fun createCall(): Flow<ApiResponse<ResponseWithoutData>> =
+                remoteDataSource.postCart(token(), productId, quantity)
         }.asFlow()
 
     override fun updateItemInCart(itemId: String, quantity: Int): Flow<Resource<String>> =
         object: NetworkBoundResource<String, ResponseWithoutData>() {
             override suspend fun fetchFromApi(response: ResponseWithoutData): String = response.message
 
-            override suspend fun createCall(): Flow<ApiResponse<ResponseWithoutData>> {
-                val token = "Bearer " + localDataSource.getUserToken().first()
-                return remoteDataSource.putCart(token, itemId, quantity)
-            }
+            override suspend fun createCall(): Flow<ApiResponse<ResponseWithoutData>> =
+                remoteDataSource.putCart(token(), itemId, quantity)
         }.asFlow()
 
     override fun deleteItemFromCart(itemId: String): Flow<Resource<String>> =
         object: NetworkBoundResource<String, ResponseWithoutData>() {
             override suspend fun fetchFromApi(response: ResponseWithoutData): String = response.message
 
-            override suspend fun createCall(): Flow<ApiResponse<ResponseWithoutData>> {
-                val token = "Bearer " + localDataSource.getUserToken().first()
-                return remoteDataSource.deleteCart(token, itemId)
-            }
+            override suspend fun createCall(): Flow<ApiResponse<ResponseWithoutData>> =
+                remoteDataSource.deleteCart(token(), itemId)
         }.asFlow()
 
 
@@ -189,10 +180,8 @@ class EShopRepository @Inject constructor(
             override suspend fun fetchFromApi(response: List<TransactionResponse>): List<Transaction> =
                 response.map { DataMapper.mapTransactionResponseToDomain(it) }
 
-            override suspend fun createCall(): Flow<ApiResponse<List<TransactionResponse>>> {
-                val token = "Bearer " + localDataSource.getUserToken().first()
-                return remoteDataSource.getTransactions(token)
-            }
+            override suspend fun createCall(): Flow<ApiResponse<List<TransactionResponse>>> =
+                remoteDataSource.getTransactions(token())
         }.asFlow()
 
     override fun getTransactionById(id: String): Flow<Resource<Transaction>> =
@@ -200,19 +189,15 @@ class EShopRepository @Inject constructor(
             override suspend fun fetchFromApi(response: TransactionResponse): Transaction =
                 DataMapper.mapTransactionResponseToDomain(response)
 
-            override suspend fun createCall(): Flow<ApiResponse<TransactionResponse>> {
-                val token = "Bearer " + localDataSource.getUserToken().first()
-                return remoteDataSource.getTransactionById(token, id)
-            }
+            override suspend fun createCall(): Flow<ApiResponse<TransactionResponse>> =
+                remoteDataSource.getTransactionById(token(), id)
         }.asFlow()
 
     override fun checkout(): Flow<Resource<String>> =
         object: NetworkBoundResource<String, ResponseWithoutData>() {
             override suspend fun fetchFromApi(response: ResponseWithoutData): String = response.message
-            override suspend fun createCall(): Flow<ApiResponse<ResponseWithoutData>> {
-                val token = "Bearer " + localDataSource.getUserToken().first()
-                return remoteDataSource.postCheckout(token)
-            }
+            override suspend fun createCall(): Flow<ApiResponse<ResponseWithoutData>> =
+                remoteDataSource.postCheckout(token())
         }.asFlow()
 
     // favorite

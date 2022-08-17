@@ -2,7 +2,6 @@ package com.mankart.eshop.core.domain.repository
 
 import androidx.paging.PagingData
 import com.mankart.eshop.core.data.Resource
-import com.mankart.eshop.core.data.source.remote.response.ProductCategoryResponse
 import com.mankart.eshop.core.domain.model.Product
 import com.mankart.eshop.core.domain.model.ProductCategory
 import kotlinx.coroutines.flow.Flow

@@ -10,7 +10,6 @@ import com.mankart.eshop.core.domain.usecase.favproduct.FavoriteProductUseCase
 import com.mankart.eshop.core.domain.usecase.products.ProductUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel

@@ -16,5 +16,5 @@ abstract class ProductModule {
     abstract fun provideProductUseCase(productInteractor: ProductInteractor): ProductUseCase
 
     // binds cart di provide di module cart
-    // binds favorite product di provide sama core module
+    // binds favorite product di provide di core module
 }

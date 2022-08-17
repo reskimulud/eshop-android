@@ -12,6 +12,7 @@ import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.mankart.eshop.core.utils.Constants.EMPTY_DATA_STORE
 import com.mankart.eshop.databinding.ActivitySplashScreenBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -39,7 +40,7 @@ class SplashScreenActivity : AppCompatActivity() {
         lifecycleScope.launchWhenCreated {
             mainViewModel.getUserToken().collect {
                 Log.e("SplashScreenActivity", "User Token: $it")
-                if (it.isNotEmpty() && it != "not_set_yet") {
+                if (it.isNotEmpty() && it != EMPTY_DATA_STORE) {
                     startActivity(
                         Intent(
                             this@SplashScreenActivity,

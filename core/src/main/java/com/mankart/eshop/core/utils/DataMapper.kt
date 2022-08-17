@@ -5,6 +5,11 @@ import com.mankart.eshop.core.data.source.local.entity.ProductEntity
 import com.mankart.eshop.core.data.source.remote.response.*
 import com.mankart.eshop.core.domain.model.*
 
+/**
+ * Image ditambahkan elvis operator untuk menghindari NullPointerException.
+ * Terkadang produk tidak memiliki image dan berisi null. Biasanya yang baru ditambahkan
+ * dan image belum di ubah (masih kosong).
+ */
 object DataMapper {
     fun mapLoginResponseToDomain(input: LoginResponse) : User = User(
         id = input.id,

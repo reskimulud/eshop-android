@@ -16,7 +16,6 @@ import androidx.navigation.fragment.findNavController
 import com.mankart.eshop.auth.ui.AuthenticationViewModel
 import com.mankart.eshop.auth.R
 import com.mankart.eshop.auth.databinding.FragmentLoginBinding
-import com.mankart.eshop.auth.utils.Helpers.isVisible
 import com.mankart.eshop.core.data.Resource
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*

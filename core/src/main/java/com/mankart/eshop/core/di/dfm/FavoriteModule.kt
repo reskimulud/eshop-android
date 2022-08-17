@@ -7,6 +7,11 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 
+/**
+ * Modul ini digunakan untuk mem-provide favorite useCase
+ * untuk fitur Dynamic Feature Module (DFM)
+ */
+
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class FavoriteModule {

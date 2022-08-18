@@ -38,5 +38,6 @@ android {
 
 dependencies {
     implementation project(':core')
+    implementation project(':commonui')
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 }

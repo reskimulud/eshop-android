@@ -1,11 +1,7 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
-    id 'kotlin-kapt'
-    id 'dagger.hilt.android.plugin'
 }
-
-apply from: '../ui_dependencies.gradle'
 
 android {
     compileSdk 32
@@ -31,15 +27,11 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-    buildFeatures {
-        viewBinding true
-    }
 }
 
 dependencies {
-    implementation project(':core')
-    implementation project(':commonui')
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    implementation 'de.hdodenhof:circleimageview:3.1.0'
+    implementation 'androidx.core:core-ktx:1.7.0'
+    implementation 'androidx.appcompat:appcompat:1.5.0'
+    implementation 'com.google.android.material:material:1.6.1'
 }

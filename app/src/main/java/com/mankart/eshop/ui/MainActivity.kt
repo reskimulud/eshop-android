@@ -6,6 +6,9 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.mankart.eshop.R
+import com.mankart.eshop.product.R as productR
+import com.mankart.eshop.cart.R as cartR
+import com.mankart.eshop.profile.R as profileR
 import com.mankart.eshop.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -26,9 +29,9 @@ class MainActivity : AppCompatActivity() {
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                com.mankart.eshop.product.R.id.detailProductFragment -> hideBottomNavigation(true)
-                com.mankart.eshop.cart.R.id.cartFragment -> hideBottomNavigation(true)
-                com.mankart.eshop.profile.R.id.detailTransactionFragment -> hideBottomNavigation(true)
+                productR.id.detailProductFragment -> hideBottomNavigation(true)
+                cartR.id.cartFragment -> hideBottomNavigation(true)
+                profileR.id.detailTransactionFragment -> hideBottomNavigation(true)
                 else -> hideBottomNavigation(false)
             }
         }

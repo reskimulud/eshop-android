@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.activity.viewModels
@@ -39,7 +38,6 @@ class SplashScreenActivity : AppCompatActivity() {
     private fun handlerIntent() {
         lifecycleScope.launchWhenCreated {
             mainViewModel.getUserToken().collect {
-                Log.e("SplashScreenActivity", "User Token: $it")
                 if (it.isNotEmpty() && it != EMPTY_DATA_STORE) {
                     startActivity(
                         Intent(

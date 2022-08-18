@@ -22,6 +22,7 @@ import com.mankart.eshop.core.utils.Constants.CART_URI
 import com.mankart.eshop.core.utils.Constants.EXTRA_PRODUCT_ID
 import com.mankart.eshop.core.utils.Helpers.formatIDR
 import com.mankart.eshop.product.R
+import com.mankart.eshop.commonui.R as commonR
 import com.mankart.eshop.product.databinding.FragmentDetailProductBinding
 import com.mankart.eshop.product.ui.ProductViewModel
 import com.mankart.eshop.product.ui.adapter.ListUserReviewAdapter
@@ -101,9 +102,9 @@ class DetailProductFragment: Fragment() {
             productId?.let { productViewModel.isFavoriteProduct(it).collect { isFavorite ->
                 this@DetailProductFragment.isFavorite = isFavorite
                 if (isFavorite) {
-                    binding.fabAddToFavorite.setImageResource(R.drawable.ic_favorite)
+                    binding.fabAddToFavorite.setImageResource(commonR.drawable.ic_favorite)
                 } else {
-                    binding.fabAddToFavorite.setImageResource(R.drawable.ic_favorite_border)
+                    binding.fabAddToFavorite.setImageResource(commonR.drawable.ic_favorite_border)
                 }
             } }
         }
@@ -112,14 +113,14 @@ class DetailProductFragment: Fragment() {
     private fun favoriteProductToggle() {
         binding.fabAddToFavorite.setOnClickListener {
             isFavorite = if (isFavorite) {
-                binding.fabAddToFavorite.setImageResource(R.drawable.ic_favorite_border)
+                binding.fabAddToFavorite.setImageResource(commonR.drawable.ic_favorite_border)
                 lifecycleScope.launch {
                     productViewModel.deleteFavoriteProductById(productState.id)
                     Log.e(TAG, "deleteFavoriteProductById: ${productState.id}")
                 }
                 false
             } else {
-                binding.fabAddToFavorite.setImageResource(R.drawable.ic_favorite)
+                binding.fabAddToFavorite.setImageResource(commonR.drawable.ic_favorite)
                 lifecycleScope.launch {
                     productViewModel.addFavoriteProduct(productState)
                     Log.e(TAG, "addFavoriteProduct: ${productState.id}")

@@ -1,7 +1,8 @@
 package com.mankart.eshop.core.utils
 
-import android.icu.text.NumberFormat
-import android.icu.text.SimpleDateFormat
+
+import java.text.NumberFormat
+import java.text.SimpleDateFormat
 import java.util.*
 
 object Helpers {

@@ -1,7 +1,5 @@
 package com.mankart.eshop.profile.ui.adapter
 
-import android.annotation.SuppressLint
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -9,6 +7,7 @@ import com.bumptech.glide.Glide
 import com.mankart.eshop.core.domain.model.Order
 import com.mankart.eshop.core.utils.Helpers.formatIDR
 import com.mankart.eshop.profile.databinding.ItemOrderBinding
+import timber.log.Timber
 
 class ListOrderAdapter(
     private val listOrder: List<Order>,
@@ -37,7 +36,6 @@ class ListOrderAdapter(
         return ViewHolder(itemOrderBinding)
     }
 
-    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val itemOrder = listOrder[position]
 
@@ -49,7 +47,7 @@ class ListOrderAdapter(
             tvQuantity.text = "${itemOrder.quantity}x ${itemOrder.price.formatIDR()}"
             tvSubTotal.text = (itemOrder.price * itemOrder.quantity).formatIDR()
 
-            Log.e("Adapter", "Rating: ${itemOrder.yourRating}")
+            Timber.d("Rating: ${itemOrder.yourRating}")
 
             if (itemOrder.yourRating == 0 && itemOrder.yourReview == null) {
                 rbYourRating.visibility = ViewGroup.GONE

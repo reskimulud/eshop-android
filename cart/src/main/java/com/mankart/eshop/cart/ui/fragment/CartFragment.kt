@@ -1,7 +1,6 @@
 package com.mankart.eshop.cart.ui.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,6 +27,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @AndroidEntryPoint
 class CartFragment: Fragment() {
@@ -126,7 +126,7 @@ class CartFragment: Fragment() {
                     uiState.value = getCurrentDate()
                     Toast.makeText(requireActivity(), getString(R.string.item_updated), Toast.LENGTH_SHORT).show()
                 } else {
-                    Log.e(TAG, it.message.toString())
+                    Timber.e(it.message.toString())
                 }
             }
         }
@@ -139,7 +139,7 @@ class CartFragment: Fragment() {
                     uiState.value = getCurrentDate()
                     Toast.makeText(requireActivity(), getString(R.string.item_deleted), Toast.LENGTH_SHORT).show()
                 } else {
-                    Log.e(TAG, it.message.toString())
+                    Timber.e(it.message.toString())
                 }
             }
         }
@@ -166,7 +166,7 @@ class CartFragment: Fragment() {
                         binding.btnCheckout.isEnabled = false
                     }
                 } else {
-                    Log.e(TAG, resource.message.toString())
+                    Timber.e(resource.message.toString())
                 }
             }
         }
@@ -217,9 +217,5 @@ class CartFragment: Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    companion object {
-        private const val TAG = "CartFragment"
     }
 }

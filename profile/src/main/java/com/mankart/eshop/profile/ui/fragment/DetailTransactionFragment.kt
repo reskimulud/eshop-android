@@ -1,7 +1,6 @@
 package com.mankart.eshop.profile.ui.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,6 +25,7 @@ import com.mankart.eshop.profile.ui.adapter.ListOrderAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @AndroidEntryPoint
 class DetailTransactionFragment: Fragment() {
@@ -96,7 +96,7 @@ class DetailTransactionFragment: Fragment() {
                     Toast.makeText(requireContext(), getString(R.string.success_add_review), Toast.LENGTH_SHORT).show()
                     uiState.value = getCurrentDate()
                 } else {
-                    Log.e("DetailTransaction", "Error adding review")
+                    Timber.e("Error adding review: $it")
                 }
             }
         }

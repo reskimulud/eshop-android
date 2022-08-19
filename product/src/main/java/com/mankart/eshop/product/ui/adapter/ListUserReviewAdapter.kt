@@ -1,11 +1,11 @@
 package com.mankart.eshop.product.ui.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.mankart.eshop.core.domain.model.UserReview
 import com.mankart.eshop.product.databinding.ItemReviewBinding
+import timber.log.Timber
 
 class ListUserReviewAdapter(private val listUserReview: List<UserReview>): RecyclerView.Adapter<ListUserReviewAdapter.ViewHolder>() {
     inner class ViewHolder(binding: ItemReviewBinding): RecyclerView.ViewHolder(binding.root) {
@@ -21,7 +21,7 @@ class ListUserReviewAdapter(private val listUserReview: List<UserReview>): Recyc
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = listUserReview[position]
-        Log.e("Adapter", item.toString())
+        Timber.d(item.toString())
 
         holder.apply {
             userRate.rating = item.rate.toFloat()

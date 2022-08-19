@@ -1,0 +1,19 @@
+<resources>
+    <string name="welcome_back">Welcome Back!</string>
+    <string name="login">Login</string>
+    <string name="login_desc">Login to eShop</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="no_account">Don\'t have an account?</string>
+    <string name="register">Register</string>
+    <string name="create_account">Create account</string>
+    <string name="register_desc">Create an account to enter eShop</string>
+    <string name="have_account">Already have an account?</string>
+    <string name="name">Name</string>
+    <string name="email_not_valid">Email is not valid!</string>
+    <string name="password_not_valid">Password must have length between 6 – 15</string>
+    <string name="wrong_email_password">Login Failed, Wrong Email or Password</string>
+    <string name="login_success">Login Successfully</string>
+    <string name="to_login">To login and redirect to home page</string>
+    <string name="to_register">To Register and redirect to Login page</string>
+</resources>

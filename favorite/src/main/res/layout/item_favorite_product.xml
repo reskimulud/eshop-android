@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="16dp">
+
+    <ImageView
+        android:id="@+id/iv_product_image"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:background="@android:color/white"
+        android:contentDescription="@string/product_image_of"
+        android:padding="4dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ImageContrastCheck"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/tv_product_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="pop"
+        android:text="@string/products"
+        app:layout_constraintBottom_toTopOf="@+id/tv_product_price"
+        app:layout_constraintEnd_toStartOf="@+id/btn_fav_product"
+        app:layout_constraintStart_toEndOf="@+id/iv_product_image"
+        tools:fontFamily="@font/poppins" />
+
+    <TextView
+        android:id="@+id/tv_product_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tv_product_title"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Rp.10.000" />
+
+    <RatingBar
+        android:id="@+id/rb_product_rating"
+        style="?attr/ratingBarStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:progressTint="@color/colorAccent"
+        android:rating="4"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tv_product_price"
+        app:layout_constraintTop_toBottomOf="@+id/tv_product_price" />
+
+    <ImageView
+        android:id="@+id/btn_fav_product"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/delete_from_favorite"
+        android:padding="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_favorite" />
+</androidx.constraintlayout.widget.ConstraintLayout>

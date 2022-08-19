@@ -10,7 +10,16 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven { url "https://jitpack.io" }
     }
 }
 rootProject.name = "Eshop"
 include ':app'
+include ':core'
+include ':auth'
+include ':product'
+include ':favorite'
+include ':cart'
+include ':setting'
+include ':profile'
+include ':commonui'

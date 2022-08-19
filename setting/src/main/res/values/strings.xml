@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="setting">Setting</string>
+    <string name="set_language">Set Language</string>
+    <string name="english">English</string>
+    <string name="set_theme">Set Theme</string>
+    <string name="app_name">Eshop</string>
+    <string name="logout">Logout</string>
+    <string name="confirm_logout">Are you sure you want to logout?</string>
+    <string name="under_dev">Under Development</string>
+</resources>

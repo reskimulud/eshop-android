@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/app_nav_graph"
+    app:startDestination="@id/product_nav_graph">
+
+    <include app:graph="@navigation/product_nav_graph" />
+    <include-dynamic
+        android:id="@+id/favorite_nav_graph"
+        app:moduleName="favorite"
+        app:graphResName="favorite_nav_graph"
+        app:graphPackage="com.mankart.eshop.favorite" />
+    <include app:graph="@navigation/cart_nav_graph" />
+    <include app:graph="@navigation/profile_nav_graph" />
+    <include app:graph="@navigation/setting_nav_graph" />
+
+</navigation>

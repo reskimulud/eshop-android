@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="products">Products</string>
+    <string name="detail_product">Detail Product</string>
+    <string name="search">Search</string>
+    <string name="categories">Categories</string>
+    <string name="all_products">All Products</string>
+    <string name="add_to_cart">Add Item To Cart</string>
+    <string name="user_name">User Name</string>
+    <string name="user_review">User Review</string>
+    <string name="no_reviews">No Reviews Yet</string>
+    <string name="item_add_to_cart">Item has added to cart</string>
+    <string name="scroll_to_top">Scroll to Top</string>
+    <string name="navigate_to_carts">Navigate to Carts</string>
+    <string name="product_image_of">Product Image of %s</string>
+    <string name="back_pressed">Back to previous screen</string>
+    <string name="favorite_toggle">Add or Remove Product to Favorite</string>
+</resources>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="favorite_product">Favorite Product</string>
+    <string name="no_favorite_item_yet">No Favorite Item Yet</string>
+    <string name="product_image_of">Product Image of %s</string>
+    <string name="delete_from_favorite">Delete Item from Favorite Product</string>
+</resources>

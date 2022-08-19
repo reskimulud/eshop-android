@@ -1,0 +1,43 @@
+name: Android CI Development
+
+env:
+  # The name of the main module repository
+  main_project_module: app
+
+  # The name of the Play Store
+  playstore_name: eShop
+
+on:
+  # Triggers the workflow on push or pull request events but only for default and protected branches
+  push:
+    branches: [ development ]
+  pull_request:
+    branches: [ development ]
+
+jobs:
+  build:
+    name: Build and Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Set Up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+
+      - name: Change wrapper permissions
+        run: chmod +x ./gradlew
+
+      # Run Build Project
+      - name: Build gradle project
+        run: ./gradlew build
+
+      # Run Tests Build
+      - name: Run lint tests
+        run: ./gradlew test
+
+      # Run Unit Tests module :core
+      - name: Run Unit Test module core
+        run: ./gradlew :core:testDebugUnitTest

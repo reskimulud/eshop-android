@@ -50,16 +50,16 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <TextView
+    <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/tv_empty_cart"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/cart_is_empty"
-        android:layout_marginTop="?android:attr/actionBarSize"
-        android:paddingTop="16dp"
-        android:fontFamily="@font/poppins"
-        android:visibility="gone"/>
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_gravity="center"
+        android:contentDescription="@string/cart_is_empty"
+        android:visibility="gone"
+        app:lottie_autoPlay="true"
+        app:lottie_fileName="empty-cart.json"
+        app:lottie_loop="true" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_carts"

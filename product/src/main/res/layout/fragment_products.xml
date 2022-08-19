@@ -16,7 +16,7 @@
         android:backgroundTint="@color/colorPrimaryVariant"
         android:clickable="true"
         android:src="@drawable/ic_top"
-        tools:ignore="RtlHardcoded"
+        android:contentDescription="@string/scroll_to_top"
         android:focusable="true"
         app:tint="@color/colorBase"/>
 
@@ -38,6 +38,7 @@
                 android:minWidth="50dp"
                 android:minHeight="50dp"
                 android:padding="8dp"
+                android:contentDescription="@string/navigate_to_carts"
                 android:background="@android:color/transparent"
                 android:src="@drawable/ic_cart"
                 app:layout_constraintEnd_toEndOf="parent"

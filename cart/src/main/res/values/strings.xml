@@ -8,4 +8,8 @@
     <string name="transaction_success">Transaction Success</string>
     <string name="item_updated">Item Updated</string>
     <string name="item_deleted">Item deleted from Cart</string>
+    <string name="back_pressed">Back to previous screen</string>
+    <string name="product_image_of">Product Image of %s</string>
+    <string name="decrease_one">Update item quantity to decrease one</string>
+    <string name="increase_one">Update item quantity to increase one</string>
 </resources>

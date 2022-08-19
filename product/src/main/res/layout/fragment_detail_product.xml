@@ -20,6 +20,7 @@
                 android:id="@+id/iv_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:contentDescription="@string/back_pressed"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:background="@drawable/capsul_button"
@@ -35,6 +36,7 @@
                 android:id="@+id/iv_cart_from_detail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:contentDescription="@string/navigate_to_carts"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:background="@drawable/capsul_button"
@@ -51,10 +53,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
                 android:background="@android:color/white"
+                android:contentDescription="@string/product_image_of"
                 android:padding="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ImageContrastCheck,ImageContrastCheck"
                 tools:src="@tools:sample/avatars" />
 
             <TextView
@@ -82,6 +86,7 @@
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="@+id/tv_title_product"
                 app:layout_constraintTop_toBottomOf="@+id/tv_title_product"
+                tools:ignore="TextContrastCheck"
                 tools:text="Rp. 10.000" />
 
             <RatingBar
@@ -106,6 +111,7 @@
                 android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/rb_rating_product"
+                tools:ignore="TextContrastCheck,TextContrastCheck"
                 tools:text="(2000)" />
 
             <View
@@ -129,6 +135,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/divider"
+                tools:ignore="TextContrastCheck"
                 tools:text="@tools:sample/lorem" />
 
             <View
@@ -194,6 +201,7 @@
             android:id="@+id/fab_add_to_favorite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:contentDescription="@string/favorite_toggle"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
@@ -208,13 +216,14 @@
             android:layout_marginHorizontal="16dp"
             android:layout_marginVertical="8dp"
             android:backgroundTint="@color/cta_enabled_state"
-            android:textAlignment="center"
-            android:text="@string/add_to_cart"
             android:fontFamily="@font/poppins"
-            android:textStyle="bold"
+            android:text="@string/add_to_cart"
+            android:textAlignment="center"
             android:textAllCaps="false"
             android:textColor="@color/colorBase"
-            app:cornerRadius="24dp"/>
+            android:textStyle="bold"
+            app:cornerRadius="24dp"
+            tools:ignore="TextContrastCheck,TextContrastCheck" />
 
     </com.google.android.material.bottomappbar.BottomAppBar>
 

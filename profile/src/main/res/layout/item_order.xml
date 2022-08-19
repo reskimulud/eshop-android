@@ -23,8 +23,10 @@
                 android:layout_width="64dp"
                 android:layout_height="64dp"
                 android:background="@android:color/white"
+                android:contentDescription="@string/product_image_of"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ImageContrastCheck"
                 tools:srcCompat="@tools:sample/avatars" />
 
             <TextView
@@ -126,6 +128,7 @@
                 android:background="@drawable/shape_edit_text"
                 android:padding="6dp"
                 android:hint="@string/your_review"
+                android:importantForAutofill="no"
                 android:minHeight="100dp"
                 android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@+id/rb_rating_user_input" />

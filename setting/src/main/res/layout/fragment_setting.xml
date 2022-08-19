@@ -53,7 +53,8 @@
             android:text="@string/english"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="TextContrastCheck" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -120,6 +121,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins"
         android:gravity="center"
-        tools:text="v1.0.0"/>
+        tools:ignore="TextContrastCheck"
+        tools:text="v1.0.0" />
 
 </LinearLayout>

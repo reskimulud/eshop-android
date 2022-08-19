@@ -24,7 +24,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:background="@android:color/transparent"
-                android:padding="8dp"
+                android:contentDescription="@string/back_pressed"
+                android:minWidth="48dp"
+                android:minHeight="48dp"
+                android:padding="16dp"
                 android:src="@drawable/ic_back"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -84,10 +87,11 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/total"
                 android:fontFamily="@font/poppins"
+                android:text="@string/total"
+                android:textColor="@color/colorTextSecondary"
                 android:textSize="12sp"
-                android:textColor="@color/colorTextSecondary"/>
+                tools:ignore="TextContrastCheck,TextContrastCheck" />
 
             <TextView
                 android:id="@+id/tv_total_price"
@@ -112,7 +116,8 @@
             android:textColor="@color/colorBase"
             android:textStyle="bold"
             app:backgroundTint="@color/cta_enabled_state"
-            app:cornerRadius="24dp" />
+            app:cornerRadius="24dp"
+            tools:ignore="TextContrastCheck,TextContrastCheck"/>
 
     </com.google.android.material.bottomappbar.BottomAppBar>
 

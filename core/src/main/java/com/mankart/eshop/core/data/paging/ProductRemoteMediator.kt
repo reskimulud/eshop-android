@@ -59,7 +59,7 @@ class ProductRemoteMediator constructor(
                 }
                 localDataSource.insertRemoteKey(keys)
 
-                localDataSource.insertProducts(productEntity ?: emptyList())
+                localDataSource.insertProducts(productEntity)
             }
 
             if (!categoryId.isNullOrEmpty() && categoryId != "all") {

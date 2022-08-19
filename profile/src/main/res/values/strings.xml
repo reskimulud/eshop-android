@@ -16,4 +16,6 @@
     <string name="your_review">Enter your review…</string>
     <string name="post_review">Post Review</string>
     <string name="success_add_review">Review added successfully</string>
+    <string name="back_pressed">Back to previous screen</string>
+    <string name="product_image_of">Product Image of %s</string>
 </resources>

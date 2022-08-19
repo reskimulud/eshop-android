@@ -10,10 +10,12 @@
         android:id="@+id/iv_product_image"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:padding="4dp"
         android:background="@android:color/white"
+        android:contentDescription="@string/product_image_of"
+        android:padding="4dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ImageContrastCheck"
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
@@ -64,10 +66,12 @@
             android:id="@+id/ib_decrease"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_decrement"
             android:background="@android:color/transparent"
-            android:paddingVertical="8dp"
-            android:paddingEnd="8dp"
+            android:contentDescription="@string/decrease_one"
+            android:minWidth="48dp"
+            android:paddingVertical="12dp"
+            android:paddingStart="8dp"
+            android:src="@drawable/ic_decrement"
             app:tint="@color/colorAccent" />
 
         <TextView
@@ -84,7 +88,8 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_increment"
             android:background="@android:color/transparent"
-            android:paddingVertical="8dp"
+            android:contentDescription="@string/increase_one"
+            android:paddingVertical="12dp"
             android:paddingStart="8dp"
             app:tint="@color/colorAccent" />
 

@@ -10,10 +10,12 @@
         android:id="@+id/iv_product_image"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:padding="4dp"
         android:background="@android:color/white"
+        android:contentDescription="@string/product_image_of"
+        android:padding="4dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ImageContrastCheck"
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
@@ -57,6 +59,7 @@
         android:id="@+id/btn_fav_product"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:contentDescription="@string/delete_from_favorite"
         android:padding="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

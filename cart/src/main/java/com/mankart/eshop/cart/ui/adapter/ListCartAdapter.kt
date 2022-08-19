@@ -1,10 +1,12 @@
 package com.mankart.eshop.cart.ui.adapter
 
 import android.annotation.SuppressLint
+import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.mankart.eshop.cart.R
 import com.mankart.eshop.cart.databinding.ItemCartProductBinding
 import com.mankart.eshop.core.domain.model.CartItem
 import com.mankart.eshop.core.utils.Helpers.formatIDR
@@ -24,6 +26,7 @@ class ListCartAdapter(
         val ibIncrease = itemCartProductBinding.ibIncrease
         val ibDecrease = itemCartProductBinding.ibDecrease
         val root = itemCartProductBinding.root
+        val itemResources: Resources = itemView.context.resources
 
         lateinit var itemId: String
     }
@@ -46,6 +49,8 @@ class ListCartAdapter(
             tvProductPrice.text = "@${cartItem.price.formatIDR()}"
             tvQty.text = cartItem.quantity.toString()
             tvSubTotal.text = (cartItem.price * cartItem.quantity).formatIDR()
+
+            ivProductImage.contentDescription = itemResources.getString(R.string.product_image_of, cartItem.title)
 
             root.setOnClickListener {
                 onItemClickCallback(cartItem.productId)

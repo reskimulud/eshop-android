@@ -16,6 +16,9 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
+
+        buildConfigField("String" , "DB_PASSPHRASE" , '"eshop_reskimulud"')
+        buildConfigField("String" , "DB_NAME" , '"products.db"')
     }
 
     buildTypes {
@@ -54,5 +57,9 @@ dependencies {
 
     // paging 3
     api "androidx.paging:paging-runtime-ktx:3.1.1"
+
+    // encrypt database
+    implementation "net.zetetic:android-database-sqlcipher:4.5.2"
+    implementation "androidx.sqlite:sqlite-ktx:2.2.0"
 
 }

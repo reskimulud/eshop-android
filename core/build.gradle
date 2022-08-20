@@ -16,11 +16,20 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
+
+        buildConfigField("String" , "DB_PASSPHRASE" , '"eshop_reskimulud"')
+        buildConfigField("String" , "DB_NAME" , '"products.db"')
+        buildConfigField("String" , "SECRET_KEY" , '"@McQfTjWnZr4u7x!A%D*G-KaNdRgUkXp"')
+
+        buildConfigField("String", "HOST_NAME", '"eshop.reskimulud.my.id"')
+        buildConfigField("String" , "CERT_PIN_1" , '"sha256/jgRZEuEQDTr5MmQ1tVE8a4/Jj7V9yp6ivvx7FddyYGE="')
+        buildConfigField("String" , "CERT_PIN_2" , '"sha256/jQJTbIh0grw0/1TkHSumWb+Fs0Ggogr621gT3PvPKG0="')
+        buildConfigField("String" , "CERT_PIN_3" , '"sha256/C5+lpZ7tcVwmwQIMcRtPbsQtWLABXhQzejna0wHFr8M="')
     }
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -54,5 +63,11 @@ dependencies {
 
     // paging 3
     api "androidx.paging:paging-runtime-ktx:3.1.1"
+
+    // encrypt database
+    implementation "net.zetetic:android-database-sqlcipher:4.5.2"
+    implementation "androidx.sqlite:sqlite-ktx:2.2.0"
+
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2"
 
 }

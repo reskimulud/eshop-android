@@ -6,6 +6,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import com.mankart.eshop.core.data.source.local.datastore.PreferenceDataStore
 import com.mankart.eshop.core.utils.Constants.DATA_STORE_NAME
+import com.mankart.eshop.core.utils.SecurityUtils
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,8 +24,11 @@ class DataStoreModule {
         context.dataStore
 
     @Provides
+    fun provideSecurityUtils(): SecurityUtils = SecurityUtils()
+
+    @Provides
     @Singleton
-    fun provideAuthPreference(dataStore: DataStore<Preferences>) : PreferenceDataStore =
-        PreferenceDataStore(dataStore)
+    fun provideAuthPreference(dataStore: DataStore<Preferences>, security: SecurityUtils) : PreferenceDataStore =
+        PreferenceDataStore(dataStore, security)
 
 }

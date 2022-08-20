@@ -188,6 +188,12 @@ class DetailProductFragment: Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        binding.rvReview.adapter = null
+        _binding = null
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
         _binding = null
     }
 }

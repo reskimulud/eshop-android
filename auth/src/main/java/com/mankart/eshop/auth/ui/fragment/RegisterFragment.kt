@@ -151,6 +151,11 @@ class RegisterFragment : Fragment() {
         _binding = null
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
+
     companion object {
         private const val TAG = "RegisterFragment"
     }

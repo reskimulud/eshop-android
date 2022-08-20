@@ -13,7 +13,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavDeepLinkRequest
 import androidx.navigation.fragment.findNavController
-import androidx.paging.PagingData
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mankart.eshop.core.data.Resource
@@ -206,8 +205,15 @@ class ProductsFragment: Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        binding.rvProducts.adapter = null
+        binding.rvCategories.adapter = null
         _binding = null
-        listProductAdapter.submitData(lifecycle, PagingData.empty())
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        productJob.cancel()
+        _binding = null
     }
 
     private fun isShowProgressBar(state: Boolean) {

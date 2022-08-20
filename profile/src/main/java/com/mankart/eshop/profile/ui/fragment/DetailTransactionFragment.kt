@@ -116,6 +116,12 @@ class DetailTransactionFragment: Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        binding.rvOrders.adapter = null
+        _binding = null
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
         _binding = null
     }
 

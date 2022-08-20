@@ -219,6 +219,12 @@ class CartFragment: Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        binding.rvCarts.adapter = null
+        _binding = null
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
         _binding = null
     }
 

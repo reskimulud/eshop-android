@@ -91,6 +91,12 @@ class ProfileFragment: Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        binding.rvTransactions.adapter = null
+        _binding = null
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
         _binding = null
     }
 }

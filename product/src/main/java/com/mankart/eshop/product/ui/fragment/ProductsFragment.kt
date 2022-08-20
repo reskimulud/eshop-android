@@ -3,7 +3,6 @@ package com.mankart.eshop.product.ui.fragment
 import android.animation.ObjectAnimator
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,6 +29,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @AndroidEntryPoint
 class ProductsFragment: Fragment() {
@@ -126,7 +126,7 @@ class ProductsFragment: Fragment() {
         lifecycleScope.launch {
             productViewModel.getProductCategories().collect {
                 when (it) {
-                    is Resource.Loading -> Log.i("ProductsFragment", "Loading")
+                    is Resource.Loading -> Timber.i("Loading")
                     is Resource.Success -> {
                         val adapter = it.data?.let { listCategory ->
                             val allCategory = ProductCategory("all", "All")
@@ -137,22 +137,22 @@ class ProductsFragment: Fragment() {
                                 lifecycleScope.launch {
                                     categoryIdState.value = categoryId
                                 }
-                                Log.e("ProductsFragment", "onClick - categoryId: $categoryId")
+                                Timber.d("onClick - categoryId: $categoryId")
                                 binding.tvProducts.text = categoryName
                             }
                         }
                         binding.rvCategories.adapter = adapter
                     }
-                    else -> Log.e("ProductsFragment", it.toString())
+                    else -> Timber.e(it.toString())
                 }
             }
         }
     }
 
     private fun stateFlowCollector() {
-        Log.e("ProductsFragment", "stateFlowCollector")
+        Timber.d("stateFlowCollector")
         val stateCombine = combine(categoryIdState, searchState) { categoryId, search ->
-            Log.e("ProductsFragment", "stateFlowCollector - categoryId: $categoryId - search: $search")
+            Timber.d("stateFlowCollector - categoryId: $categoryId - search: $search")
             Pair(categoryId, search)
         }
 
@@ -161,8 +161,9 @@ class ProductsFragment: Fragment() {
                 val categoryId = it.first
                 val search = it.second
 
+                isShowProgressBar(true)
                 if (categoryId.isNotEmpty() || search.isNotEmpty()) {
-                    Log.e("ProductsFragment", "collect - categoryId: $categoryId")
+                    Timber.d("collect - categoryId: $categoryId")
                     if (categoryId.isNotEmpty() || categoryId != "all") {
                         getProducts(categoryId, search)
                     } else {
@@ -179,8 +180,9 @@ class ProductsFragment: Fragment() {
 
             productJob = launch {
                 productViewModel.getProducts(categoryId, search).collect {
-                    Log.e("ProductsFragment", "Products: $it")
+                    Timber.d("Products: $it")
                     listProductAdapter.submitData(it)
+                    isShowProgressBar(false)
                 }
             }
         }
@@ -196,6 +198,7 @@ class ProductsFragment: Fragment() {
             findNavController().navigate(request)
         }
 
+        isShowProgressBar(true)
         getProducts()
 
         binding.rvProducts.adapter = listProductAdapter
@@ -205,5 +208,13 @@ class ProductsFragment: Fragment() {
         super.onDestroyView()
         _binding = null
         listProductAdapter.submitData(lifecycle, PagingData.empty())
+    }
+
+    private fun isShowProgressBar(state: Boolean) {
+        if (state) {
+            binding.progressBar.visibility = View.VISIBLE
+        } else {
+            binding.progressBar.visibility = View.GONE
+        }
     }
 }

@@ -1,6 +1,5 @@
 package com.mankart.eshop.core.data.paging
 
-import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
@@ -10,6 +9,7 @@ import com.mankart.eshop.core.data.source.local.entity.ProductEntity
 import com.mankart.eshop.core.data.source.local.entity.RemoteKeys
 import com.mankart.eshop.core.data.source.remote.RemoteDataSource
 import com.mankart.eshop.core.utils.DataMapper
+import timber.log.Timber
 
 @OptIn(ExperimentalPagingApi::class)
 class ProductRemoteMediator constructor(
@@ -77,7 +77,7 @@ class ProductRemoteMediator constructor(
                         DataMapper.mapProductsResponseToEntity(it)
                     }
 
-                    Log.e("ProductRemoteMediator", "entity: $productEntity")
+                    Timber.d("entity: $productEntity")
                     insertIntoDatabase(endOfPaginationReached, productEntity)
                 }
             } else {
@@ -90,14 +90,14 @@ class ProductRemoteMediator constructor(
                     val productEntity = dataResponse.map {
                         DataMapper.mapProductsResponseToEntity(it)
                     }
-                    Log.e("ProductRemoteMediator", "entity: $productEntity")
+                    Timber.d("entity: $productEntity")
                     insertIntoDatabase(endOfPaginationReached, productEntity)
                 }
             }
 
             MediatorResult.Success(endOfPaginationReached = false)
         } catch (err: Exception) {
-            Log.e("ProductRemoteMediator", "err: ${err.message}")
+            Timber.e("err: ${err.message}")
             MediatorResult.Error(err)
         }
     }

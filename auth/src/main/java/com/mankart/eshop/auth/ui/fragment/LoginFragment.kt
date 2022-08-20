@@ -2,7 +2,6 @@ package com.mankart.eshop.auth.ui.fragment
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.util.Patterns
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -20,6 +19,7 @@ import com.mankart.eshop.core.data.Resource
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
+import timber.log.Timber
 
 @AndroidEntryPoint
 class LoginFragment : Fragment() {
@@ -83,12 +83,12 @@ class LoginFragment : Fragment() {
                         is Resource.Message -> {
                             setLoading(false)
                             Toast.makeText(requireActivity(), it.message, Toast.LENGTH_SHORT).show()
-                            Log.e(TAG, it.message.toString())
+                            Timber.i(it.message.toString())
                         }
                         is Resource.Error -> {
                             setLoading(false)
                             Toast.makeText(requireActivity(), getString(R.string.wrong_email_password), Toast.LENGTH_SHORT).show()
-                            Log.e(TAG, it.message.toString())
+                            Timber.e(it.message.toString())
                         }
                         is Resource.Success -> {
                             setLoading(false)
@@ -156,9 +156,5 @@ class LoginFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    companion object {
-        private const val TAG = "LoginFragment"
     }
 }

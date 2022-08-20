@@ -1,7 +1,6 @@
 package com.mankart.eshop.profile.ui.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,6 +25,7 @@ import com.mankart.eshop.profile.ui.adapter.ListOrderAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @AndroidEntryPoint
 class DetailTransactionFragment: Fragment() {
@@ -68,22 +68,27 @@ class DetailTransactionFragment: Fragment() {
     private fun getOrders() {
         lifecycleScope.launchWhenStarted {
             profileViewModel.getTransactionById(transactionId).collect {
-                if (it is Resource.Success) {
-                    binding.apply {
-                        tvTransactionId.text = it.data?.id
-                        tvTransactionDate.text = it.data?.dateCreated?.timestampToDate()
-                        tvTotalPrice.text = it.data?.totalPrice?.formatIDR()
+                when (it) {
+                    is Resource.Loading -> isShowProgressBar(true)
+                    is Resource.Success -> {
+                        isShowProgressBar(false)
+                        binding.apply {
+                            tvTransactionId.text = it.data?.id
+                            tvTransactionDate.text = it.data?.dateCreated?.timestampToDate()
+                            tvTotalPrice.text = it.data?.totalPrice?.formatIDR()
+                        }
+                        val adapter = it.data?.orders?.let { listOrder ->
+                            ListOrderAdapter(
+                                listOrder,
+                                onItemClickCallback = { productId -> navigateToDetailProduct(productId) },
+                                onBtnRateClickCallback = { productId, rating, review ->
+                                    addRatingHandler(productId, rating, review)
+                                }
+                            )
+                        }
+                        binding.rvOrders.adapter = adapter
                     }
-                    val adapter = it.data?.orders?.let { listOrder ->
-                        ListOrderAdapter(
-                            listOrder,
-                            onItemClickCallback = { productId -> navigateToDetailProduct(productId) },
-                            onBtnRateClickCallback = { productId, rating, review ->
-                                addRatingHandler(productId, rating, review)
-                            }
-                        )
-                    }
-                    binding.rvOrders.adapter = adapter
+                    else -> Timber.e("Error: ${it.message}")
                 }
             }
         }
@@ -96,7 +101,7 @@ class DetailTransactionFragment: Fragment() {
                     Toast.makeText(requireContext(), getString(R.string.success_add_review), Toast.LENGTH_SHORT).show()
                     uiState.value = getCurrentDate()
                 } else {
-                    Log.e("DetailTransaction", "Error adding review")
+                    Timber.e("Error adding review: $it")
                 }
             }
         }
@@ -112,5 +117,13 @@ class DetailTransactionFragment: Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun isShowProgressBar(state: Boolean) {
+        if (state) {
+            binding.progressBar.visibility = View.VISIBLE
+        } else {
+            binding.progressBar.visibility = View.GONE
+        }
     }
 }

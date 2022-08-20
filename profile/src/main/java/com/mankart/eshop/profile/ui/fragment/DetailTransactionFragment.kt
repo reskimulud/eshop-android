@@ -68,22 +68,27 @@ class DetailTransactionFragment: Fragment() {
     private fun getOrders() {
         lifecycleScope.launchWhenStarted {
             profileViewModel.getTransactionById(transactionId).collect {
-                if (it is Resource.Success) {
-                    binding.apply {
-                        tvTransactionId.text = it.data?.id
-                        tvTransactionDate.text = it.data?.dateCreated?.timestampToDate()
-                        tvTotalPrice.text = it.data?.totalPrice?.formatIDR()
+                when (it) {
+                    is Resource.Loading -> isShowProgressBar(true)
+                    is Resource.Success -> {
+                        isShowProgressBar(false)
+                        binding.apply {
+                            tvTransactionId.text = it.data?.id
+                            tvTransactionDate.text = it.data?.dateCreated?.timestampToDate()
+                            tvTotalPrice.text = it.data?.totalPrice?.formatIDR()
+                        }
+                        val adapter = it.data?.orders?.let { listOrder ->
+                            ListOrderAdapter(
+                                listOrder,
+                                onItemClickCallback = { productId -> navigateToDetailProduct(productId) },
+                                onBtnRateClickCallback = { productId, rating, review ->
+                                    addRatingHandler(productId, rating, review)
+                                }
+                            )
+                        }
+                        binding.rvOrders.adapter = adapter
                     }
-                    val adapter = it.data?.orders?.let { listOrder ->
-                        ListOrderAdapter(
-                            listOrder,
-                            onItemClickCallback = { productId -> navigateToDetailProduct(productId) },
-                            onBtnRateClickCallback = { productId, rating, review ->
-                                addRatingHandler(productId, rating, review)
-                            }
-                        )
-                    }
-                    binding.rvOrders.adapter = adapter
+                    else -> Timber.e("Error: ${it.message}")
                 }
             }
         }
@@ -112,5 +117,13 @@ class DetailTransactionFragment: Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun isShowProgressBar(state: Boolean) {
+        if (state) {
+            binding.progressBar.visibility = View.VISIBLE
+        } else {
+            binding.progressBar.visibility = View.GONE
+        }
     }
 }

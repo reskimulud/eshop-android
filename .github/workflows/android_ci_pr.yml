@@ -1,0 +1,45 @@
+name: Android CI on PR to Master
+
+env:
+  # The name of the main module repository
+  main_project_module: app
+
+  # The name of the Play Store
+  playstore_name: eShop
+
+on:
+  # Triggers the workflow on push or pull request events but only for default and protected branches
+  pull_request:
+    branches: [ master ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build and Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Set Up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+
+      - name: Change wrapper permissions
+        run: chmod +x ./gradlew
+        
+      # Run Build Project
+      - name: Build gradle project
+        run: ./gradlew build
+
+      # Run Tests Lint
+      - name: Run Lint tests
+        run: ./gradlew lint test
+        
+      # Run Unit Testing module core
+      - name: Run Unit Testing module Core
+        run: ./gradlew :core:testDebugUnitTest
+        

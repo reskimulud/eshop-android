@@ -148,25 +148,28 @@ class CartFragment: Fragment() {
     private fun getCart() {
         lifecycleScope.launchWhenStarted {
             cartViewModel.getCarts().collect { resource ->
-                if (resource is Resource.Success) {
-                    totalPriceState.value = resource.data?.subTotal?:0
-                    val listCart = resource.data?.cart
+                when (resource) {
+                    is Resource.Loading -> isShowProgressBar(true)
+                    is Resource.Success -> {
+                        isShowProgressBar(false)
+                        totalPriceState.value = resource.data?.subTotal?:0
+                        val listCart = resource.data?.cart
 
-                    if (!listCart.isNullOrEmpty()) {
-                        val adapter = ListCartAdapter(
-                            listCart,
-                            onItemClickCallback = { productId -> onItemClickHandler(productId) },
-                            onBtnIncreaseClickCallback = { itemId, qty -> onIncreaseQtyHandler(itemId, qty) },
-                            onBtnDecreaseClickCallback = { itemId, qty -> onDecreaseQtyHandler(itemId, qty) }
-                        )
-                        binding.rvCarts.adapter = adapter
-                    } else {
-                        binding.rvCarts.visibility = View.GONE
-                        binding.tvEmptyCart.visibility = View.VISIBLE
-                        binding.btnCheckout.isEnabled = false
+                        if (!listCart.isNullOrEmpty()) {
+                            val adapter = ListCartAdapter(
+                                listCart,
+                                onItemClickCallback = { productId -> onItemClickHandler(productId) },
+                                onBtnIncreaseClickCallback = { itemId, qty -> onIncreaseQtyHandler(itemId, qty) },
+                                onBtnDecreaseClickCallback = { itemId, qty -> onDecreaseQtyHandler(itemId, qty) }
+                            )
+                            binding.rvCarts.adapter = adapter
+                        } else {
+                            binding.rvCarts.visibility = View.GONE
+                            binding.tvEmptyCart.visibility = View.VISIBLE
+                            binding.btnCheckout.isEnabled = false
+                        }
                     }
-                } else {
-                    Timber.e(resource.message.toString())
+                    else -> Timber.e(resource.message.toString())
                 }
             }
         }
@@ -217,5 +220,13 @@ class CartFragment: Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun isShowProgressBar(state: Boolean) {
+        if (state) {
+            binding.progressBar.visibility = View.VISIBLE
+        } else {
+            binding.progressBar.visibility = View.GONE
+        }
     }
 }

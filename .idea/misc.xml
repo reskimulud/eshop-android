@@ -27,7 +27,7 @@
         <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/auth/src/main/res/layout/fragment_register.xml" value="0.22447916666666667" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/cart/src/main/res/drawable/fragment_background.xml" value="0.1295" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/cart/src/main/res/layout/fragment_cart.xml" value="0.16" />
-        <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/cart/src/main/res/layout/item_cart_product.xml" value="0.25" />
+        <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/cart/src/main/res/layout/item_cart_product.xml" value="0.22" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/cart/src/main/res/layout/item_product.xml" value="0.2234375" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/commonui/src/main/res/drawable/ic_decrement.xml" value="0.1295" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/commonui/src/main/res/drawable/ic_increment.xml" value="0.1295" />
@@ -35,6 +35,7 @@
         <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/commonui/src/main/res/drawable/ic_search.xml" value="0.1295" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/commonui/src/main/res/drawable/ic_setting.xml" value="0.1295" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/commonui/src/main/res/drawable/shape_search_view.xml" value="0.1295" />
+        <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/commonui/src/main/res/layout/item_product_placeholder.xml" value="0.18" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/favorite/src/main/res/layout/fragment_favorite_product.xml" value="0.22" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/favorite/src/main/res/layout/item_favorite_product.xml" value="0.25" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/product/src/main/res/drawable/capsul_button.xml" value="0.13" />

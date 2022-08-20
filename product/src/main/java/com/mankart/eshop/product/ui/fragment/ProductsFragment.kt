@@ -161,6 +161,7 @@ class ProductsFragment: Fragment() {
                 val categoryId = it.first
                 val search = it.second
 
+                isShowProgressBar(true)
                 if (categoryId.isNotEmpty() || search.isNotEmpty()) {
                     Timber.d("collect - categoryId: $categoryId")
                     if (categoryId.isNotEmpty() || categoryId != "all") {
@@ -181,6 +182,7 @@ class ProductsFragment: Fragment() {
                 productViewModel.getProducts(categoryId, search).collect {
                     Timber.d("Products: $it")
                     listProductAdapter.submitData(it)
+                    isShowProgressBar(false)
                 }
             }
         }
@@ -196,14 +198,28 @@ class ProductsFragment: Fragment() {
             findNavController().navigate(request)
         }
 
+        isShowProgressBar(true)
         getProducts()
 
         binding.rvProducts.adapter = listProductAdapter
+    }
+
+    override fun onResume() {
+        super.onResume()
+        isShowProgressBar(true)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
         listProductAdapter.submitData(lifecycle, PagingData.empty())
+    }
+
+    private fun isShowProgressBar(state: Boolean) {
+        if (state) {
+            binding.progressBar.visibility = View.VISIBLE
+        } else {
+            binding.progressBar.visibility = View.GONE
+        }
     }
 }

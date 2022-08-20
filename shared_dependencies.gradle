@@ -15,10 +15,13 @@ dependencies {
     // coroutine
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1"
+
+    // 3rd party library
+    implementation "com.jakewharton.timber:timber:5.0.1"
 }
 
 android {
     lintOptions {
-        disable 'RtlSymmetry', 'RtlHardcoded'
+        disable 'RtlSymmetry', 'RtlHardcoded', 'SetTextI18n'
     }
 }

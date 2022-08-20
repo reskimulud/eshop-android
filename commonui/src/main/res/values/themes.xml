@@ -7,6 +7,9 @@
     <color name="colorTextSecondary">#636363</color>
     <color name="colorPrimaryVariant">#1C1C1C</color>
 
+    <!--  Soft grey  -->
+    <color name="colorSoftGrey">#888888</color>
+
     <style name="Theme.Eshop" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/colorPrimary</item>

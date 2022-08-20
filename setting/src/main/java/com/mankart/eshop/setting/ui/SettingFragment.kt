@@ -1,6 +1,5 @@
 package com.mankart.eshop.setting.ui
 
-import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
@@ -31,7 +30,6 @@ class SettingFragment: Fragment() {
         return binding.root
     }
 
-    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -78,6 +76,11 @@ class SettingFragment: Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        _binding = null
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
         _binding = null
     }
 }

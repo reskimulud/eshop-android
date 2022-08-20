@@ -2,7 +2,6 @@ package com.mankart.eshop.product.ui.fragment
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,6 +28,7 @@ import com.mankart.eshop.product.ui.adapter.ListUserReviewAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @AndroidEntryPoint
 class DetailProductFragment: Fragment() {
@@ -91,7 +91,7 @@ class DetailProductFragment: Fragment() {
                 if (resource is Resource.Success || resource is Resource.Message) {
                     Toast.makeText(requireContext(), getString(R.string.item_add_to_cart), Toast.LENGTH_SHORT).show()
                 } else {
-                    Log.e(TAG, "Error adding to cart ${resource.message}")
+                    Timber.d("Error adding to cart ${resource.message}")
                 }
             } }
         }
@@ -116,14 +116,14 @@ class DetailProductFragment: Fragment() {
                 binding.fabAddToFavorite.setImageResource(commonR.drawable.ic_favorite_border)
                 lifecycleScope.launch {
                     productViewModel.deleteFavoriteProductById(productState.id)
-                    Log.e(TAG, "deleteFavoriteProductById: ${productState.id}")
+                    Timber.d("deleteFavoriteProductById: ${productState.id}")
                 }
                 false
             } else {
                 binding.fabAddToFavorite.setImageResource(commonR.drawable.ic_favorite)
                 lifecycleScope.launch {
                     productViewModel.addFavoriteProduct(productState)
-                    Log.e(TAG, "addFavoriteProduct: ${productState.id}")
+                    Timber.d("addFavoriteProduct: ${productState.id}")
                 }
                 true
             }
@@ -188,10 +188,12 @@ class DetailProductFragment: Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        binding.rvReview.adapter = null
         _binding = null
     }
 
-    companion object {
-        private const val TAG = "DetailProductFragment"
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

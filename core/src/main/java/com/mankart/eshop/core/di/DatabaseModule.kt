@@ -2,12 +2,15 @@ package com.mankart.eshop.core.di
 
 import android.content.Context
 import androidx.room.Room
+import com.mankart.eshop.core.BuildConfig
 import com.mankart.eshop.core.data.source.local.room.ProductDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import net.sqlcipher.database.SQLiteDatabase
+import net.sqlcipher.database.SupportFactory
 import javax.inject.Singleton
 
 @Module
@@ -17,12 +20,17 @@ class DatabaseModule {
     // Product Database
     @Singleton
     @Provides
-    fun provideProductDatabase(@ApplicationContext context: Context) : ProductDatabase =
-        Room.databaseBuilder(
+    fun provideProductDatabase(@ApplicationContext context: Context) : ProductDatabase {
+        val dbPassphrase: ByteArray = SQLiteDatabase.getBytes(BuildConfig.DB_PASSPHRASE.toCharArray())
+        val factory = SupportFactory(dbPassphrase)
+        return Room.databaseBuilder(
             context,
             ProductDatabase::class.java,
-            "products.db"
-        ).fallbackToDestructiveMigration().build()
+            BuildConfig.DB_NAME
+        ).fallbackToDestructiveMigration()
+            .openHelperFactory(factory)
+            .build()
+    }
 
     // product dao
     @Provides

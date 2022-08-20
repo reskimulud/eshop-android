@@ -12,4 +12,6 @@
     <string name="product_image_of">Product Image of %s</string>
     <string name="decrease_one">Update item quantity to decrease one</string>
     <string name="increase_one">Update item quantity to increase one</string>
+    <string name="sub_total">Sub Total</string>
+    <string name="price">Price</string>
 </resources>

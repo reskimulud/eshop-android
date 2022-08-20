@@ -2,7 +2,6 @@ package com.mankart.eshop.favorite.ui.fragment
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,6 +26,7 @@ import com.mankart.eshop.favorite.ui.adapter.ListFavoriteProductAdapter
 import dagger.hilt.android.EntryPointAccessors
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -97,7 +97,7 @@ class FavoriteProductFragment: Fragment() {
                         binding.rvFavoriteProduct.adapter = adapter
                     }
                 } else {
-                    Log.e(TAG, "Error: ${resource.message}")
+                    Timber.e("Error: ${resource.message}")
                 }
             }
         }
@@ -144,10 +144,12 @@ class FavoriteProductFragment: Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        binding.rvFavoriteProduct.adapter = null
         _binding = null
     }
 
-    companion object {
-        private const val TAG = "FavoriteProductFragment"
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

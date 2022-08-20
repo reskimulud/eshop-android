@@ -1,7 +1,6 @@
 package com.mankart.eshop.cart.ui.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,6 +27,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @AndroidEntryPoint
 class CartFragment: Fragment() {
@@ -126,7 +126,7 @@ class CartFragment: Fragment() {
                     uiState.value = getCurrentDate()
                     Toast.makeText(requireActivity(), getString(R.string.item_updated), Toast.LENGTH_SHORT).show()
                 } else {
-                    Log.e(TAG, it.message.toString())
+                    Timber.e(it.message.toString())
                 }
             }
         }
@@ -139,7 +139,7 @@ class CartFragment: Fragment() {
                     uiState.value = getCurrentDate()
                     Toast.makeText(requireActivity(), getString(R.string.item_deleted), Toast.LENGTH_SHORT).show()
                 } else {
-                    Log.e(TAG, it.message.toString())
+                    Timber.e(it.message.toString())
                 }
             }
         }
@@ -148,25 +148,28 @@ class CartFragment: Fragment() {
     private fun getCart() {
         lifecycleScope.launchWhenStarted {
             cartViewModel.getCarts().collect { resource ->
-                if (resource is Resource.Success) {
-                    totalPriceState.value = resource.data?.subTotal?:0
-                    val listCart = resource.data?.cart
+                when (resource) {
+                    is Resource.Loading -> isShowProgressBar(true)
+                    is Resource.Success -> {
+                        isShowProgressBar(false)
+                        totalPriceState.value = resource.data?.subTotal?:0
+                        val listCart = resource.data?.cart
 
-                    if (!listCart.isNullOrEmpty()) {
-                        val adapter = ListCartAdapter(
-                            listCart,
-                            onItemClickCallback = { productId -> onItemClickHandler(productId) },
-                            onBtnIncreaseClickCallback = { itemId, qty -> onIncreaseQtyHandler(itemId, qty) },
-                            onBtnDecreaseClickCallback = { itemId, qty -> onDecreaseQtyHandler(itemId, qty) }
-                        )
-                        binding.rvCarts.adapter = adapter
-                    } else {
-                        binding.rvCarts.visibility = View.GONE
-                        binding.tvEmptyCart.visibility = View.VISIBLE
-                        binding.btnCheckout.isEnabled = false
+                        if (!listCart.isNullOrEmpty()) {
+                            val adapter = ListCartAdapter(
+                                listCart,
+                                onItemClickCallback = { productId -> onItemClickHandler(productId) },
+                                onBtnIncreaseClickCallback = { itemId, qty -> onIncreaseQtyHandler(itemId, qty) },
+                                onBtnDecreaseClickCallback = { itemId, qty -> onDecreaseQtyHandler(itemId, qty) }
+                            )
+                            binding.rvCarts.adapter = adapter
+                        } else {
+                            binding.rvCarts.visibility = View.GONE
+                            binding.tvEmptyCart.visibility = View.VISIBLE
+                            binding.btnCheckout.isEnabled = false
+                        }
                     }
-                } else {
-                    Log.e(TAG, resource.message.toString())
+                    else -> Timber.e(resource.message.toString())
                 }
             }
         }
@@ -216,10 +219,20 @@ class CartFragment: Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        binding.rvCarts.adapter = null
         _binding = null
     }
 
-    companion object {
-        private const val TAG = "CartFragment"
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
+
+    private fun isShowProgressBar(state: Boolean) {
+        if (state) {
+            binding.progressBar.visibility = View.VISIBLE
+        } else {
+            binding.progressBar.visibility = View.GONE
+        }
     }
 }

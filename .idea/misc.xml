@@ -26,8 +26,8 @@
         <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/auth/src/main/res/layout/fragment_login.xml" value="0.25" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/auth/src/main/res/layout/fragment_register.xml" value="0.22447916666666667" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/cart/src/main/res/drawable/fragment_background.xml" value="0.1295" />
-        <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/cart/src/main/res/layout/fragment_cart.xml" value="0.2" />
-        <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/cart/src/main/res/layout/item_cart_product.xml" value="0.25" />
+        <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/cart/src/main/res/layout/fragment_cart.xml" value="0.16" />
+        <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/cart/src/main/res/layout/item_cart_product.xml" value="0.22" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/cart/src/main/res/layout/item_product.xml" value="0.2234375" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/commonui/src/main/res/drawable/ic_decrement.xml" value="0.1295" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/commonui/src/main/res/drawable/ic_increment.xml" value="0.1295" />
@@ -35,6 +35,7 @@
         <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/commonui/src/main/res/drawable/ic_search.xml" value="0.1295" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/commonui/src/main/res/drawable/ic_setting.xml" value="0.1295" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/commonui/src/main/res/drawable/shape_search_view.xml" value="0.1295" />
+        <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/commonui/src/main/res/layout/item_product_placeholder.xml" value="0.18" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/favorite/src/main/res/layout/fragment_favorite_product.xml" value="0.22" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/favorite/src/main/res/layout/item_favorite_product.xml" value="0.25" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/product/src/main/res/drawable/capsul_button.xml" value="0.13" />
@@ -45,9 +46,10 @@
         <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/product/src/main/res/drawable/ic_top.xml" value="0.13" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/product/src/main/res/drawable/shape_edit_text.xml" value="0.13" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/product/src/main/res/layout/fragment_detail_product.xml" value="0.22" />
-        <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/product/src/main/res/layout/fragment_products.xml" value="0.21756688541140837" />
+        <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/product/src/main/res/layout/fragment_products.xml" value="0.18" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/product/src/main/res/layout/item_btn_category.xml" value="0.5" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/product/src/main/res/layout/item_product.xml" value="0.33" />
+        <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/product/src/main/res/layout/item_product_placeholder.xml" value="0.22447916666666667" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/product/src/main/res/layout/item_review.xml" value="0.18" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/profile/src/main/res/drawable/bg_bottom_sheet_dialog.xml" value="0.1295" />
         <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/profile/src/main/res/drawable/capsul_button.xml" value="0.1295" />
@@ -62,6 +64,28 @@
         <entry key="..\:/Users/asus/AndroidStudioProjects/Submission/Eshop/setting/src/main/res/layout/fragment_setting.xml" value="0.25" />
       </map>
     </option>
+  </component>
+  <component name="EntryPointsManager">
+    <list size="18">
+      <item index="0" class="java.lang.String" itemvalue="dagger.Binds" />
+      <item index="1" class="java.lang.String" itemvalue="dagger.Binds" />
+      <item index="2" class="java.lang.String" itemvalue="dagger.Binds" />
+      <item index="3" class="java.lang.String" itemvalue="dagger.Binds" />
+      <item index="4" class="java.lang.String" itemvalue="dagger.Binds" />
+      <item index="5" class="java.lang.String" itemvalue="dagger.Binds" />
+      <item index="6" class="java.lang.String" itemvalue="dagger.Binds" />
+      <item index="7" class="java.lang.String" itemvalue="dagger.Binds" />
+      <item index="8" class="java.lang.String" itemvalue="dagger.Binds" />
+      <item index="9" class="java.lang.String" itemvalue="dagger.Binds" />
+      <item index="10" class="java.lang.String" itemvalue="dagger.Binds" />
+      <item index="11" class="java.lang.String" itemvalue="dagger.Binds" />
+      <item index="12" class="java.lang.String" itemvalue="dagger.Module" />
+      <item index="13" class="java.lang.String" itemvalue="dagger.Module" />
+      <item index="14" class="java.lang.String" itemvalue="dagger.Module" />
+      <item index="15" class="java.lang.String" itemvalue="dagger.Module" />
+      <item index="16" class="java.lang.String" itemvalue="dagger.Module" />
+      <item index="17" class="java.lang.String" itemvalue="dagger.Module" />
+    </list>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />

@@ -19,6 +19,7 @@ android {
 
         buildConfigField("String" , "DB_PASSPHRASE" , '"eshop_reskimulud"')
         buildConfigField("String" , "DB_NAME" , '"products.db"')
+        buildConfigField("String" , "SECRET_KEY" , '"@McQfTjWnZr4u7x!A%D*G-KaNdRgUkXp"')
     }
 
     buildTypes {
@@ -61,5 +62,7 @@ dependencies {
     // encrypt database
     implementation "net.zetetic:android-database-sqlcipher:4.5.2"
     implementation "androidx.sqlite:sqlite-ktx:2.2.0"
+
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2"
 
 }

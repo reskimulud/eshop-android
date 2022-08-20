@@ -12,7 +12,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
-import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -74,9 +73,7 @@ class PreferenceDataStore @Inject constructor(
             val value = fetchValue(preference)
 
             if (value.isNotEmpty() && value != EMPTY_DATA_STORE) {
-                Timber.e("value: $value")
                 val decryptedValue = security.decryptData(value)
-                Timber.e(decryptedValue)
                 jsonEncode.decodeFromString(decryptedValue)
             } else {
                 value as T

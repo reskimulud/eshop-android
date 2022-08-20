@@ -1,5 +1,7 @@
 package com.mankart.eshop.core.utils
 
+import com.mankart.eshop.core.BuildConfig
+
 object Constants {
     const val EXTRA_PRODUCT_ID = "productId"
     const val EXTRA_TRANSACTION_ID = "transactionId"
@@ -11,4 +13,6 @@ object Constants {
 
     const val DATA_STORE_NAME = "application"
     const val EMPTY_DATA_STORE = "not_set_yet"
+
+    const val BASE_URL = "https://${BuildConfig.HOST_NAME}/"
 }

@@ -20,6 +20,11 @@ android {
         buildConfigField("String" , "DB_PASSPHRASE" , '"eshop_reskimulud"')
         buildConfigField("String" , "DB_NAME" , '"products.db"')
         buildConfigField("String" , "SECRET_KEY" , '"@McQfTjWnZr4u7x!A%D*G-KaNdRgUkXp"')
+
+        buildConfigField("String", "HOST_NAME", '"eshop.reskimulud.my.id"')
+        buildConfigField("String" , "CERT_PIN_1" , '"sha256/jgRZEuEQDTr5MmQ1tVE8a4/Jj7V9yp6ivvx7FddyYGE="')
+        buildConfigField("String" , "CERT_PIN_2" , '"sha256/jQJTbIh0grw0/1TkHSumWb+Fs0Ggogr621gT3PvPKG0="')
+        buildConfigField("String" , "CERT_PIN_3" , '"sha256/C5+lpZ7tcVwmwQIMcRtPbsQtWLABXhQzejna0wHFr8M="')
     }
 
     buildTypes {

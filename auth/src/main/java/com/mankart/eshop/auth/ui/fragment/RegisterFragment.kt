@@ -1,7 +1,6 @@
 package com.mankart.eshop.auth.ui.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.util.Patterns
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -21,6 +20,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @AndroidEntryPoint
 class RegisterFragment : Fragment() {
@@ -86,18 +86,18 @@ class RegisterFragment : Fragment() {
                         is Resource.Message -> {
                             setLoading(false)
                             Toast.makeText(requireActivity(), it.message, Toast.LENGTH_LONG).show()
-                            Log.e(TAG, it.message.toString())
+                            Timber.i(it.message.toString())
                             moveToLoginFragment()
                         }
                         is Resource.Error -> {
                             setLoading(false)
                             Toast.makeText(requireActivity(), it.message, Toast.LENGTH_LONG).show()
-                            Log.e(TAG, it.message.toString())
+                            Timber.e(it.message.toString())
                         }
                         is Resource.Success -> {
                             setLoading(false)
                             Toast.makeText(requireActivity(), it.message.toString(), Toast.LENGTH_LONG).show()
-                            Log.e(TAG, it.message.toString())
+                            Timber.i(it.message.toString())
                             moveToLoginFragment()
                         }
                     }
@@ -154,9 +154,5 @@ class RegisterFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
-    }
-
-    companion object {
-        private const val TAG = "RegisterFragment"
     }
 }

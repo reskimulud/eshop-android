@@ -1,6 +1,5 @@
 package com.mankart.eshop.cart.ui.adapter
 
-import android.annotation.SuppressLint
 import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -36,7 +35,6 @@ class ListCartAdapter(
         return ViewHolder(itemCartProductBinding)
     }
 
-    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val cartItem = listCart[position]
 
@@ -46,7 +44,7 @@ class ListCartAdapter(
                 .into(ivProductImage)
 
             tvProductTitle.text = cartItem.title
-            tvProductPrice.text = "@${cartItem.price.formatIDR()}"
+            tvProductPrice.text = StringBuilder("@").append(cartItem.price.formatIDR())
             tvQty.text = cartItem.quantity.toString()
             tvSubTotal.text = (cartItem.price * cartItem.quantity).formatIDR()
 

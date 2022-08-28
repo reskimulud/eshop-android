@@ -116,7 +116,7 @@ class FavoriteProductFragment: Fragment() {
             .build()
         findNavController().navigate(request)
     }
-    
+
     private fun rvTouchHelper() {
         val itemTouchHelper = ItemTouchHelper(object: ItemTouchHelper.Callback(){
             override fun getMovementFlags(
